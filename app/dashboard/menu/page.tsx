@@ -7,7 +7,7 @@ import { Loading } from "@/components/ui/loading";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Utensils, Edit, Trash2 } from "lucide-react";
+import { Plus, Utensils, Edit, Trash2, Upload } from "lucide-react";
 import Link from "next/link";
 import { CategoryIcon } from "@/components/menu/category-icon";
 import { DraggableCategoryList } from "@/components/menu/draggable-category-list";
@@ -150,12 +150,20 @@ export default function MenuManagementPage() {
                 Manage your restaurant menu categories and items
               </p>
             </div>
-            <Button asChild>
-              <Link href="/dashboard/menu/categories/new">
-                <Plus className="mr-2 h-4 w-4" />
-                Add Category
-              </Link>
-            </Button>
+            <div className="flex gap-2">
+              <Button variant="outline" asChild>
+                <Link href="/dashboard/menu/import">
+                  <Upload className="mr-2 h-4 w-4" />
+                  Import Menu
+                </Link>
+              </Button>
+              <Button asChild>
+                <Link href="/dashboard/menu/categories/new">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Category
+                </Link>
+              </Button>
+            </div>
           </div>
 
           {categories.length === 0 ? (
@@ -167,12 +175,20 @@ export default function MenuManagementPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button asChild>
-                  <Link href="/dashboard/menu/categories/new">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Create Category
-                  </Link>
-                </Button>
+                <div className="flex gap-2">
+                  <Button variant="outline" asChild>
+                    <Link href="/dashboard/menu/import">
+                      <Upload className="mr-2 h-4 w-4" />
+                      Import Menu
+                    </Link>
+                  </Button>
+                  <Button asChild>
+                    <Link href="/dashboard/menu/categories/new">
+                      <Plus className="mr-2 h-4 w-4" />
+                      Create Category
+                    </Link>
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ) : (
