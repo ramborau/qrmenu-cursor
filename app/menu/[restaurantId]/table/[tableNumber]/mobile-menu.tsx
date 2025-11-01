@@ -156,35 +156,35 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
   const isDarkTheme = restaurant.darkTheme || false;
   const primaryColor = restaurant.primaryColor || "#075e54";
   const secondaryColor = restaurant.secondaryColor || "#00c307";
-  
+
   // Dark theme: Pure black background with primary/secondary accents
   const bgColor = isDarkTheme ? "#000000" : (restaurant.backgroundColor || "#ffffff");
   const textColor = isDarkTheme ? "#ffffff" : "#111827";
   const textColorSecondary = isDarkTheme ? "#a0a0a0" : "#6b7280";
   const cardBg = isDarkTheme ? "#111111" : "#ffffff";
   const borderColor = isDarkTheme ? "#222222" : "#e5e7eb";
-  
+
   // Smart color adjustments for dark theme
   // Make primary and secondary colors brighter/lighter for better visibility on black
   const getAdjustedColor = (color: string, isDark: boolean) => {
     if (!isDark) return color;
-    
+
     // Convert hex to RGB
     const hex = color.replace('#', '');
     const r = parseInt(hex.substr(0, 2), 16);
     const g = parseInt(hex.substr(2, 2), 16);
     const b = parseInt(hex.substr(4, 2), 16);
-    
+
     // Lighten the color by 20% for better visibility on black
     const lighten = (value: number) => Math.min(255, Math.floor(value + (255 - value) * 0.2));
-    
+
     const newR = lighten(r);
     const newG = lighten(g);
     const newB = lighten(b);
-    
+
     return `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
   };
-  
+
   const adjustedPrimaryColor = getAdjustedColor(primaryColor, isDarkTheme);
   const adjustedSecondaryColor = getAdjustedColor(secondaryColor, isDarkTheme);
 
@@ -193,9 +193,9 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
       {/* Sticky Header */}
       <header
         className="sticky top-0 z-30 border-b shadow-sm"
-        style={{ 
-          backgroundColor: isDarkTheme ? adjustedPrimaryColor : primaryColor, 
-          color: "#ffffff" 
+        style={{
+          backgroundColor: isDarkTheme ? adjustedPrimaryColor : primaryColor,
+          color: "#ffffff"
         }}
       >
         {/* Restaurant Name & Table */}
@@ -251,7 +251,7 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
         )}
 
         {/* High-Level Categories (Food, Drinks, Shisha) */}
-        <div 
+        <div
           className="flex border-t overflow-x-auto scrollbar-hide"
           style={{ borderTopColor: isDarkTheme ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.2)' }}
         >
@@ -489,13 +489,13 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
                     activeSubCategory === subCat.id ? 'ring-2 ring-offset-2' : ''
                   }`}
                   style={{
-                    backgroundColor: activeSubCategory === subCat.id 
+                    backgroundColor: activeSubCategory === subCat.id
                       ? (isDarkTheme ? adjustedPrimaryColor : primaryColor)
-                      : isDarkTheme 
-                        ? `${adjustedPrimaryColor}30` 
+                      : isDarkTheme
+                        ? `${adjustedPrimaryColor}30`
                         : `${primaryColor}20`,
-                    color: activeSubCategory === subCat.id 
-                      ? '#ffffff' 
+                    color: activeSubCategory === subCat.id
+                      ? '#ffffff'
                       : (isDarkTheme ? adjustedPrimaryColor : primaryColor),
                     border: `1px solid ${isDarkTheme ? adjustedPrimaryColor : primaryColor}40`,
                     ringColor: isDarkTheme ? adjustedPrimaryColor : primaryColor,

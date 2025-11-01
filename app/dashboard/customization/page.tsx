@@ -98,7 +98,7 @@ export default function CustomizationPage() {
         backgroundColor: data.backgroundColor || "#ffffff",
         darkTheme: data.darkTheme || false,
       });
-      
+
       toast.success("Settings saved successfully!");
       console.log("Settings saved:", data);
     } catch (error) {
@@ -256,8 +256,8 @@ export default function CustomizationPage() {
                         id="darkTheme"
                         checked={formData.darkTheme}
                         onCheckedChange={(checked) => {
-                          setFormData({ 
-                            ...formData, 
+                          setFormData({
+                            ...formData,
                             darkTheme: checked,
                             backgroundColor: checked ? "#000000" : "#ffffff",
                           });
@@ -271,7 +271,7 @@ export default function CustomizationPage() {
                       Warning: Contrast ratio ({contrastRatio.toFixed(2)}) is below recommended minimum (3:1). Text may be hard to read.
                     </div>
                   )}
-                  
+
                   {formData.darkTheme && (
                     <div className="rounded-md bg-green-100 p-3 text-sm text-green-800">
                       ✓ Dark theme enabled: Black background with automatic text color adjustments for optimal readability.
