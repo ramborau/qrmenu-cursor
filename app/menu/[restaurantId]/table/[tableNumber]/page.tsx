@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { revalidate } from "@/lib/performance";
 import { ClientMenu } from "./client-menu";
 
 export const revalidate = 3600; // Revalidate every hour
