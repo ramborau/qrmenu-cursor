@@ -13,10 +13,9 @@ const config = {
 
 async function generateKey(password: string, salt: string): Promise<Uint8Array> {
   // Better Auth passes salt (hex string) directly to scryptAsync
-  // scryptAsync uses 'clean' utility which converts hex strings to bytes
-  // But to be safe, let's convert hex to bytes explicitly
-  const saltBytes = utils.hexToBytes(salt);
-  return await scryptAsync(password.normalize("NFKC"), saltBytes, {
+  // scryptAsync's pbkdf2 internally handles hex strings via utf8ToBytes
+  // So we can pass hex string directly, matching Better Auth's behavior
+  return await scryptAsync(password.normalize("NFKC"), salt, {
     N: config.N,
     p: config.p,
     r: config.r,
