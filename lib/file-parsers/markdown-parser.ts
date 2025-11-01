@@ -16,11 +16,11 @@ export function parseMarkdown(content: string): ParsedMenuItem[] {
   // Looks for ## Category, ### SubCategory, #### Item patterns
   const items: ParsedMenuItem[] = [];
   const lines = content.split("\n");
-  
+
   let currentCategory = "";
   let currentSubCategory = "";
   let currentItem: Partial<ParsedMenuItem> = {};
-  
+
   for (const line of lines) {
     if (line.startsWith("## ")) {
       currentCategory = line.replace("## ", "").trim();
@@ -54,11 +54,11 @@ export function parseMarkdown(content: string): ParsedMenuItem[] {
       }
     }
   }
-  
+
   if (currentItem.name) {
     items.push({ ...currentItem } as ParsedMenuItem);
   }
-  
+
   return items;
 }
 

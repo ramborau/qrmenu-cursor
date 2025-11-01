@@ -15,15 +15,15 @@ export function parseHTML(content: string): ParsedMenuRow[] {
   const parser = new DOMParser();
   const doc = parser.parseFromString(content, "text/html");
   const tables = doc.querySelectorAll("table");
-  
+
   tables.forEach((table) => {
     const rows = table.querySelectorAll("tr");
     const headers: string[] = [];
-    
+
     rows.forEach((row, index) => {
       const cells = row.querySelectorAll("td, th");
       const rowData: any = {};
-      
+
       cells.forEach((cell, cellIndex) => {
         if (index === 0) {
           headers.push(cell.textContent?.trim() || "");
@@ -34,13 +34,13 @@ export function parseHTML(content: string): ParsedMenuRow[] {
           }
         }
       });
-      
+
       if (index > 0 && Object.keys(rowData).length > 0) {
         items.push(rowData as ParsedMenuRow);
       }
     });
   });
-  
+
   return items;
 }
 

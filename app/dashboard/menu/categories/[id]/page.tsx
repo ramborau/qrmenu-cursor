@@ -59,7 +59,7 @@ export default function CategoryDetailPage() {
       const res = await fetch(`/api/sub-categories?categoryId=${categoryId}`);
       const data = await res.json();
       setSubCategories(data);
-      
+
       // Fetch menu items for each sub-category
       const itemsPromises = data.map((sub: any) =>
         fetch(`/api/menu-items?subCategoryId=${sub.id}`).then((r) => r.json())
