@@ -172,25 +172,29 @@ export default function SettingsPage() {
         body: JSON.stringify(formData),
       });
 
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        toast.error(errorData.message || `Failed to save settings (${res.status})`);
+        console.error("API Error:", errorData);
+        return;
+      }
+
       const data = await res.json();
       
-      if (res.ok) {
-        toast.success("Settings saved successfully!");
-        // Update local state with the response data
-        setRestaurant(data);
-        setFormData({
-          name: data.name || "",
-          logoUrl: data.logoUrl || "",
-          heroImageUrl: data.heroImageUrl || "",
-          primaryColor: data.primaryColor || "#075e54",
-          secondaryColor: data.secondaryColor || "#00c307",
-          backgroundColor: data.backgroundColor || "#ffffff",
-          darkTheme: data.darkTheme || false,
-        });
-      } else {
-        toast.error(data.message || "Failed to save settings");
-        console.error("API Error:", data);
-      }
+      // Update local state with the response data
+      setRestaurant(data);
+      setFormData({
+        name: data.name || "",
+        logoUrl: data.logoUrl || "",
+        heroImageUrl: data.heroImageUrl || "",
+        primaryColor: data.primaryColor || "#075e54",
+        secondaryColor: data.secondaryColor || "#00c307",
+        backgroundColor: data.backgroundColor || "#ffffff",
+        darkTheme: data.darkTheme || false,
+      });
+      
+      toast.success("Settings saved successfully!");
+      console.log("Settings saved:", data);
     } catch (error) {
       console.error("Failed to save settings:", error);
       toast.error("Failed to save settings. Please check console for details.");

@@ -2,7 +2,8 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { MobileMenu } from "./mobile-menu";
 
-export const revalidate = 3600; // Revalidate every hour
+export const revalidate = 0; // Always fetch fresh data
+export const dynamic = 'force-dynamic'; // Force dynamic rendering
 
 async function getRestaurantMenu(restaurantId: string) {
   const restaurant = await prisma.restaurant.findUnique({

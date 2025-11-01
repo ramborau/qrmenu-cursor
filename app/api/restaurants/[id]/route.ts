@@ -78,8 +78,9 @@ export async function PATCH(
 
     return NextResponse.json(updated);
   } catch (error: any) {
+    console.error("Restaurant update error:", error);
     return NextResponse.json(
-      { message: error.message || "Failed to update restaurant" },
+      { message: error.message || "Failed to update restaurant", error: String(error) },
       { status: 500 }
     );
   }
