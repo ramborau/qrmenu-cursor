@@ -32,23 +32,33 @@ export async function POST(request: NextRequest) {
 
     // Handle different selection scopes
     if (menuItemIds && Array.isArray(menuItemIds) && menuItemIds.length > 0) {
-      // Specific menu items selected
-      whereClause.id = { in: menuItemIds };
+      // Specific menu items selected - filter by IDs and restaurant
+      whereClause = {
+        id: { in: menuItemIds },
+        subCategory: {
+          category: {
+            restaurantId: { in: restaurantIds },
+          },
+        },
+      };
     } else if (subCategoryIds && Array.isArray(subCategoryIds) && subCategoryIds.length > 0) {
-      // Subcategories selected
-      whereClause.subCategoryId = { in: subCategoryIds };
-      // Keep restaurant filter
-      whereClause.subCategory = {
-        category: {
-          restaurantId: { in: restaurantIds },
+      // Subcategories selected - filter by subCategoryIds and restaurant
+      whereClause = {
+        subCategoryId: { in: subCategoryIds },
+        subCategory: {
+          category: {
+            restaurantId: { in: restaurantIds },
+          },
         },
       };
     } else if (categoryIds && Array.isArray(categoryIds) && categoryIds.length > 0) {
-      // Categories selected
-      whereClause.subCategory = {
-        categoryId: { in: categoryIds },
-        category: {
-          restaurantId: { in: restaurantIds },
+      // Categories selected - filter by categoryIds and restaurant
+      whereClause = {
+        subCategory: {
+          categoryId: { in: categoryIds },
+          category: {
+            restaurantId: { in: restaurantIds },
+          },
         },
       };
     }
