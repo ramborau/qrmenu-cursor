@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>QR Menu Manager Pro - Live Dashboard</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                background: linear-gradient(135deg, #075e54 0%, #00c307 100%);
+                color: #333;
+                padding: 20px;
+                min-height: 100vh;
+            }
+
+            .container {
+                max-width: 1400px;
+                margin: 0 auto;
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                overflow: hidden;
+            }
+
+            .header {
+                background: linear-gradient(135deg, #075e54 0%, #00c307 100%);
+                color: white;
+                padding: 30px;
+                text-align: center;
+            }
+
+            .header h1 {
+                font-size: 2.5em;
+                margin-bottom: 10px;
+            }
+
+            .header .repo-link {
+                color: #dcf8c6;
+                text-decoration: none;
+                font-size: 1.1em;
+                display: inline-block;
+                margin-top: 10px;
+            }
+
+            .header .repo-link:hover {
+                text-decoration: underline;
+            }
+
+            .stats-bar {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+                padding: 20px;
+                background: #f5f5f5;
+            }
+
+            .stat-card {
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                text-align: center;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .stat-card h3 {
+                font-size: 0.9em;
+                color: #666;
+                margin-bottom: 10px;
+            }
+
+            .stat-card .value {
+                font-size: 2em;
+                font-weight: bold;
+                color: #075e54;
+            }
+
+            .progress-bar {
+                width: 100%;
+                height: 8px;
+                background: #e0e0e0;
+                border-radius: 4px;
+                margin-top: 10px;
+                overflow: hidden;
+            }
+
+            .progress-fill {
+                height: 100%;
+                background: linear-gradient(90deg, #00c307 0%, #075e54 100%);
+                transition: width 0.3s ease;
+            }
+
+            .main-content {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            @media (max-width: 968px) {
+                .main-content {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            .section {
+                background: white;
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .section h2 {
+                color: #075e54;
+                margin-bottom: 20px;
+                padding-bottom: 10px;
+                border-bottom: 2px solid #dcf8c6;
+            }
+
+            .phase {
+                margin-bottom: 30px;
+                border-left: 4px solid #075e54;
+                padding-left: 15px;
+            }
+
+            .phase-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+            }
+
+            .phase-header h3 {
+                color: #075e54;
+                font-size: 1.5em;
+            }
+
+            .phase-progress {
+                font-size: 0.9em;
+                color: #666;
+            }
+
+            .sprint {
+                margin-bottom: 20px;
+                padding: 15px;
+                background: #f9f9f9;
+                border-radius: 6px;
+                border-left: 3px solid #00c307;
+            }
+
+            .sprint-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+
+            .sprint-header h4 {
+                color: #075e54;
+            }
+
+            .sprint-meta {
+                font-size: 0.85em;
+                color: #666;
+            }
+
+            .tasks {
+                margin-top: 10px;
+            }
+
+            .task {
+                display: flex;
+                align-items: center;
+                padding: 8px;
+                margin: 5px 0;
+                background: white;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+
+            .task:hover {
+                background: #f0f0f0;
+            }
+
+            .task input[type="checkbox"] {
+                margin-right: 10px;
+                width: 20px;
+                height: 20px;
+                cursor: pointer;
+            }
+
+            .task-label {
+                flex: 1;
+                font-size: 0.9em;
+            }
+
+            .task-status {
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 0.75em;
+                font-weight: bold;
+            }
+
+            .status-completed {
+                background: #00c307;
+                color: white;
+            }
+
+            .status-in-progress {
+                background: #ffa500;
+                color: white;
+            }
+
+            .status-blocked {
+                background: #ff4444;
+                color: white;
+            }
+
+            .status-paused {
+                background: #888;
+                color: white;
+            }
+
+            .status-not-started {
+                background: #e0e0e0;
+                color: #666;
+            }
+
+            .git-section {
+                max-height: 500px;
+                overflow-y: auto;
+            }
+
+            .commit {
+                padding: 12px;
+                margin-bottom: 10px;
+                background: #f9f9f9;
+                border-radius: 6px;
+                border-left: 3px solid #00c307;
+            }
+
+            .commit-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 8px;
+            }
+
+            .commit-hash {
+                font-family: monospace;
+                font-size: 0.85em;
+                color: #075e54;
+                background: #dcf8c6;
+                padding: 2px 6px;
+                border-radius: 3px;
+            }
+
+            .commit-date {
+                font-size: 0.8em;
+                color: #666;
+            }
+
+            .commit-message {
+                font-size: 0.9em;
+                color: #333;
+                margin-bottom: 5px;
+            }
+
+            .commit-author {
+                font-size: 0.8em;
+                color: #666;
+            }
+
+            .refresh-btn {
+                background: #00c307;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 1em;
+                margin: 10px 0;
+                transition: background 0.2s;
+            }
+
+            .refresh-btn:hover {
+                background: #075e54;
+            }
+
+            .filter-bar {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 20px;
+                flex-wrap: wrap;
+            }
+
+            .filter-btn {
+                padding: 8px 16px;
+                border: 2px solid #075e54;
+                background: white;
+                color: #075e54;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 0.9em;
+                transition: all 0.2s;
+            }
+
+            .filter-btn.active {
+                background: #075e54;
+                color: white;
+            }
+
+            .filter-btn:hover {
+                background: #dcf8c6;
+            }
+
+            .empty-state {
+                text-align: center;
+                padding: 40px;
+                color: #666;
+            }
+
+            .empty-state svg {
+                width: 64px;
+                height: 64px;
+                margin-bottom: 20px;
+                opacity: 0.5;
+            }
+
+            @keyframes pulse {
+
+                0%,
+                100% {
+                    opacity: 1;
+                }
+
+                50% {
+                    opacity: 0.5;
+                }
+            }
+
+            .loading {
+                animation: pulse 1.5s ease-in-out infinite;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>🍽️ QR Menu Manager Pro</h1>
+                <p>Live Project Dashboard & Progress Tracker</p>
+                <a href="https://github.com/ramborau/qrmenu-cursor.git" target="_blank" class="repo-link">
+                    📦 View Repository on GitHub
+                </a>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <h3>Overall Progress</h3>
+                    <div class="value" id="overall-progress">0%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="overall-progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Tasks</h3>
+                    <div class="value" id="total-tasks">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Completed</h3>
+                    <div class="value" id="completed-tasks">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>In Progress</h3>
+                    <div class="value" id="in-progress-tasks">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Git Commits</h3>
+                    <div class="value" id="commit-count">0</div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="section">
+                    <h2>📋 Project Phases & Tasks</h2>
+                    <div class="filter-bar">
+                        <button class="filter-btn active" data-filter="all">All Tasks</button>
+                        <button class="filter-btn" data-filter="phase1">Phase 1: MVP</button>
+                        <button class="filter-btn" data-filter="phase2">Phase 2: Enhanced</button>
+                        <button class="filter-btn" data-filter="phase3">Phase 3: Scale</button>
+                        <button class="filter-btn" data-filter="completed">Completed</button>
+                        <button class="filter-btn" data-filter="in-progress">In Progress</button>
+                    </div>
+                    <div id="phases-container"></div>
+                </div>
+
+                <div class="section">
+                    <h2>🔄 Recent Git Activity</h2>
+                    <button class="refresh-btn" onclick="loadGitCommits()">🔄 Refresh Commits</button>
+                    <div class="git-section" id="git-commits">
+                        <div class="empty-state">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                            </svg>
+                            <p>Click "Refresh Commits" to load git history</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Project data structure
+            const projectData = {
+                phases: [
+                    {
+                        id: 'phase1',
+                        name: 'Phase 1: MVP (Months 1-3)',
+                        sprints: [
+                            {
+                                id: 'sprint-1.1',
+                                name: 'Project Setup & Architecture',
+                                duration: 'Week 1-2',
+                                agent: 'Architect Agent',
+                                tasks: [
+                                    { id: 'task-1.1.1', label: 'Initialize Next.js project with App Router', status: 'completed' },
+                                    { id: 'task-1.1.2', label: 'Set up TypeScript configuration', status: 'completed' },
+                                    { id: 'task-1.1.3', label: 'Configure ESLint and Prettier', status: 'completed' },
+                                    { id: 'task-1.1.4', label: 'Set up folder structure (feature-based)', status: 'completed' },
+                                    { id: 'task-1.1.5', label: 'Initialize Git repository', status: 'completed' },
+                                    { id: 'task-1.1.6', label: 'Configure Vercel deployment', status: 'completed' },
+                                    { id: 'task-1.1.7', label: 'Set up environment variables', status: 'completed' },
+                                    { id: 'task-1.1.8', label: 'Create initial README.md', status: 'completed' },
+                                    { id: 'task-1.1.9', label: 'Set up CI/CD pipeline basics', status: 'completed' }
+                                ]
+                            },
+                            {
+                                id: 'sprint-1.2',
+                                name: 'Database Setup',
+                                duration: 'Week 2-3',
+                                agent: 'Database Agent',
+                                tasks: [
+                                    { id: 'task-1.2.1', label: 'Install and configure Prisma', status: 'not-started' },
+                                    { id: 'task-1.2.2', label: 'Design database schema', status: 'not-started' },
+                                    { id: 'task-1.2.3', label: 'Create initial Prisma schema', status: 'not-started' },
+                                    { id: 'task-1.2.4', label: 'Set up PostgreSQL database', status: 'not-started' },
+                                    { id: 'task-1.2.5', label: 'Create database migrations', status: 'not-started' },
+                                    { id: 'task-1.2.6', label: 'Write seed script for development data', status: 'not-started' },
+                                    { id: 'task-1.2.7', label: 'Set up Prisma Studio', status: 'not-started' },
+                                    { id: 'task-1.2.8', label: 'Create database connection utilities', status: 'not-started' }
+                                ]
+                            },
+                            {
+                                id: 'sprint-1.3',
+                                name: 'Authentication System',
+                                duration: 'Week 3-4',
+                                agent: 'Backend Agent',
+                                tasks: [
+                                    { id: 'task-1.3.1', label: 'Install and configure Better Auth', status: 'not-started' },
+                                    { id: 'task-1.3.2', label: 'Set up email/password authentication', status: 'not-started' },
+                                    { id: 'task-1.3.3', label: 'Implement sign up flow', status: 'not-started' },
+                                    { id: 'task-1.3.4', label: 'Implement login flow', status: 'not-started' },
+                                    { id: 'task-1.3.5', label: 'Implement logout flow', status: 'not-started' },
+                                    { id: 'task-1.3.6', label: 'Implement password reset flow', status: 'not-started' },
+                                    { id: 'task-1.3.7', label: 'Set up session management', status: 'not-started' },
+                                    { id: 'task-1.3.8', label: 'Implement role-based access control', status: 'not-started' }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'phase2',
+                        name: 'Phase 2: Enhanced Features (Months 4-6)',
+                        sprints: [
+                            {
+                                id: 'sprint-2.1',
+                                name: 'File Import System',
+                                duration: 'Week 13-15',
+                                agent: 'Backend Agent, Frontend Agent',
+                                tasks: [
+                                    { id: 'task-2.1.1', label: 'Create file upload API endpoint', status: 'not-started' },
+                                    { id: 'task-2.1.2', label: 'Implement CSV parser', status: 'not-started' },
+                                    { id: 'task-2.1.3', label: 'Implement JSON parser', status: 'not-started' },
+                                    { id: 'task-2.1.4', label: 'Implement Excel parser', status: 'not-started' },
+                                    { id: 'task-2.1.5', label: 'Implement Markdown parser', status: 'not-started' },
+                                    { id: 'task-2.1.6', label: 'Implement HTML parser', status: 'not-started' }
+                                ]
+                            },
+                            {
+                                id: 'sprint-2.2',
+                                name: 'QR Code Branding & Customization',
+                                duration: 'Week 15-17',
+                                agent: 'Frontend Agent, Backend Agent',
+                                tasks: [
+                                    { id: 'task-2.2.1', label: 'Add branding fields to Table model', status: 'not-started' },
+                                    { id: 'task-2.2.2', label: 'Create QR branding UI', status: 'not-started' },
+                                    { id: 'task-2.2.3', label: 'Implement color customization for QR codes', status: 'not-started' },
+                                    { id: 'task-2.2.4', label: 'Implement logo/icon embedding', status: 'not-started' }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        id: 'phase3',
+                        name: 'Phase 3: Optimization & Scale (Months 7-9)',
+                        sprints: [
+                            {
+                                id: 'sprint-3.1',
+                                name: 'Performance Optimization',
+                                duration: 'Week 25-27',
+                                agent: 'Architect Agent, Frontend Agent, Backend Agent',
+                                tasks: [
+                                    { id: 'task-3.1.1', label: 'Implement ISR for menu pages', status: 'not-started' },
+                                    { id: 'task-3.1.2', label: 'Optimize database queries', status: 'not-started' },
+                                    { id: 'task-3.1.3', label: 'Add database indexes', status: 'not-started' },
+                                    { id: 'task-3.1.4', label: 'Implement caching strategies', status: 'not-started' }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                commits: []
+            };
+
+            // Load tasks from localStorage
+            function loadTasks() {
+                const saved = localStorage.getItem('qrmenu-tasks');
+                if (saved) {
+                    const savedData = JSON.parse(saved);
+                    // Merge saved task statuses with project data
+                    savedData.phases.forEach((savedPhase, phaseIdx) => {
+                        if (projectData.phases[phaseIdx]) {
+                            savedPhase.sprints.forEach((savedSprint, sprintIdx) => {
+                                if (projectData.phases[phaseIdx].sprints[sprintIdx]) {
+                                    savedSprint.tasks.forEach((savedTask, taskIdx) => {
+                                        if (projectData.phases[phaseIdx].sprints[sprintIdx].tasks[taskIdx]) {
+                                            projectData.phases[phaseIdx].sprints[sprintIdx].tasks[taskIdx].status = savedTask.status;
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+
+            // Save tasks to localStorage
+            function saveTasks() {
+                localStorage.setItem('qrmenu-tasks', JSON.stringify(projectData));
+            }
+
+            // Calculate statistics
+            function calculateStats() {
+                let totalTasks = 0;
+                let completedTasks = 0;
+                let inProgressTasks = 0;
+
+                projectData.phases.forEach(phase => {
+                    phase.sprints.forEach(sprint => {
+                        sprint.tasks.forEach(task => {
+                            totalTasks++;
+                            if (task.status === 'completed') completedTasks++;
+                            if (task.status === 'in-progress') inProgressTasks++;
+                        });
+                    });
+                });
+
+                const progress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+                document.getElementById('total-tasks').textContent = totalTasks;
+                document.getElementById('completed-tasks').textContent = completedTasks;
+                document.getElementById('in-progress-tasks').textContent = inProgressTasks;
+                document.getElementById('overall-progress').textContent = progress + '%';
+                document.getElementById('overall-progress-bar').style.width = progress + '%';
+            }
+
+            // Render phases
+            function renderPhases(filter = 'all') {
+                const container = document.getElementById('phases-container');
+                container.innerHTML = '';
+
+                projectData.phases.forEach(phase => {
+                    if (filter !== 'all' && !phase.id.includes(filter)) return;
+
+                    const phaseDiv = document.createElement('div');
+                    phaseDiv.className = 'phase';
+
+                    // Calculate phase progress
+                    let phaseTotal = 0;
+                    let phaseCompleted = 0;
+                    phase.sprints.forEach(sprint => {
+                        sprint.tasks.forEach(task => {
+                            phaseTotal++;
+                            if (task.status === 'completed') phaseCompleted++;
+                        });
+                    });
+                    const phaseProgress = phaseTotal > 0 ? Math.round((phaseCompleted / phaseTotal) * 100) : 0;
+
+                    phaseDiv.innerHTML = `
+                    <div class="phase-header">
+                        <h3>${phase.name}</h3>
+                        <span class="phase-progress">${phaseCompleted}/${phaseTotal} tasks (${phaseProgress}%)</span>
+                    </div>
+                    ${phase.sprints.map(sprint => {
+                        let sprintTotal = sprint.tasks.length;
+                        let sprintCompleted = sprint.tasks.filter(t => t.status === 'completed').length;
+                        const sprintProgress = sprintTotal > 0 ? Math.round((sprintCompleted / sprintTotal) * 100) : 0;
+
+                        const visibleTasks = filter === 'all' ||
+                            filter === 'completed' ? sprint.tasks.filter(t => t.status === 'completed') :
+                            filter === 'in-progress' ? sprint.tasks.filter(t => t.status === 'in-progress') :
+                                sprint.tasks;
+
+                        return `
+                            <div class="sprint">
+                                <div class="sprint-header">
+                                    <h4>${sprint.name}</h4>
+                                    <span class="sprint-meta">${sprint.duration} • ${sprint.agent}</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${sprintProgress}%"></div>
+                                </div>
+                                <div class="tasks">
+                                    ${visibleTasks.map(task => `
+                                        <div class="task" data-task-id="${task.id}">
+                                            <input type="checkbox" ${task.status === 'completed' ? 'checked' : ''}
+                                                onchange="updateTaskStatus('${task.id}', this.checked)">
+                                            <span class="task-label">${task.label}</span>
+                                            <span class="task-status status-${task.status}">${task.status.replace('-', ' ')}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                `;
+
+                    container.appendChild(phaseDiv);
+                });
+            }
+
+            // Update task status
+            function updateTaskStatus(taskId, checked) {
+                projectData.phases.forEach(phase => {
+                    phase.sprints.forEach(sprint => {
+                        sprint.tasks.forEach(task => {
+                            if (task.id === taskId) {
+                                task.status = checked ? 'completed' : 'not-started';
+                                saveTasks();
+                                calculateStats();
+                                renderPhases(document.querySelector('.filter-btn.active').dataset.filter);
+                            }
+                        });
+                    });
+                });
+            }
+
+            // Load git commits (simulated - replace with actual Git API)
+            function loadGitCommits() {
+                const commitsContainer = document.getElementById('git-commits');
+                commitsContainer.innerHTML = '<div class="loading">Loading commits...</div>';
+
+                // Simulate Git API call
+                setTimeout(() => {
+                    // In a real implementation, this would fetch from Git API
+                    const sampleCommits = [
+                        {
+                            hash: 'a1b2c3d',
+                            message: 'Initial project setup with Next.js and TypeScript',
+                            author: 'Developer',
+                            date: new Date().toLocaleDateString()
+                        },
+                        {
+                            hash: 'e4f5g6h',
+                            message: 'Add Prisma schema and database migrations',
+                            author: 'Developer',
+                            date: new Date().toLocaleDateString()
+                        }
+                    ];
+
+                    if (sampleCommits.length === 0) {
+                        commitsContainer.innerHTML = `
+                        <div class="empty-state">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            <p>No commits found. Start making changes!</p>
+                        </div>
+                    `;
+                    } else {
+                        commitsContainer.innerHTML = sampleCommits.map(commit => `
+                        <div class="commit">
+                            <div class="commit-header">
+                                <span class="commit-hash">${commit.hash}</span>
+                                <span class="commit-date">${commit.date}</span>
+                            </div>
+                            <div class="commit-message">${commit.message}</div>
+                            <div class="commit-author">by ${commit.author}</div>
+                        </div>
+                    `).join('');
+                    }
+
+                    document.getElementById('commit-count').textContent = sampleCommits.length;
+                }, 500);
+            }
+
+            // Filter handling
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderPhases(btn.dataset.filter);
+                });
+            });
+
+            // Initialize
+            loadTasks();
+            calculateStats();
+            renderPhases('all');
+            loadGitCommits();
+
+            // Auto-refresh every 5 minutes
+            setInterval(() => {
+                loadGitCommits();
+            }, 300000);
+        </script>
+    </body>
+
+</html>
