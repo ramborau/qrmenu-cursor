@@ -5,19 +5,39 @@ import { requireAuth } from "@/lib/auth-helpers";
 export async function GET(request: NextRequest) {
   try {
     const session = await requireAuth();
+    const { searchParams } = new URL(request.url);
+    const restaurantId = searchParams.get("restaurantId");
 
-    // Get user's restaurants
-    const restaurants = await prisma.restaurant.findMany({
-      where: { ownerId: session.user.id },
-      select: { id: true },
-    });
+    let whereClause: any = {};
 
-    const restaurantIds = restaurants.map((r) => r.id);
+    if (restaurantId) {
+      // Verify user owns the restaurant
+      const restaurant = await prisma.restaurant.findFirst({
+        where: { id: restaurantId, ownerId: session.user.id },
+      });
+
+      if (!restaurant) {
+        return NextResponse.json(
+          { message: "Restaurant not found or unauthorized" },
+          { status: 404 }
+        );
+      }
+
+      whereClause.restaurantId = restaurantId;
+    } else {
+      // Get all user's restaurants
+      const restaurants = await prisma.restaurant.findMany({
+        where: { ownerId: session.user.id },
+        select: { id: true },
+      });
+
+      const restaurantIds = restaurants.map((r) => r.id);
+
+      whereClause.restaurantId = { in: restaurantIds };
+    }
 
     const offers = await prisma.offer.findMany({
-      where: {
-        restaurantId: { in: restaurantIds },
-      },
+      where: whereClause,
       orderBy: {
         createdAt: "desc",
       },
@@ -50,6 +70,7 @@ export async function POST(request: NextRequest) {
       daysOfWeek,
       startTime,
       endTime,
+      tableNumbers,
       isActive,
     } = body;
 
@@ -90,6 +111,7 @@ export async function POST(request: NextRequest) {
         daysOfWeek: daysOfWeek || [],
         startTime: startTime || null,
         endTime: endTime || null,
+        tableNumbers: tableNumbers || [],
         isActive: isActive !== undefined ? isActive : true,
       },
     });

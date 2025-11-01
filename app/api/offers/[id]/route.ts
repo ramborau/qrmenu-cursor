@@ -69,6 +69,7 @@ export async function PATCH(
         ...(body.daysOfWeek !== undefined && { daysOfWeek: body.daysOfWeek }),
         ...(body.startTime !== undefined && { startTime: body.startTime }),
         ...(body.endTime !== undefined && { endTime: body.endTime }),
+        ...(body.tableNumbers !== undefined && { tableNumbers: body.tableNumbers }),
         ...(body.isActive !== undefined && { isActive: body.isActive }),
       },
     });

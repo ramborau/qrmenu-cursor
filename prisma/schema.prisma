@@ -242,6 +242,7 @@ model Offer {
   daysOfWeek      Int[]    @default([]) @map("days_of_week") // 0 = Sunday, 6 = Saturday
   startTime       String?  @map("start_time") // HH:mm format
   endTime         String?  @map("end_time") // HH:mm format
+  tableNumbers    String[] @default([]) @map("table_numbers") // Specific table numbers for this offer
   isActive        Boolean  @default(true) @map("is_active")
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")

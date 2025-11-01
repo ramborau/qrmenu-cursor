@@ -22,17 +22,11 @@ export async function POST(request: NextRequest) {
     const restaurantIds = restaurants.map((r) => r.id);
 
     // Build where clause to get menu items
-    let whereClause: any = {
-      subCategory: {
-        category: {
-          restaurantId: { in: restaurantIds },
-        },
-      },
-    };
+    let whereClause: any = {};
 
     // Handle different selection scopes
     if (menuItemIds && Array.isArray(menuItemIds) && menuItemIds.length > 0) {
-      // Specific menu items selected - filter by IDs and restaurant
+      // Specific menu items selected - filter by IDs and verify they belong to user's restaurants
       whereClause = {
         id: { in: menuItemIds },
         subCategory: {
@@ -42,7 +36,7 @@ export async function POST(request: NextRequest) {
         },
       };
     } else if (subCategoryIds && Array.isArray(subCategoryIds) && subCategoryIds.length > 0) {
-      // Subcategories selected - filter by subCategoryIds and restaurant
+      // Subcategories selected
       whereClause = {
         subCategoryId: { in: subCategoryIds },
         subCategory: {
@@ -52,7 +46,7 @@ export async function POST(request: NextRequest) {
         },
       };
     } else if (categoryIds && Array.isArray(categoryIds) && categoryIds.length > 0) {
-      // Categories selected - filter by categoryIds and restaurant
+      // Categories selected
       whereClause = {
         subCategory: {
           categoryId: { in: categoryIds },
@@ -61,12 +55,20 @@ export async function POST(request: NextRequest) {
           },
         },
       };
+    } else {
+      // Scope = "all" - get all menu items for user's restaurants
+      whereClause = {
+        subCategory: {
+          category: {
+            restaurantId: { in: restaurantIds },
+          },
+        },
+      };
     }
-    // If none are provided (scope = "all"), whereClause already has restaurant filter which will get all items
 
     // Get all menu items
     console.log("Fetching menu items with whereClause:", JSON.stringify(whereClause, null, 2));
-    
+
     const menuItems = await prisma.menuItem.findMany({
       where: whereClause,
       include: {
@@ -82,7 +84,7 @@ export async function POST(request: NextRequest) {
 
     if (menuItems.length === 0) {
       return NextResponse.json(
-        { 
+        {
           message: "No menu items found to generate nutrition facts for",
           details: {
             restaurantIds,

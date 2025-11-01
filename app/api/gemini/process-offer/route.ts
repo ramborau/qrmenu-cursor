@@ -1,101 +1,107 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireAuth } from "@/lib/auth-helpers";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI(
-  process.env.GEMINI_API_KEY || "AIzaSyBZKaIkDD5E-2rxluU7xVUb3IQCalVz-Yw"
-);
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "AIzaSyBZKaIkDD5E-2rxluU7xVUb3IQCalVz-Yw";
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 export async function POST(request: NextRequest) {
   try {
+    await requireAuth();
     const body = await request.json();
     const { input } = body;
 
     if (!input) {
       return NextResponse.json(
-        { message: "Input is required" },
+        { message: "Input is required for AI processing" },
         { status: 400 }
       );
     }
 
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-    const prompt = `Parse the following offer description and extract structured information. Return ONLY valid JSON in this exact format:
+    const prompt = `
+You are an AI assistant that helps create promotional offers for a restaurant menu.
+The user will provide a natural language description of an offer. Your task is to extract the following information and format it as a JSON object.
+If a piece of information is not explicitly mentioned, use a reasonable default or leave it null/undefined.
+
+JSON Schema for the output:
 {
-  "name": "string - short name for the offer",
-  "description": "string - full description",
-  "offerType": "DISCOUNT, BUY_ONE_GET_ONE, or FIXED_PRICE",
-  "discountValue": number - percentage or fixed amount,
-  "targetType": "ALL, CATEGORY, SUBCATEGORY, or MENU_ITEM",
-  "targetIds": [] - array of IDs if targetType is not ALL,
-  "startDate": "YYYY-MM-DD or null",
-  "endDate": "YYYY-MM-DD or null",
+  "name": string, // e.g., "Friday Happy Hour"
+  "description": string (optional),
+  "offerType": "DISCOUNT" | "BUY_ONE_GET_ONE" | "FIXED_PRICE",
+  "discountValue": number (percentage or amount),
+  "targetType": "ALL" | "CATEGORY" | "SUBCATEGORY" | "MENU_ITEM",
+  "targetIds": string[] (optional, array of IDs if specific targets),
+  "startDate": string (YYYY-MM-DD format, optional),
+  "endDate": string (YYYY-MM-DD format, optional),
   "isForever": boolean,
-  "daysOfWeek": [0-6] - array of numbers (0=Sunday, 6=Saturday), empty array means all days,
-  "startTime": "HH:mm or null",
-  "endTime": "HH:mm or null"
+  "daysOfWeek": number[] (0=Sunday, 6=Saturday, optional),
+  "startTime": string (HH:mm format, optional),
+  "endTime": string (HH:mm format, optional),
+  "tableNumbers": string[] (optional, array of table numbers),
+  "isActive": boolean
 }
 
-User description: "${input}"
+Examples:
+- "20% discount on all food items every Friday from 5 PM to 9 PM for tables T-01, T-02, T-03, valid from January 1st to January 31st"
+  => {
+      "name": "Friday Happy Hour",
+      "description": "20% discount on all food items",
+      "offerType": "DISCOUNT",
+      "discountValue": 20,
+      "targetType": "ALL",
+      "targetIds": [],
+      "startDate": "2025-01-01",
+      "endDate": "2025-01-31",
+      "isForever": false,
+      "daysOfWeek": [5],
+      "startTime": "17:00",
+      "endTime": "21:00",
+      "tableNumbers": ["T-01", "T-02", "T-03"],
+      "isActive": true
+    }
 
-If information is missing, use reasonable defaults:
-- offerType: "DISCOUNT"
-- discountValue: 10
-- targetType: "ALL"
-- targetIds: []
-- startDate: null (today)
-- endDate: null
-- isForever: false
-- daysOfWeek: [] (all days)
-- startTime: null
-- endTime: null
+- "Buy one get one free on all drinks every weekend"
+  => {
+      "name": "Weekend BOGO Drinks",
+      "description": "Buy one get one free on all drinks",
+      "offerType": "BUY_ONE_GET_ONE",
+      "discountValue": null,
+      "targetType": "ALL",
+      "targetIds": [],
+      "startDate": null,
+      "endDate": null,
+      "isForever": true,
+      "daysOfWeek": [0, 6],
+      "startTime": null,
+      "endTime": null,
+      "tableNumbers": [],
+      "isActive": true
+    }
 
-Return ONLY the JSON, no other text.`;
+User input: "${input}"
+
+Provide ONLY the JSON object, no other text.`;
 
     const result = await model.generateContent(prompt);
-    const response = result.response;
-    const text = response.text();
+    const response = await result.response;
+    let rawText = response.text().trim();
 
-    // Extract JSON from response
-    let jsonText = text.trim();
-    if (jsonText.startsWith("```json")) {
-      jsonText = jsonText.replace(/```json\n?/g, "").replace(/```\n?/g, "");
-    } else if (jsonText.startsWith("```")) {
-      jsonText = jsonText.replace(/```\n?/g, "");
+    // Extract JSON
+    if (rawText.startsWith("```json")) {
+      rawText = rawText.replace(/```json\n?/g, "").replace(/```\n?/g, "");
+    } else if (rawText.startsWith("```")) {
+      rawText = rawText.replace(/```\n?/g, "");
     }
 
-    try {
-      const parsed = JSON.parse(jsonText);
+    const parsedOffer = JSON.parse(rawText);
 
-      // Validate and return
-      return NextResponse.json({
-        name: parsed.name || "Special Offer",
-        description: parsed.description || "",
-        offerType: ["DISCOUNT", "BUY_ONE_GET_ONE", "FIXED_PRICE"].includes(parsed.offerType)
-          ? parsed.offerType
-          : "DISCOUNT",
-        discountValue: typeof parsed.discountValue === "number" ? parsed.discountValue : 10,
-        targetType: parsed.targetType || "ALL",
-        targetIds: Array.isArray(parsed.targetIds) ? parsed.targetIds : [],
-        startDate: parsed.startDate || null,
-        endDate: parsed.endDate || null,
-        isForever: parsed.isForever === true,
-        daysOfWeek: Array.isArray(parsed.daysOfWeek)
-          ? parsed.daysOfWeek.filter((d: number) => d >= 0 && d <= 6)
-          : [],
-        startTime: parsed.startTime || null,
-        endTime: parsed.endTime || null,
-      });
-    } catch (parseError) {
-      console.error("Failed to parse AI response:", parseError);
-      return NextResponse.json(
-        { message: "Failed to parse AI response", raw: text },
-        { status: 500 }
-      );
-    }
+    return NextResponse.json(parsedOffer);
   } catch (error: any) {
-    console.error("AI processing error:", error);
+    console.error("Error processing offer with AI:", error);
     return NextResponse.json(
-      { message: error.message || "Failed to process with AI" },
+      { message: error.message || "Failed to process offer with AI" },
       { status: 500 }
     );
   }

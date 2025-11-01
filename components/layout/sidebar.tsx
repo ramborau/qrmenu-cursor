@@ -10,6 +10,7 @@ import {
   Palette,
   Settings,
   Menu,
+  Tag,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -23,6 +24,11 @@ const menuItems = [
     title: "Menu Management",
     href: "/dashboard/menu",
     icon: Utensils,
+  },
+  {
+    title: "Offers",
+    href: "/dashboard/menu/offers",
+    icon: Tag,
   },
   {
     title: "QR Codes",
