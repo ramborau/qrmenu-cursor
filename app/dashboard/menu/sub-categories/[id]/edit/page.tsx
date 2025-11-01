@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loading } from "@/components/ui/loading";
+import { IconPicker } from "@/components/icons/icon-picker";
 
 export default function EditSubCategoryPage() {
   const params = useParams();
@@ -20,6 +21,7 @@ export default function EditSubCategoryPage() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
+    icon: "",
   });
 
   useEffect(() => {
@@ -29,6 +31,7 @@ export default function EditSubCategoryPage() {
         setFormData({
           name: data.name || "",
           description: data.description || "",
+          icon: data.icon || "",
         });
       })
       .catch((error) => {
@@ -109,6 +112,14 @@ export default function EditSubCategoryPage() {
                       setFormData({ ...formData, description: e.target.value })
                     }
                     placeholder="Optional description"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="icon">Icon (Optional)</Label>
+                  <IconPicker
+                    value={formData.icon}
+                    onChange={(icon) => setFormData({ ...formData, icon })}
                   />
                 </div>
 

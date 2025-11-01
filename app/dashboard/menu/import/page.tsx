@@ -8,13 +8,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Upload, FileText, CheckCircle, AlertCircle } from "lucide-react";
+import { Upload, FileText, CheckCircle, AlertCircle, Link2, Clipboard, Sparkles } from "lucide-react";
 import { Loading } from "@/components/ui/loading";
+import { Textarea } from "@/components/ui/textarea";
+
+type ImportMode = "file" | "url" | "paste";
 
 export default function ImportMenuPage() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [mode, setMode] = useState<ImportMode>("file");
   const [file, setFile] = useState<File | null>(null);
+  const [url, setUrl] = useState("");
+  const [text, setText] = useState("");
+  const [useGemini, setUseGemini] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState("");
@@ -30,8 +37,19 @@ export default function ImportMenuPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!file) {
+    
+    if (mode === "file" && !file) {
       setError("Please select a file");
+      return;
+    }
+    
+    if (mode === "url" && !url.trim()) {
+      setError("Please enter a URL");
+      return;
+    }
+    
+    if (mode === "paste" && !text.trim()) {
+      setError("Please paste menu data");
       return;
     }
 
@@ -41,7 +59,16 @@ export default function ImportMenuPage() {
 
     try {
       const formData = new FormData();
-      formData.append("file", file);
+      
+      if (mode === "file" && file) {
+        formData.append("file", file);
+      } else if (mode === "url") {
+        formData.append("url", url);
+      } else if (mode === "paste") {
+        formData.append("text", text);
+      }
+      
+      formData.append("useGemini", useGemini.toString());
 
       const res = await fetch("/api/menu/import", {
         method: "POST",
@@ -53,6 +80,8 @@ export default function ImportMenuPage() {
       if (res.ok) {
         setResult(data);
         setFile(null);
+        setUrl("");
+        setText("");
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
@@ -83,27 +112,107 @@ export default function ImportMenuPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Upload Menu File</CardTitle>
+              <CardTitle>Import Menu</CardTitle>
               <CardDescription>
-                Supported formats: CSV, JSON, XLS/XLSX, Markdown (.md), HTML, TXT
+                Import your menu from various sources using file upload, URL, or copy-paste. Use AI-powered processing for complex formats.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <Label htmlFor="file">Menu File *</Label>
-                  <Input
-                    id="file"
-                    ref={fileInputRef}
-                    type="file"
-                    accept=".csv,.json,.xlsx,.xls,.md,.html,.htm,.txt"
-                    onChange={handleFileChange}
-                    className="mt-2"
-                    required
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant={mode === "file" ? "default" : "outline"}
+                    onClick={() => setMode("file")}
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    File Upload
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={mode === "url" ? "default" : "outline"}
+                    onClick={() => setMode("url")}
+                  >
+                    <Link2 className="mr-2 h-4 w-4" />
+                    From URL
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={mode === "paste" ? "default" : "outline"}
+                    onClick={() => setMode("paste")}
+                  >
+                    <Clipboard className="mr-2 h-4 w-4" />
+                    Copy-Paste
+                  </Button>
+                </div>
+
+                {mode === "file" && (
+                  <div>
+                    <Label htmlFor="file">Menu File *</Label>
+                    <Input
+                      id="file"
+                      ref={fileInputRef}
+                      type="file"
+                      accept=".csv,.json,.xlsx,.xls,.md,.html,.htm,.txt,.pdf,.docx,.doc"
+                      onChange={handleFileChange}
+                      className="mt-2"
+                      required
+                    />
+                    <p className="mt-2 text-xs text-gray-500">
+                      Supported formats: CSV, JSON, XLS/XLSX, Markdown, HTML, TXT, PDF, DOCX, DOC
+                      <br />
+                      Maximum file size: 10MB
+                    </p>
+                  </div>
+                )}
+
+                {mode === "url" && (
+                  <div>
+                    <Label htmlFor="url">Menu URL *</Label>
+                    <Input
+                      id="url"
+                      type="url"
+                      value={url}
+                      onChange={(e) => setUrl(e.target.value)}
+                      placeholder="https://example.com/menu.txt"
+                      className="mt-2"
+                      required
+                    />
+                    <p className="mt-2 text-xs text-gray-500">
+                      Enter a URL to fetch menu data from
+                    </p>
+                  </div>
+                )}
+
+                {mode === "paste" && (
+                  <div>
+                    <Label htmlFor="text">Menu Data *</Label>
+                    <Textarea
+                      id="text"
+                      value={text}
+                      onChange={(e) => setText(e.target.value)}
+                      placeholder="Paste your menu data here..."
+                      className="mt-2 min-h-[200px]"
+                      required
+                    />
+                    <p className="mt-2 text-xs text-gray-500">
+                      Paste menu data in any format. AI will process it automatically.
+                    </p>
+                  </div>
+                )}
+
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="useGemini"
+                    checked={useGemini}
+                    onChange={(e) => setUseGemini(e.target.checked)}
+                    className="h-4 w-4"
                   />
-                  <p className="mt-2 text-xs text-gray-500">
-                    Maximum file size: 10MB
-                  </p>
+                  <Label htmlFor="useGemini" className="flex items-center gap-2">
+                    <Sparkles className="h-4 w-4" />
+                    Use AI-powered processing (recommended for PDF, DOCX, DOC, or unstructured data)
+                  </Label>
                 </div>
 
                 {file && (

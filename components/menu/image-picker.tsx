@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { Search, Image as ImageIcon, Loader2 } from "lucide-react";
+import { Search, Image as ImageIcon, Loader2, Upload, X } from "lucide-react";
+import { toast } from "sonner";
 
 interface UnsplashImage {
   id: string;
@@ -30,7 +31,11 @@ export function ImagePicker({ value, onChange, menuItemName }: ImagePickerProps)
   const [searchQuery, setSearchQuery] = useState(menuItemName || "");
   const [images, setImages] = useState<UnsplashImage[]>([]);
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [customUrl, setCustomUrl] = useState(value || "");
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [mode, setMode] = useState<"url" | "upload">("url");
 
   useEffect(() => {
     if (menuItemName && !searchQuery) {
@@ -62,22 +67,144 @@ export function ImagePicker({ value, onChange, menuItemName }: ImagePickerProps)
     onChange(imageUrl);
   };
 
+  const handleFileUpload = async (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select an image file");
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("File size exceeds 10MB limit");
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("type", "menu-item");
+
+      const res = await fetch("/api/upload/image", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        const imageUrl = data.url;
+        setUploadedImage(imageUrl);
+        onChange(imageUrl);
+        toast.success("Image uploaded successfully");
+      } else {
+        toast.error(data.message || "Failed to upload image");
+      }
+    } catch (error) {
+      console.error("Failed to upload image:", error);
+      toast.error("Failed to upload image");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      handleFileUpload(file);
+    }
+  };
+
   return (
     <div className="space-y-4">
-      <div>
-        <Label htmlFor="imageUrl">Image URL</Label>
-        <Input
-          id="imageUrl"
-          type="url"
-          value={customUrl}
-          onChange={(e) => {
-            setCustomUrl(e.target.value);
-            onChange(e.target.value);
-          }}
-          placeholder="https://example.com/image.jpg"
-          className="mt-2"
-        />
+      <div className="flex gap-2">
+        <Button
+          type="button"
+          variant={mode === "url" ? "default" : "outline"}
+          onClick={() => setMode("url")}
+        >
+          URL
+        </Button>
+        <Button
+          type="button"
+          variant={mode === "upload" ? "default" : "outline"}
+          onClick={() => setMode("upload")}
+        >
+          Upload
+        </Button>
       </div>
+
+      {mode === "url" ? (
+        <div>
+          <Label htmlFor="imageUrl">Image URL</Label>
+          <Input
+            id="imageUrl"
+            type="url"
+            value={customUrl}
+            onChange={(e) => {
+              setCustomUrl(e.target.value);
+              onChange(e.target.value);
+            }}
+            placeholder="https://example.com/image.jpg"
+            className="mt-2"
+          />
+        </div>
+      ) : (
+        <div>
+          <Label>Upload Image</Label>
+          <div className="mt-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+            >
+              {uploading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Uploading...
+                </>
+              ) : (
+                <>
+                  <Upload className="mr-2 h-4 w-4" />
+                  Choose File
+                </>
+              )}
+            </Button>
+            {uploadedImage && (
+              <div className="mt-2">
+                <img
+                  src={uploadedImage}
+                  alt="Uploaded"
+                  className="h-32 w-32 rounded object-cover"
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setUploadedImage(null);
+                    onChange("");
+                    if (fileInputRef.current) {
+                      fileInputRef.current.value = "";
+                    }
+                  }}
+                  className="mt-2"
+                >
+                  <X className="mr-2 h-4 w-4" />
+                  Remove
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <div>
         <Label>Search Unsplash</Label>

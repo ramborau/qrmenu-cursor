@@ -49,6 +49,7 @@ export async function POST(request: NextRequest) {
       allergens,
       availabilityStatus,
       preparationTime,
+      nutritionalValues,
       subCategoryId,
       sortOrder,
     } = body;
@@ -90,6 +91,7 @@ export async function POST(request: NextRequest) {
         allergens: allergens || [],
         availabilityStatus: availabilityStatus || "AVAILABLE",
         preparationTime: preparationTime ? parseInt(preparationTime) : null,
+        nutritionalValues: nutritionalValues || null,
         subCategoryId,
         sortOrder: sortOrder ?? 0,
       },

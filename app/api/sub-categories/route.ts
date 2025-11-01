@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
   try {
     const session = await requireAuth();
     const body = await request.json();
-    const { name, description, categoryId, sortOrder } = body;
+    const { name, description, icon, categoryId, sortOrder } = body;
 
     if (!name || !categoryId) {
       return NextResponse.json(
@@ -79,6 +79,7 @@ export async function POST(request: NextRequest) {
       data: {
         name,
         description,
+        icon: icon || null,
         categoryId,
         sortOrder: sortOrder ?? 0,
       },

@@ -2,16 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/prisma";
 import { parseMenuFile } from "@/lib/file-parsers";
+import { processMenuWithGemini } from "@/lib/gemini";
 
 export async function POST(request: NextRequest) {
   try {
     const session = await requireAuth();
     const formData = await request.formData();
     const file = formData.get("file") as File;
+    const url = formData.get("url") as string;
+    const text = formData.get("text") as string; // For copy-paste
+    const useGemini = formData.get("useGemini") === "true";
 
-    if (!file) {
+    if (!file && !url && !text) {
       return NextResponse.json(
-        { message: "No file provided" },
+        { message: "No file, URL, or text provided" },
         { status: 400 }
       );
     }
@@ -30,12 +34,52 @@ export async function POST(request: NextRequest) {
 
     const restaurant = restaurants[0];
 
-    // Parse the file
-    const importResult = await parseMenuFile(file);
+    let importResult: any = null;
+
+    // Handle different import types
+    if (file) {
+      // File upload
+      const fileName = file.name.toLowerCase();
+      const fileType = fileName.split(".").pop()?.toLowerCase();
+
+      // Check if we should use GEMINI for processing
+      if (useGemini || ["pdf", "docx", "doc"].includes(fileType || "")) {
+        const content = await file.text();
+        importResult = await processMenuWithGemini(content, fileType as any || "txt");
+      } else {
+        // Use existing parser
+        importResult = await parseMenuFile(file);
+      }
+    } else if (url) {
+      // URL fetch
+      try {
+        const response = await fetch(url);
+        const content = await response.text();
+        const urlType = useGemini ? "url" : "txt";
+        if (useGemini) {
+          importResult = await processMenuWithGemini(content, "url");
+        } else {
+          // Try to parse as text
+          importResult = await parseMenuFile(new File([content], "menu.txt", { type: "text/plain" }));
+        }
+      } catch (error) {
+        return NextResponse.json(
+          { message: "Failed to fetch URL content" },
+          { status: 400 }
+        );
+      }
+    } else if (text) {
+      // Copy-paste text
+      if (useGemini) {
+        importResult = await processMenuWithGemini(text, "copy-paste");
+      } else {
+        importResult = await parseMenuFile(new File([text], "menu.txt", { type: "text/plain" }));
+      }
+    }
 
     if (!importResult || importResult.categories.length === 0) {
       return NextResponse.json(
-        { message: "No valid menu data found in file" },
+        { message: "No valid menu data found" },
         { status: 400 }
       );
     }
@@ -84,6 +128,7 @@ export async function POST(request: NextRequest) {
               categoryId: category.id,
               name: subCategoryData.name,
               description: subCategoryData.description,
+              icon: subCategoryData.icon || null,
               sortOrder: importedData.subCategories,
             },
           });
@@ -105,6 +150,7 @@ export async function POST(request: NextRequest) {
               allergens: itemData.allergens || [],
               availabilityStatus: (itemData.availabilityStatus || "AVAILABLE") as any,
               preparationTime: itemData.preparationTime || null,
+              nutritionalValues: itemData.nutritionalValues || null,
               sortOrder: importedData.items,
             },
           });

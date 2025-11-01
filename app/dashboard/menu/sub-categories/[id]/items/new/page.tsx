@@ -1,5 +1,6 @@
 "use client";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -11,12 +12,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ImagePicker } from "@/components/menu/image-picker";
+import { Sparkles } from "lucide-react";
 
 export default function NewMenuItemPage() {
   const params = useParams();
   const router = useRouter();
   const subCategoryId = params.id as string;
   const [loading, setLoading] = useState(false);
+  const [calculatingNutrition, setCalculatingNutrition] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -27,6 +30,7 @@ export default function NewMenuItemPage() {
     allergens: [] as string[],
     availabilityStatus: "AVAILABLE",
     preparationTime: "",
+    nutritionalValues: null as any,
   });
   const [tagInput, setTagInput] = useState("");
   const [allergenInput, setAllergenInput] = useState("");
@@ -65,6 +69,42 @@ export default function NewMenuItemPage() {
     });
   };
 
+  const handleCalculateNutrition = async () => {
+    if (!formData.name) {
+      toast.error("Please enter item name first");
+      return;
+    }
+
+    setCalculatingNutrition(true);
+    try {
+      const res = await fetch("/api/nutritional-values", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          description: formData.description,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setFormData({
+          ...formData,
+          nutritionalValues: data,
+        });
+        toast.success("Nutritional values calculated successfully");
+      } else {
+        toast.error(data.message || "Failed to calculate nutritional values");
+      }
+    } catch (error) {
+      console.error("Failed to calculate nutritional values:", error);
+      toast.error("Failed to calculate nutritional values");
+    } finally {
+      setCalculatingNutrition(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -78,6 +118,7 @@ export default function NewMenuItemPage() {
           price: parseFloat(formData.price),
           subCategoryId,
           preparationTime: formData.preparationTime ? parseInt(formData.preparationTime) : null,
+          nutritionalValues: formData.nutritionalValues,
         }),
       });
 
@@ -167,6 +208,7 @@ export default function NewMenuItemPage() {
                         <SelectItem value="USD">USD</SelectItem>
                         <SelectItem value="EUR">EUR</SelectItem>
                         <SelectItem value="GBP">GBP</SelectItem>
+                        <SelectItem value="BHD">BHD</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -291,6 +333,72 @@ export default function NewMenuItemPage() {
                     }
                     placeholder="15"
                   />
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between">
+                    <Label>Nutritional Values (AI Generated)</Label>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleCalculateNutrition}
+                      disabled={calculatingNutrition || !formData.name}
+                    >
+                      {calculatingNutrition ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Calculating...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="mr-2 h-4 w-4" />
+                          Calculate
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  {formData.nutritionalValues && (
+                    <div className="mt-2 rounded-md border p-3 text-sm">
+                      <div className="grid grid-cols-2 gap-2">
+                        {formData.nutritionalValues.calories && (
+                          <div>
+                            <strong>Calories:</strong> {formData.nutritionalValues.calories} kcal
+                          </div>
+                        )}
+                        {formData.nutritionalValues.protein && (
+                          <div>
+                            <strong>Protein:</strong> {formData.nutritionalValues.protein}g
+                          </div>
+                        )}
+                        {formData.nutritionalValues.carbohydrates && (
+                          <div>
+                            <strong>Carbs:</strong> {formData.nutritionalValues.carbohydrates}g
+                          </div>
+                        )}
+                        {formData.nutritionalValues.fat && (
+                          <div>
+                            <strong>Fat:</strong> {formData.nutritionalValues.fat}g
+                          </div>
+                        )}
+                        {formData.nutritionalValues.fiber && (
+                          <div>
+                            <strong>Fiber:</strong> {formData.nutritionalValues.fiber}g
+                          </div>
+                        )}
+                        {formData.nutritionalValues.sugar && (
+                          <div>
+                            <strong>Sugar:</strong> {formData.nutritionalValues.sugar}g
+                          </div>
+                        )}
+                        {formData.nutritionalValues.sodium && (
+                          <div>
+                            <strong>Sodium:</strong> {formData.nutritionalValues.sodium}mg
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex gap-4">

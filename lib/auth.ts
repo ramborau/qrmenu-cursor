@@ -5,6 +5,7 @@ import { prisma } from "./prisma";
 // Create a custom adapter wrapper to fix field mapping
 const baseAdapter = prismaAdapter(prisma, {
   provider: "postgresql",
+  transaction: true, // Enable transactions for proper adapter wrapping
 });
 
 // Wrap the adapter to map provider -> providerId in results
@@ -31,12 +32,12 @@ const fixedAdapter = (options: any) => {
   if (originalFindMany) {
     adapter.findMany = async (params: any) => {
       const results = await originalFindMany(params);
-      
+
       // Map provider -> providerId for account results
       if (params?.model === "account" && Array.isArray(results)) {
         return results.map(mapAccountFields);
       }
-      
+
       return results;
     };
   }

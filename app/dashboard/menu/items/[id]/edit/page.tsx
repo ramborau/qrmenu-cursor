@@ -198,6 +198,7 @@ export default function EditMenuItemPage() {
                         <SelectItem value="USD">USD</SelectItem>
                         <SelectItem value="EUR">EUR</SelectItem>
                         <SelectItem value="GBP">GBP</SelectItem>
+                        <SelectItem value="BHD">BHD</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

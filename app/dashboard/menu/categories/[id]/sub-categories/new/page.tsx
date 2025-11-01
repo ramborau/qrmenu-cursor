@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { IconPicker } from "@/components/icons/icon-picker";
 
 export default function NewSubCategoryPage() {
   const params = useParams();
@@ -18,6 +19,7 @@ export default function NewSubCategoryPage() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
+    icon: "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -86,6 +88,14 @@ export default function NewSubCategoryPage() {
                       setFormData({ ...formData, description: e.target.value })
                     }
                     placeholder="Optional description"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="icon">Icon (Optional)</Label>
+                  <IconPicker
+                    value={formData.icon}
+                    onChange={(icon) => setFormData({ ...formData, icon })}
                   />
                 </div>
 

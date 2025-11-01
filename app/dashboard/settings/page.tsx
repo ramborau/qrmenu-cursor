@@ -10,7 +10,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Save } from "lucide-react";
+import { Save, Upload, Loader2, X } from "lucide-react";
+import { useRef, useState } from "react";
+import { toast } from "sonner";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -23,6 +25,10 @@ export default function SettingsPage() {
     logoUrl: "",
     heroImageUrl: "",
   });
+  const [logoUploading, setLogoUploading] = useState(false);
+  const [heroUploading, setHeroUploading] = useState(false);
+  const logoFileRef = useRef<HTMLInputElement>(null);
+  const heroFileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetch("/api/auth/session")
@@ -62,6 +68,88 @@ export default function SettingsPage() {
       console.error("Failed to fetch restaurant:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select an image file");
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("File size exceeds 10MB limit");
+      return;
+    }
+
+    setLogoUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("type", "logo");
+
+      const res = await fetch("/api/upload/image", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setFormData({ ...formData, logoUrl: data.url });
+        toast.success("Logo uploaded successfully");
+      } else {
+        toast.error(data.message || "Failed to upload logo");
+      }
+    } catch (error) {
+      console.error("Failed to upload logo:", error);
+      toast.error("Failed to upload logo");
+    } finally {
+      setLogoUploading(false);
+    }
+  };
+
+  const handleHeroUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select an image file");
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("File size exceeds 10MB limit");
+      return;
+    }
+
+    setHeroUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("type", "logo"); // Using same upload type
+
+      const res = await fetch("/api/upload/image", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setFormData({ ...formData, heroImageUrl: data.url });
+        toast.success("Hero image uploaded successfully");
+      } else {
+        toast.error(data.message || "Failed to upload hero image");
+      }
+    } catch (error) {
+      console.error("Failed to upload hero image:", error);
+      toast.error("Failed to upload hero image");
+    } finally {
+      setHeroUploading(false);
     }
   };
 
@@ -134,29 +222,113 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="logoUrl">Logo URL</Label>
-                  <Input
-                    id="logoUrl"
-                    type="url"
-                    value={formData.logoUrl}
-                    onChange={(e) =>
-                      setFormData({ ...formData, logoUrl: e.target.value })
-                    }
-                    placeholder="https://example.com/logo.png"
-                  />
+                  <Label htmlFor="logoUrl">Logo</Label>
+                  <div className="mt-2 space-y-2">
+                    <div className="flex gap-2">
+                      <Input
+                        id="logoUrl"
+                        type="url"
+                        value={formData.logoUrl}
+                        onChange={(e) =>
+                          setFormData({ ...formData, logoUrl: e.target.value })
+                        }
+                        placeholder="https://example.com/logo.png"
+                        className="flex-1"
+                      />
+                      <input
+                        ref={logoFileRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleLogoUpload}
+                        className="hidden"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => logoFileRef.current?.click()}
+                        disabled={logoUploading}
+                      >
+                        {logoUploading ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Upload className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                    {formData.logoUrl && (
+                      <div className="relative inline-block">
+                        <img
+                          src={formData.logoUrl}
+                          alt="Logo"
+                          className="h-20 w-20 rounded object-cover"
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setFormData({ ...formData, logoUrl: "" })}
+                          className="absolute -right-2 -top-2 h-6 w-6 rounded-full p-0"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="heroImageUrl">Hero Image URL</Label>
-                  <Input
-                    id="heroImageUrl"
-                    type="url"
-                    value={formData.heroImageUrl}
-                    onChange={(e) =>
-                      setFormData({ ...formData, heroImageUrl: e.target.value })
-                    }
-                    placeholder="https://example.com/hero.jpg"
-                  />
+                  <Label htmlFor="heroImageUrl">Hero Image</Label>
+                  <div className="mt-2 space-y-2">
+                    <div className="flex gap-2">
+                      <Input
+                        id="heroImageUrl"
+                        type="url"
+                        value={formData.heroImageUrl}
+                        onChange={(e) =>
+                          setFormData({ ...formData, heroImageUrl: e.target.value })
+                        }
+                        placeholder="https://example.com/hero.jpg"
+                        className="flex-1"
+                      />
+                      <input
+                        ref={heroFileRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleHeroUpload}
+                        className="hidden"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => heroFileRef.current?.click()}
+                        disabled={heroUploading}
+                      >
+                        {heroUploading ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Upload className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                    {formData.heroImageUrl && (
+                      <div className="relative inline-block">
+                        <img
+                          src={formData.heroImageUrl}
+                          alt="Hero"
+                          className="h-32 w-full max-w-md rounded object-cover"
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setFormData({ ...formData, heroImageUrl: "" })}
+                          className="absolute -right-2 -top-2 h-6 w-6 rounded-full p-0"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <Button type="submit" disabled={saving}>

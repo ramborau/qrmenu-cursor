@@ -43,7 +43,7 @@ export async function verifyPassword(hash: string, password: string): Promise<bo
   if (!salt || !key) {
     throw new Error("Invalid password hash format - expected salt:key");
   }
-  
+
   try {
     const targetKey = await generateKey(password, salt);
     const storedKey = utils.hexToBytes(key);

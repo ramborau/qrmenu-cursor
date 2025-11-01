@@ -36,10 +36,10 @@ export async function POST(request: NextRequest) {
       // Better Auth is trying to create account with accountId/providerId
       // Extract password hash from error and create manually
       const errorMessage = signupError.message || '';
-      
+
       // Extract password hash if present in error
       const passwordMatch = errorMessage.match(/password:\s*"([^"]+)"/);
-      
+
       if (passwordMatch && errorMessage.includes('accountId')) {
         // User was created but account creation failed
         const passwordHash = passwordMatch[1];

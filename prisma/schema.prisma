@@ -36,8 +36,9 @@ model Account {
   id                String  @id @default(cuid())
   userId            String  @map("user_id")
   type              String  @default("credential")
-  provider          String
-  providerAccountId String  @map("provider_account_id")
+  provider          String  @default("credential")
+  providerAccountId String  @default("") @map("provider_account_id")
+  password          String? @db.Text  // Better Auth stores password here
   refresh_token     String? @db.Text
   access_token      String? @db.Text
   expires_at        Int?
@@ -124,6 +125,7 @@ model SubCategory {
   categoryId  String   @map("category_id")
   name        String
   description String?
+  icon        String?
   sortOrder   Int      @default(0) @map("sort_order")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
@@ -149,6 +151,7 @@ model MenuItem {
   allergens       String[]          @default([])
   availabilityStatus AvailabilityStatus @default(AVAILABLE) @map("availability_status")
   preparationTime Int?              @map("preparation_time") // in minutes
+  nutritionalValues Json?           @map("nutritional_values") // Calories, protein, carbs, fat, etc.
   sortOrder       Int               @default(0) @map("sort_order")
   createdAt       DateTime          @default(now()) @map("created_at")
   updatedAt       DateTime          @updatedAt @map("updated_at")

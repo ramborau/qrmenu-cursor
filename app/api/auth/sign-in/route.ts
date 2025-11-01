@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
 
     // Manually verify password using Better Auth's verification
     const passwordHash = account.password;
-    
+
     if (!passwordHash || typeof passwordHash !== 'string') {
       console.error("Password hash is not a string:", { type: typeof passwordHash, value: passwordHash });
       return NextResponse.json(
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
         { status: 401 }
       );
     }
-    
+
     const isValid = await verifyPassword(passwordHash, password);
 
     if (!isValid) {
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     } catch (authError: any) {
       // If Better Auth fails due to field mapping, manually create session
       console.error("Better Auth sign-in failed, but password is valid:", authError.message);
-      
+
       // Create session manually
       const sessionToken = crypto.randomUUID();
       const expires = new Date();
