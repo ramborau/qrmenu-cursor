@@ -21,6 +21,7 @@ import { GripVertical } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Edit, Trash2 } from "lucide-react";
+import { CategoryIcon } from "@/components/menu/category-icon";
 
 interface Category {
   id: string;
@@ -79,7 +80,7 @@ function SortableCategoryItem({
                 <GripVertical className="h-5 w-5 text-gray-400" />
               </button>
               <CardTitle className="flex items-center gap-2">
-                {category.icon && <span>{category.icon}</span>}
+                {category.icon && <CategoryIcon iconPath={category.icon} className="h-5 w-5" />}
                 {category.name}
               </CardTitle>
             </div>

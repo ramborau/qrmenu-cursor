@@ -35,7 +35,7 @@ export function ImagePicker({ value, onChange, menuItemName }: ImagePickerProps)
   const [customUrl, setCustomUrl] = useState(value || "");
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [mode, setMode] = useState<"url" | "upload">("url");
+  const [mode, setMode] = useState<"url" | "upload">("upload");
 
   useEffect(() => {
     if (menuItemName && !searchQuery) {
@@ -119,17 +119,17 @@ export function ImagePicker({ value, onChange, menuItemName }: ImagePickerProps)
       <div className="flex gap-2">
         <Button
           type="button"
-          variant={mode === "url" ? "default" : "outline"}
-          onClick={() => setMode("url")}
-        >
-          URL
-        </Button>
-        <Button
-          type="button"
           variant={mode === "upload" ? "default" : "outline"}
           onClick={() => setMode("upload")}
         >
-          Upload
+          Upload Image
+        </Button>
+        <Button
+          type="button"
+          variant={mode === "url" ? "default" : "outline"}
+          onClick={() => setMode("url")}
+        >
+          Use URL
         </Button>
       </div>
 

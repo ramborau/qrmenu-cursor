@@ -10,8 +10,17 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, QrCode, Download, Trash2 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Plus, QrCode, Download, Trash2, Settings } from "lucide-react";
 import { BrandingForm } from "@/components/qr/branding-form";
+import { PricingAdjustment } from "@/components/menu/pricing-adjustment";
 
 export default function QRCodesPage() {
   const router = useRouter();
@@ -27,6 +36,9 @@ export default function QRCodesPage() {
   const [brandingSettings, setBrandingSettings] = useState<any>(null);
   const [showBranding, setShowBranding] = useState(false);
   const [restaurant, setRestaurant] = useState<any>(null);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [showPricingDialog, setShowPricingDialog] = useState(false);
+  const [selectedTables, setSelectedTables] = useState<string[]>([]);
 
   useEffect(() => {
     fetch("/api/auth/session")
@@ -47,6 +59,7 @@ export default function QRCodesPage() {
     if (user) {
       fetchRestaurant();
       fetchQRCodes();
+      fetchCategories();
     }
   }, [user]);
 
@@ -60,6 +73,16 @@ export default function QRCodesPage() {
       }
     } catch (error) {
       console.error("Failed to fetch restaurant:", error);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch("/api/categories");
+      const data = await res.json();
+      setCategories(data);
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
     }
   };
 
@@ -97,6 +120,7 @@ export default function QRCodesPage() {
       if (res.ok) {
         fetchQRCodes();
         setFormData({ tableNumber: "", count: 1 });
+        toast.success("QR codes generated successfully");
       } else {
         const data = await res.json();
         toast.error(data.message || "Failed to generate QR codes");
@@ -137,12 +161,21 @@ export default function QRCodesPage() {
 
       if (res.ok) {
         fetchQRCodes();
+        toast.success("QR code deleted successfully");
       } else {
         toast.error("Failed to delete QR code");
       }
     } catch (error) {
       console.error("Failed to delete QR code:", error);
       toast.error("Failed to delete QR code");
+    }
+  };
+
+  const handleTableToggle = (tableId: string) => {
+    if (selectedTables.includes(tableId)) {
+      setSelectedTables(selectedTables.filter((id) => id !== tableId));
+    } else {
+      setSelectedTables([...selectedTables, tableId]);
     }
   };
 
@@ -158,13 +191,38 @@ export default function QRCodesPage() {
     <ErrorBoundary>
       <DashboardLayout user={user}>
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">QR Codes</h1>
               <p className="mt-2 text-gray-600">
                 Generate and manage QR codes for your restaurant tables
               </p>
             </div>
+            {qrCodes.length > 0 && (
+              <Dialog open={showPricingDialog} onOpenChange={setShowPricingDialog}>
+                <DialogTrigger asChild>
+                  <Button variant="outline">
+                    <Settings className="mr-2 h-4 w-4" />
+                    Pricing Adjustment
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Bulk Price Adjustment for Tables</DialogTitle>
+                    <DialogDescription>
+                      Adjust prices for menu items accessible via selected tables
+                    </DialogDescription>
+                  </DialogHeader>
+                  <PricingAdjustment
+                    categories={categories}
+                    onComplete={() => {
+                      setShowPricingDialog(false);
+                      fetchCategories();
+                    }}
+                  />
+                </DialogContent>
+              </Dialog>
+            )}
           </div>
 
           <Card>
@@ -308,4 +366,3 @@ export default function QRCodesPage() {
     </ErrorBoundary>
   );
 }
-
