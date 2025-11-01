@@ -9,14 +9,18 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false, // Can enable later
+    minPasswordLength: 8,
   },
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days
     updateAge: 60 * 60 * 24, // 1 day
   },
   trustedOrigins: [
-    process.env.APP_URL || "http://localhost:3000",
+    process.env.APP_URL || "http://localhost:3006",
+    process.env.BETTER_AUTH_URL || "http://localhost:3006",
   ],
+  baseURL: process.env.APP_URL || "http://localhost:3006",
+  basePath: "/api/auth",
 });
 
 export type Session = typeof auth.$Infer.Session;
