@@ -8,26 +8,15 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: false, // Can enable later for production
+    requireEmailVerification: false, // Can enable later
   },
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days
     updateAge: 60 * 60 * 24, // 1 day
   },
-  // Customize user fields
-  user: {
-    additionalFields: {
-      name: {
-        type: "string",
-        required: false,
-      },
-      role: {
-        type: "string",
-        required: false,
-      },
-    },
-  },
+  trustedOrigins: [
+    process.env.APP_URL || "http://localhost:3000",
+  ],
 });
 
 export type Session = typeof auth.$Infer.Session;
-

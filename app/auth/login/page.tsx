@@ -4,10 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export default function SignUpPage() {
+export default function LoginPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
   });
@@ -20,7 +19,7 @@ export default function SignUpPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/sign-up", {
+      const res = await fetch("/api/auth/sign-in", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -29,7 +28,7 @@ export default function SignUpPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || "Sign up failed");
+        throw new Error(data.message || "Login failed");
       }
 
       router.push("/dashboard");
@@ -44,10 +43,10 @@ export default function SignUpPage() {
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary-dark to-secondary p-4">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-xl">
         <h1 className="mb-6 text-3xl font-bold text-primary-dark">
-          Create Account
+          Welcome Back
         </h1>
         <p className="mb-6 text-gray-600">
-          Sign up to start managing your restaurant menu
+          Sign in to manage your restaurant menu
         </p>
 
         {error && (
@@ -57,26 +56,6 @@ export default function SignUpPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              htmlFor="name"
-              className="mb-2 block text-sm font-medium text-gray-700"
-            >
-              Name
-            </label>
-            <input
-              id="name"
-              type="text"
-              required
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-primary-dark focus:outline-none focus:ring-2 focus:ring-primary-light"
-              placeholder="John Doe"
-            />
-          </div>
-
           <div>
             <label
               htmlFor="email"
@@ -108,7 +87,6 @@ export default function SignUpPage() {
               id="password"
               type="password"
               required
-              minLength={8}
               value={formData.password}
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
@@ -116,9 +94,19 @@ export default function SignUpPage() {
               className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-primary-dark focus:outline-none focus:ring-2 focus:ring-primary-light"
               placeholder="••••••••"
             />
-            <p className="mt-1 text-xs text-gray-500">
-              Minimum 8 characters with mixed case and numbers
-            </p>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <label className="flex items-center">
+              <input type="checkbox" className="mr-2" />
+              <span className="text-sm text-gray-600">Remember me</span>
+            </label>
+            <Link
+              href="/auth/forgot-password"
+              className="text-sm font-semibold text-primary-dark hover:underline"
+            >
+              Forgot password?
+            </Link>
           </div>
 
           <button
@@ -126,20 +114,21 @@ export default function SignUpPage() {
             disabled={loading}
             className="w-full rounded-md bg-primary-dark px-4 py-2 font-semibold text-white transition-colors hover:bg-primary-dark/90 disabled:opacity-50"
           >
-            {loading ? "Creating account..." : "Sign Up"}
+            {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
         <p className="mt-6 text-center text-sm text-gray-600">
-          Already have an account?{" "}
+          Don't have an account?{" "}
           <Link
-            href="/auth/login"
+            href="/auth/signup"
             className="font-semibold text-primary-dark hover:underline"
           >
-            Sign in
+            Sign up
           </Link>
         </p>
       </div>
     </div>
   );
 }
+
