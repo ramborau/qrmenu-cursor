@@ -143,9 +143,21 @@ export default function MenuOffersPage() {
     try {
       const res = await fetch(`/api/offers?restaurantId=${restaurantId}`);
       const data = await res.json();
-      setOffers(data);
+      
+      // Ensure data is always an array
+      if (Array.isArray(data)) {
+        setOffers(data);
+      } else if (data.message) {
+        // If there's an error message, log it and set empty array
+        console.error("API Error:", data.message);
+        setOffers([]);
+      } else {
+        // If data is not an array and no error message, set empty array
+        setOffers([]);
+      }
     } catch (error) {
       console.error("Failed to fetch offers:", error);
+      setOffers([]); // Ensure offers is always an array even on error
     } finally {
       setLoading(false);
     }
@@ -812,7 +824,7 @@ export default function MenuOffersPage() {
             </Dialog>
           </div>
 
-          {offers.length === 0 ? (
+          {!Array.isArray(offers) || offers.length === 0 ? (
             <Card>
               <CardHeader>
                 <CardTitle>No Offers Yet</CardTitle>
