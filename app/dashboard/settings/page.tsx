@@ -172,16 +172,28 @@ export default function SettingsPage() {
         body: JSON.stringify(formData),
       });
 
+      const data = await res.json();
+      
       if (res.ok) {
         toast.success("Settings saved successfully!");
-        fetchRestaurant();
+        // Update local state with the response data
+        setRestaurant(data);
+        setFormData({
+          name: data.name || "",
+          logoUrl: data.logoUrl || "",
+          heroImageUrl: data.heroImageUrl || "",
+          primaryColor: data.primaryColor || "#075e54",
+          secondaryColor: data.secondaryColor || "#00c307",
+          backgroundColor: data.backgroundColor || "#ffffff",
+          darkTheme: data.darkTheme || false,
+        });
       } else {
-        const data = await res.json();
         toast.error(data.message || "Failed to save settings");
+        console.error("API Error:", data);
       }
     } catch (error) {
       console.error("Failed to save settings:", error);
-      toast.error("Failed to save settings");
+      toast.error("Failed to save settings. Please check console for details.");
     } finally {
       setSaving(false);
     }
@@ -343,7 +355,7 @@ export default function SettingsPage() {
                     <Palette className="h-5 w-5" />
                     Menu Theme & Colors
                   </h3>
-                  
+
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">

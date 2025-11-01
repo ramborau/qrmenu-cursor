@@ -7,7 +7,15 @@ export const revalidate = 3600; // Revalidate every hour
 async function getRestaurantMenu(restaurantId: string) {
   const restaurant = await prisma.restaurant.findUnique({
     where: { id: restaurantId },
-    include: {
+    select: {
+      id: true,
+      name: true,
+      logoUrl: true,
+      heroImageUrl: true,
+      primaryColor: true,
+      secondaryColor: true,
+      backgroundColor: true,
+      darkTheme: true,
       categories: {
         include: {
           subCategories: {
@@ -28,13 +36,6 @@ async function getRestaurantMenu(restaurantId: string) {
         },
         orderBy: {
           sortOrder: "asc",
-        },
-        select: {
-          id: true,
-          name: true,
-          icon: true,
-          showImages: true,
-          subCategories: true,
         },
       },
     },

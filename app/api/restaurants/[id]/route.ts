@@ -59,18 +59,21 @@ export async function PATCH(
       );
     }
 
+    // Build update data object - only include fields that are provided
+    const updateData: any = {};
+    
+    if (body.name !== undefined) updateData.name = body.name;
+    if (body.logoUrl !== undefined) updateData.logoUrl = body.logoUrl;
+    if (body.heroImageUrl !== undefined) updateData.heroImageUrl = body.heroImageUrl;
+    if (body.primaryColor !== undefined) updateData.primaryColor = body.primaryColor;
+    if (body.secondaryColor !== undefined) updateData.secondaryColor = body.secondaryColor;
+    if (body.backgroundColor !== undefined) updateData.backgroundColor = body.backgroundColor;
+    if (body.darkTheme !== undefined) updateData.darkTheme = Boolean(body.darkTheme);
+    if (body.typographySettings !== undefined) updateData.typographySettings = body.typographySettings;
+
     const updated = await prisma.restaurant.update({
       where: { id: params.id },
-      data: {
-        ...(body.name && { name: body.name }),
-        ...(body.logoUrl !== undefined && { logoUrl: body.logoUrl }),
-        ...(body.heroImageUrl !== undefined && { heroImageUrl: body.heroImageUrl }),
-        ...(body.primaryColor !== undefined && { primaryColor: body.primaryColor }),
-        ...(body.secondaryColor !== undefined && { secondaryColor: body.secondaryColor }),
-        ...(body.backgroundColor !== undefined && { backgroundColor: body.backgroundColor }),
-        ...(body.darkTheme !== undefined && { darkTheme: body.darkTheme }),
-        ...(body.typographySettings !== undefined && { typographySettings: body.typographySettings }),
-      },
+      data: updateData,
     });
 
     return NextResponse.json(updated);

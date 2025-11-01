@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 
 async function getUnsplashImage(itemName: string, category?: string): Promise<string | null> {
   const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY || "";
-  
+
   if (!UNSPLASH_ACCESS_KEY) {
     return null;
   }
@@ -110,7 +110,7 @@ async function main() {
 
   if (foodCategory && foodCategory.subCategories.length > 0) {
     console.log(`📋 Found Food category with ${foodCategory.subCategories.length} subcategories`);
-    
+
     // Ensure Food category has showImages enabled
     await prisma.category.update({
       where: { id: foodCategory.id },
@@ -135,7 +135,7 @@ async function main() {
 
         try {
           const imageUrl = await getUnsplashImage(item.name, subCategory.name);
-          
+
           if (imageUrl) {
             await prisma.menuItem.update({
               where: { id: item.id },
