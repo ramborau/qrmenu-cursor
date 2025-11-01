@@ -1,8 +1,15 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Search, X, ChevronDown } from "lucide-react";
+import { Search, X, ChevronDown, Info, ArrowLeft } from "lucide-react";
 import { CategoryIcon } from "@/components/menu/category-icon";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+} from "@/components/ui/drawer";
 
 interface MenuItem {
   id: string;
@@ -14,6 +21,7 @@ interface MenuItem {
   tags: string[];
   allergens: string[];
   availabilityStatus: string;
+  nutritionalValues?: any | null;
 }
 
 interface SubCategory {
@@ -52,6 +60,8 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
   const [showSearch, setShowSearch] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [activeSubCategory, setActiveSubCategory] = useState<string>("");
+  const [selectedNutritionItem, setSelectedNutritionItem] = useState<MenuItem | null>(null);
+  const [showNutritionDrawer, setShowNutritionDrawer] = useState(false);
 
   // Group categories into Food, Drinks, Shisha
   const highLevelCategories = useMemo(() => {
@@ -343,9 +353,26 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-start justify-between gap-2 mb-1">
                                     <div className="flex-1 min-w-0">
-                                      <h3 className="font-semibold text-base leading-tight" style={{ color: textColor }}>
-                                        {item.name}
-                                      </h3>
+                                      <div className="flex items-center gap-2">
+                                        <h3 className="font-semibold text-base leading-tight" style={{ color: textColor }}>
+                                          {item.name}
+                                        </h3>
+                                        {item.nutritionalValues && (
+                                          <button
+                                            onClick={() => {
+                                              setSelectedNutritionItem(item);
+                                              setShowNutritionDrawer(true);
+                                            }}
+                                            className="flex-shrink-0 rounded-full p-1 hover:opacity-70 transition-opacity"
+                                            style={{
+                                              backgroundColor: isDarkTheme ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+                                            }}
+                                            aria-label="View nutrition facts"
+                                          >
+                                            <Info className="h-4 w-4" style={{ color: isDarkTheme ? '#a0a0a0' : '#6b7280' }} />
+                                          </button>
+                                        )}
+                                      </div>
                                       {item.description && (
                                         <p className="mt-1 text-sm line-clamp-2" style={{ color: textColorSecondary }}>
                                           {item.description}
@@ -398,9 +425,26 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-start justify-between gap-2">
                                     <div className="flex-1 min-w-0">
-                                      <h3 className="font-semibold text-base leading-tight" style={{ color: textColor }}>
-                                        {item.name}
-                                      </h3>
+                                      <div className="flex items-center gap-2">
+                                        <h3 className="font-semibold text-base leading-tight" style={{ color: textColor }}>
+                                          {item.name}
+                                        </h3>
+                                        {item.nutritionalValues && (
+                                          <button
+                                            onClick={() => {
+                                              setSelectedNutritionItem(item);
+                                              setShowNutritionDrawer(true);
+                                            }}
+                                            className="flex-shrink-0 rounded-full p-1 hover:opacity-70 transition-opacity"
+                                            style={{
+                                              backgroundColor: isDarkTheme ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+                                            }}
+                                            aria-label="View nutrition facts"
+                                          >
+                                            <Info className="h-4 w-4" style={{ color: isDarkTheme ? '#a0a0a0' : '#6b7280' }} />
+                                          </button>
+                                        )}
+                                      </div>
                                       {item.description && (
                                         <p className="mt-1 text-sm line-clamp-2" style={{ color: textColorSecondary }}>
                                           {item.description}

@@ -56,7 +56,10 @@ async function getRestaurantMenu(restaurantId: string) {
         name: subCat.name,
         description: subCat.description,
         icon: subCat.icon,
-        menuItems: subCat.menuItems,
+        menuItems: subCat.menuItems.map(item => ({
+          ...item,
+          nutritionalValues: item.nutritionalValues,
+        })),
       })),
     })),
   };
