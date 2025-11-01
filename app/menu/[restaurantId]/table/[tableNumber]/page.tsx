@@ -70,13 +70,13 @@ export default async function MenuPage({
         ) : (
           <div className="space-y-8">
             {restaurant.categories.map((category, index) => (
-              <section 
-                key={category.id} 
+              <section
+                key={category.id}
                 id={category.id}
                 className="scroll-mt-20"
               >
                 <div className="sticky top-16 z-10 mb-4 bg-white pb-2 pt-2">
-                  <h2 
+                  <h2
                     className="text-2xl font-bold text-gray-900"
                     style={{
                       color: restaurant.primaryColor || "#075e54",
@@ -187,7 +187,7 @@ export default async function MenuPage({
           </div>
         </div>
       </nav>
-      
+
       <style jsx global>{`
         .scrollbar-hide {
           -ms-overflow-style: none;
