@@ -1,7 +1,7 @@
 "use client";
 import { toast } from "sonner";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { ErrorBoundary } from "@/components/error-boundary";
@@ -11,8 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Save, Upload, Loader2, X } from "lucide-react";
-import { useRef, useState } from "react";
-import { toast } from "sonner";
 
 export default function SettingsPage() {
   const router = useRouter();

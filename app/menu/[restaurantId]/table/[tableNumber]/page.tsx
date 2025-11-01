@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { ClientMenu } from "./client-menu";
+import { MobileMenu } from "./mobile-menu";
 
 export const revalidate = 3600; // Revalidate every hour
 
@@ -47,6 +47,6 @@ export default async function MenuPage({
     notFound();
   }
 
-  return <ClientMenu restaurant={restaurant} tableNumber={params.tableNumber} />;
+  return <MobileMenu restaurant={restaurant} tableNumber={params.tableNumber} />;
 }
 

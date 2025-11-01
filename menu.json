@@ -1,0 +1,1682 @@
+[
+  {
+    "category": "Starters",
+    "name": "Classic Edamame",
+    "description": "Classic steamed edamame sprinkled with sea salt",
+    "price": 3.0
+  },
+  {
+    "category": "Starters",
+    "name": "Charred Edamame",
+    "description": "Classic charred edamame in a pan with garlic, chili, and spring onion for an aromatic, smoky kick.",
+    "price": 3.0
+  },
+  {
+    "category": "Starters",
+    "name": "Truffle Fries",
+    "description": "Crispy skin-on fries tossed in truffle oil and truffle salt, finished with grated Parmesan and fresh chives.",
+    "price": 2.5
+  },
+  {
+    "category": "Starters",
+    "name": "Tortilla Chips w/ Guacamole",
+    "description": "Signature guacamole with lime, coriander, and red onion. Served with hand-cut tortilla chips dusted with bamboo charcoal.",
+    "price": 4.5
+  },
+  {
+    "category": "Starters",
+    "name": "Mushroom Arancini",
+    "description": "With spicy smoky marinara sauce.",
+    "price": 5.5
+  },
+  {
+    "category": "Starters",
+    "name": "Crispy Calamari",
+    "description": "Baby squid rings in a seasoned semolina and flour blend, fried light and golden. Served with spicy mayo.",
+    "price": 5.0
+  },
+  {
+    "category": "Starters",
+    "name": "Gamborini Nero - Bianco",
+    "description": "Prawns in black tempura (bamboo charcoal) rolled in popcorn-panko, deep-fried. Served with garlic aioli.",
+    "price": 6.5
+  },
+  {
+    "category": "Starters",
+    "name": "Prawns Skewer",
+    "description": "Prawn skewers marinated in garlic, lime, and paprika, grilled with seasonal vegetables. Served with garlic mayo.",
+    "price": 8.0
+  },
+  {
+    "category": "Starters",
+    "name": "Beef Tacos",
+    "description": "Cajun-seasoned beef tenderloin in corn tortilla with sautéed peppers, onion, salsa, avocado cream, and chipotle sour cream.",
+    "price": 7.0
+  },
+  {
+    "category": "Starters",
+    "name": "Steak Sandwich",
+    "description": "Sliced beef tenderloin and cheddar on toasted brioche with lettuce, tomato, and chipotle mayo. Served with truffle fries.",
+    "price": 7.0
+  },
+  {
+    "category": "Starters",
+    "name": "Crostini Di Striploin",
+    "description": "Toasted focaccia topped with thyme mushrooms, striploin, and white balsamic truffle cream.",
+    "price": 8.0
+  },
+  {
+    "category": "Starters",
+    "name": "Beef Slider",
+    "description": "Juicy grilled beef patty with cheddar, caramelized onions, relish, and burger sauce on brioche. Served with skin-on fries.",
+    "price": 6.5
+  },
+  {
+    "category": "Starters",
+    "name": "Chicken Slider",
+    "description": "Crispy chicken patty with cheddar, caramelized onions, relish, and burger sauce on brioche. Served with skin-on fries.",
+    "price": 6.0
+  },
+  {
+    "category": "Cheese & Fruit",
+    "name": "Ash Cheese Platter",
+    "description": "A generous classic platter for two.",
+    "price": 6.0
+  },
+  {
+    "category": "Cheese & Fruit",
+    "name": "Velas Fruit Platter",
+    "description": "Assorted fresh fruits (may include watermelon, pineapple, melon, grapes, strawberries, apple, kiwi, dragon fruit, fig, rambutan).",
+    "price": 10.0
+  },
+  {
+    "category": "Cheese & Fruit",
+    "name": "Velas By Ash Sharing Cheese Platter",
+    "description": "Five cheeses (Parmesan, Edam, Blue, Brie, Red Cheddar) with crackers, dried figs, walnuts, apricots, grapes. Serves four.",
+    "price": 12.0
+  },
+  {
+    "category": "Salads",
+    "name": "Avocado Garden Salad",
+    "description": "Avocado slices and guacamole on gem lettuce and radicchio with homemade raspberry vinaigrette.",
+    "price": 5.5
+  },
+  {
+    "category": "Salads",
+    "name": "Salade De Brie",
+    "description": "Crispy-fried brie patty on rocket with candied walnuts and roasted beetroot, drizzled with balsamic glaze.",
+    "price": 5.5
+  },
+  {
+    "category": "Salads",
+    "name": "Classic Crab Louie",
+    "description": "Creamy citrusy crab (Japanese mayo, lemon) surrounded by carrot, cucumber, avocado, and cherry tomatoes.",
+    "price": 6.0
+  },
+  {
+    "category": "Salads",
+    "name": "Classic Beef Carpaccio",
+    "description": "Paper-thin South African beef tenderloin with truffle oil, lemon, pepper; topped with pickled shimeji, frisée, and Parmesan.",
+    "price": 6.0
+  },
+  {
+    "category": "Pizza",
+    "name": "Margherita",
+    "description": "Tomato sauce, fresh mozzarella, basil, olive oil, Parmesan on a thin base.",
+    "price": 4.5
+  },
+  {
+    "category": "Pizza",
+    "name": "Al Funghi (Mix Mushroom Pizza)",
+    "description": "Truffle cream and mozzarella base topped with wild mushrooms, truffle oil, Parmesan, and chives.",
+    "price": 9.0
+  },
+  {
+    "category": "Pizza",
+    "name": "Pizza Pollo e Pesto",
+    "description": "Pesto base with mozzarella and grilled chicken, finished with rocket, toasted pine nuts, and cherry tomatoes.",
+    "price": 6.0
+  },
+  {
+    "category": "Pizza",
+    "name": "Pepperoni Pizza",
+    "description": "Tomato sauce, mozzarella, and spicy pepperoni.",
+    "price": 6.0
+  },
+  {
+    "category": "Pasta",
+    "name": "Rigatoni With Beef",
+    "description": "Slow-braised short rib tossed with rigatoni in rich tomato braising jus; topped with basil and chives.",
+    "price": 8.0
+  },
+  {
+    "category": "Pasta",
+    "name": "Fettucine Alfredo",
+    "description": "Fettuccine in Parmesan cream with seared chicken strips and pan-fried shimeji; finished with Parmesan foam.",
+    "price": 6.0
+  },
+  {
+    "category": "Pasta",
+    "name": "Truffle Mushroom Risotto",
+    "description": "Creamy Arborio with mushroom stock, sautéed wild mushrooms, truffle oil, and Parmesan.",
+    "price": 7.0
+  },
+  {
+    "category": "Main",
+    "name": "Lambo di Striploin 250g",
+    "description": "250g striploin with celeriac purée, mushroom sauce, and seasonal vegetables.",
+    "price": 15.0
+  },
+  {
+    "category": "Main",
+    "name": "Poitrine d Poulet",
+    "description": "Grilled corn-fed chicken with grilled vegetables and wild mushroom sauce.",
+    "price": 7.0
+  },
+  {
+    "category": "Main",
+    "name": "Filetto Di Salmone",
+    "description": "Seared salmon with black cauliflower purée, pesto-roasted asparagus and baby potatoes, lemon butter sauce.",
+    "price": 10.0
+  },
+  {
+    "category": "Sides",
+    "name": "Pure d Patate",
+    "description": "Creamy mashed potatoes.",
+    "price": 2.5
+  },
+  {
+    "category": "Sides",
+    "name": "Patate Arrostite",
+    "description": "Baby potatoes with chives, sour cream, and paprika.",
+    "price": 2.5
+  },
+  {
+    "category": "Sides",
+    "name": "Maccheroni al Tartufo e Formaggio",
+    "description": "Truffle mac & mixed cheese with herbs and bread crumbs.",
+    "price": 4.0
+  },
+  {
+    "category": "Sides",
+    "name": "Sauté Seasonal Vegetables",
+    "description": "Mixed seasonal vegetables.",
+    "price": 1.5
+  },
+  {
+    "category": "Dessert",
+    "name": "Velas Tiramisu",
+    "description": "Coffee-soaked Savoiardi and mascarpone, finished with cocoa and dark chocolate.",
+    "price": 3.0
+  },
+  {
+    "category": "Dessert",
+    "name": "Pudding aux Dattes",
+    "description": "Warm date pudding with butterscotch sauce and vanilla ice cream.",
+    "price": 4.5
+  },
+  {
+    "category": "Dessert",
+    "name": "Gateau Matilda",
+    "description": "Chocolate sponge cake with Mars bar and milk chocolate ganache.",
+    "price": 4.5
+  },
+  {
+    "category": "Vodka",
+    "name": "Grey Goose Single",
+    "description": "",
+    "price": 7.0
+  },
+  {
+    "category": "Vodka",
+    "name": "Grey Goose Bottle 750ml",
+    "description": "",
+    "price": 150.0
+  },
+  {
+    "category": "Vodka",
+    "name": "Belvedere Single",
+    "description": "",
+    "price": 6.5
+  },
+  {
+    "category": "Vodka",
+    "name": "Belvedere Bottle 750ml",
+    "description": "",
+    "price": 150.0
+  },
+  {
+    "category": "Vodka",
+    "name": "Beluga Noble Single",
+    "description": "",
+    "price": 7.0
+  },
+  {
+    "category": "Vodka",
+    "name": "Beluga Noble Bottle 700ml",
+    "description": "",
+    "price": 160.0
+  },
+  {
+    "category": "Vodka",
+    "name": "Ciroc Single",
+    "description": "",
+    "price": 6.5
+  },
+  {
+    "category": "Vodka",
+    "name": "Ciroc Bottle 750ml",
+    "description": "",
+    "price": 130.0
+  },
+  {
+    "category": "Vodka",
+    "name": "Absolut Bottle 750ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Vodka",
+    "name": "Smirnoff Bottle 700ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Vodka",
+    "name": "Titos Bottle 750 ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Gin",
+    "name": "Monkey 47 Single",
+    "description": "",
+    "price": 6.5
+  },
+  {
+    "category": "Gin",
+    "name": "Monkey 47 Bottle 500ml",
+    "description": "",
+    "price": 130.0
+  },
+  {
+    "category": "Gin",
+    "name": "Hendricks Single",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Gin",
+    "name": "Hendricks Bottle 700ml",
+    "description": "",
+    "price": 120.0
+  },
+  {
+    "category": "Gin",
+    "name": "Roku Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Gin",
+    "name": "Roku Bottle 700ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Gin",
+    "name": "Bombay Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Gin",
+    "name": "Bombay Bottle 750ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Gin",
+    "name": "Tanqueray Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Gin",
+    "name": "Tanqueray Bottle 750ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Gin",
+    "name": "Beefeater Bottle 750ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Gin",
+    "name": "Gordons Bottle 750ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Rum",
+    "name": "Bacardi White Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Rum",
+    "name": "Bacardi White Bottle 750ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Rum",
+    "name": "Bacardi Gold Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Rum",
+    "name": "Bacardi Gold Bottle 750ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Rum",
+    "name": "Plantation Single",
+    "description": "",
+    "price": 6.5
+  },
+  {
+    "category": "Rum",
+    "name": "Plantation Bottle 700ml",
+    "description": "",
+    "price": 150.0
+  },
+  {
+    "category": "Rum",
+    "name": "Diplomatico Reserva Single",
+    "description": "",
+    "price": 8.0
+  },
+  {
+    "category": "Rum",
+    "name": "Diplomatico Reserva Bottle 700ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Rum",
+    "name": "Captain Morgan Spicy Single",
+    "description": "",
+    "price": 4.0
+  },
+  {
+    "category": "Rum",
+    "name": "Captain Morgan Spicy Bottle 750ml",
+    "description": "",
+    "price": 110.0
+  },
+  {
+    "category": "Rum",
+    "name": "Bacardi 4 Years Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Rum",
+    "name": "Bacardi 4 Years Bottle 750ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Rum",
+    "name": "Havana Club 3 Years Bottle 700ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Tequila",
+    "name": "1800 Silver Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Tequila",
+    "name": "1800 Silver Bottle 750ml",
+    "description": "",
+    "price": 110.0
+  },
+  {
+    "category": "Tequila",
+    "name": "1800 Reposado Single",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Tequila",
+    "name": "1800 Reposado Bottle 750ml",
+    "description": "",
+    "price": 145.0
+  },
+  {
+    "category": "Tequila",
+    "name": "Reserva De Familia Anijo Single",
+    "description": "",
+    "price": 8.5
+  },
+  {
+    "category": "Tequila",
+    "name": "Reserva De Familia Anijo Bottle 750ml",
+    "description": "",
+    "price": 190.0
+  },
+  {
+    "category": "Tequila",
+    "name": "Patron Silver Single",
+    "description": "",
+    "price": 6.0
+  },
+  {
+    "category": "Tequila",
+    "name": "Patron Silver Bottle 750 ml",
+    "description": "",
+    "price": 169.0
+  },
+  {
+    "category": "Tequila",
+    "name": "Patron Reposado Single",
+    "description": "",
+    "price": 7.0
+  },
+  {
+    "category": "Tequila",
+    "name": "Patron Reposado Bottle 750ml",
+    "description": "",
+    "price": 190.0
+  },
+  {
+    "category": "Tequila",
+    "name": "Clase Azuel Reposado Single",
+    "description": "",
+    "price": 20.0
+  },
+  {
+    "category": "Tequila",
+    "name": "Clase Azuel Reposado Bottle 700ml",
+    "description": "",
+    "price": 400.0
+  },
+  {
+    "category": "Tequila",
+    "name": "Ponchos Coffee Single",
+    "description": "",
+    "price": 4.0
+  },
+  {
+    "category": "Tequila",
+    "name": "Ponchos Coffee Bottle 750 ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Tequila",
+    "name": "Ponchos Caramel Single",
+    "description": "",
+    "price": 4.0
+  },
+  {
+    "category": "Tequila",
+    "name": "Ponchos Caramel Bottle 750ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Tequila",
+    "name": "Teremana Blanco Single",
+    "description": "",
+    "price": 6.5
+  },
+  {
+    "category": "Tequila",
+    "name": "Teremana blanco Bottle 700ml",
+    "description": "",
+    "price": 160.0
+  },
+  {
+    "category": "Tequila",
+    "name": "Teremana Reposado Single",
+    "description": "",
+    "price": 6.5
+  },
+  {
+    "category": "Tequila",
+    "name": "Teremana Repsado Bottle 700ml",
+    "description": "",
+    "price": 180.0
+  },
+  {
+    "category": "Tequila",
+    "name": "Teremana Anijo Single",
+    "description": "",
+    "price": 8.5
+  },
+  {
+    "category": "Tequila",
+    "name": "Teremana Anijo Bottle 700ml",
+    "description": "",
+    "price": 190.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Lagavulin 16 Single",
+    "description": "",
+    "price": 9.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Glenmorangie 10 Years Single",
+    "description": "",
+    "price": 6.5
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Glenmorangie 10 Years Bottle 700ml",
+    "description": "",
+    "price": 150.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Glenfiddich 12 Years Single",
+    "description": "",
+    "price": 6.5
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Glenfiddich 12 Years Bottle 700ml",
+    "description": "",
+    "price": 150.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Macallan 12 Single",
+    "description": "",
+    "price": 9.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Macallan 12 Years Bottle 700ml",
+    "description": "",
+    "price": 190.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Chivas 18 Years Single",
+    "description": "",
+    "price": 8.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Chivas 18 Years Bottle 750ml",
+    "description": "",
+    "price": 180.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Chivas 12 Years Single",
+    "description": "",
+    "price": 5.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Chivas 12 Years Bottle 750ml",
+    "description": "",
+    "price": 130.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Johnnie Walker Gold Label Single",
+    "description": "",
+    "price": 6.5
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Johnnie Walker Gold Label Bottle 750ml",
+    "description": "",
+    "price": 160.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Johnnie Walker Double Black Label Single",
+    "description": "",
+    "price": 6.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Johnnie Walker Double Black Label Bottle 750ml",
+    "description": "",
+    "price": 150.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Johnnie Walker Black Label Single",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Johnnie Walker Black Label Bottle 750ml",
+    "description": "",
+    "price": 140.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Talisker Storm Single",
+    "description": "",
+    "price": 7.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Talisker Storm Bottle 700ml",
+    "description": "",
+    "price": 200.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Monkey Shoulder Single",
+    "description": "",
+    "price": 7.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Monkey Shoulder Bottle 700ml",
+    "description": "",
+    "price": 110.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Dewars White Lable Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Dewars White Label Bottle 750ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Dewars Black Label 12 Years Single",
+    "description": "",
+    "price": 8.5
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Dewars Black Label 12 Years Bottle 750ml",
+    "description": "",
+    "price": 150.0
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Johnnie Walker Red Label Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Scotch Whisky",
+    "name": "Johnnie Walker Red Label Bottle 750ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "American Whiskey",
+    "name": "Jack Daniels 7 Tennessee Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "American Whiskey",
+    "name": "Jack Daniels 7 Tennessee Bottle 750ml",
+    "description": "",
+    "price": 110.0
+  },
+  {
+    "category": "American Whiskey",
+    "name": "Knob Creek 9 Years Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "American Whiskey",
+    "name": "Knob Creek 9 Years Bottle 700ml",
+    "description": "",
+    "price": 120.0
+  },
+  {
+    "category": "American Whiskey",
+    "name": "Bulleit Rye Single",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "American Whiskey",
+    "name": "Bulleit Rye Bottle 700ml",
+    "description": "",
+    "price": 130.0
+  },
+  {
+    "category": "American Whiskey",
+    "name": "Jim Beam Bottle 750ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Irish Whiskey",
+    "name": "Jameson Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Irish Whiskey",
+    "name": "Jameson Bottle 750ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Cognac And Brandy",
+    "name": "Hennessy V.S Single",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Cognac And Brandy",
+    "name": "Hennessy V.S Bottle 700ml",
+    "description": "",
+    "price": 120.0
+  },
+  {
+    "category": "Cognac And Brandy",
+    "name": "Hennessy V.S.O.P Single",
+    "description": "",
+    "price": 6.5
+  },
+  {
+    "category": "Cognac And Brandy",
+    "name": "Hennessy V.S.O.P Bottle 700ml",
+    "description": "",
+    "price": 140.0
+  },
+  {
+    "category": "Cognac And Brandy",
+    "name": "Courvoisier V.S.O.P Single",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Cognac And Brandy",
+    "name": "ST.Remy V.S.O.P Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Cognac And Brandy",
+    "name": "K.W.V 3 Years Single",
+    "description": "",
+    "price": 4.0
+  },
+  {
+    "category": "Cognac And Brandy",
+    "name": "K.W.V 3 Years Bottle 750ml",
+    "description": "",
+    "price": 80.0
+  },
+  {
+    "category": "Aperitifs",
+    "name": "Aperol Single",
+    "description": "",
+    "price": 4.8
+  },
+  {
+    "category": "Aperitifs",
+    "name": "Martini Dry Single",
+    "description": "",
+    "price": 4.8
+  },
+  {
+    "category": "Aperitifs",
+    "name": "Martini Rosso Single",
+    "description": "",
+    "price": 4.8
+  },
+  {
+    "category": "Aperitifs",
+    "name": "Martini Bianco Single",
+    "description": "",
+    "price": 4.8
+  },
+  {
+    "category": "Aperitifs",
+    "name": "Campari Single",
+    "description": "",
+    "price": 4.8
+  },
+  {
+    "category": "Liqueurs",
+    "name": "Sambuca Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Liqueurs",
+    "name": "Midori Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Liqueurs",
+    "name": "Baileys Single",
+    "description": "",
+    "price": 4.0
+  },
+  {
+    "category": "Liqueurs",
+    "name": "Amaretto Single",
+    "description": "",
+    "price": 4.0
+  },
+  {
+    "category": "Liqueurs",
+    "name": "Apricot Brandy Single",
+    "description": "",
+    "price": 4.0
+  },
+  {
+    "category": "Liqueurs",
+    "name": "Tia Maria Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Liqueurs",
+    "name": "Lychee Liqueur Single",
+    "description": "",
+    "price": 4.0
+  },
+  {
+    "category": "Liqueurs",
+    "name": "Jagermeister Single",
+    "description": "",
+    "price": 4.0
+  },
+  {
+    "category": "Liqueurs",
+    "name": "Fireball Single",
+    "description": "",
+    "price": 4.0
+  },
+  {
+    "category": "Liqueurs",
+    "name": "Absinthe Single",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Shots",
+    "name": "B52",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Shots",
+    "name": "Blue Kamikazi",
+    "description": "",
+    "price": 3.5
+  },
+  {
+    "category": "Shots",
+    "name": "Brazilian Shot",
+    "description": "",
+    "price": 3.5
+  },
+  {
+    "category": "Shots",
+    "name": "Doo Doo Shot",
+    "description": "",
+    "price": 3.5
+  },
+  {
+    "category": "Shots",
+    "name": "Brain Damage",
+    "description": "",
+    "price": 4.5
+  },
+  {
+    "category": "Shots",
+    "name": "Golden Ash",
+    "description": "",
+    "price": 7.0
+  },
+  {
+    "category": "Shots",
+    "name": "S.O.B Shot",
+    "description": "",
+    "price": 3.5
+  },
+  {
+    "category": "Shots",
+    "name": "Jager Bomb",
+    "description": "",
+    "price": 6.0
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Moscow Mule",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Espresso Martini",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Passion Fruit Martini",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Cosmopolitan",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Vodka Martini Dry",
+    "description": "",
+    "price": 5.25
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Vodka Martini Wet",
+    "description": "",
+    "price": 5.25
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Dirty Vodka Martini",
+    "description": "",
+    "price": 5.25
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Midori Sour",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Apple Martini",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Caipiroska",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Blue Kamakaze",
+    "description": "",
+    "price": 5.25
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Bloody Mary",
+    "description": "",
+    "price": 5.25
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Sex On The Beach",
+    "description": "",
+    "price": 5.25
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Passion Margarita",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Classic Margarita",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Tequila Sunrise",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Paloma",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Negroni",
+    "description": "",
+    "price": 5.6
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "White Lady",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Gin Martini Dry",
+    "description": "",
+    "price": 5.25
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Vasper Martini",
+    "description": "",
+    "price": 5.25
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Gin Basil",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Pegu Club",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "God Father",
+    "description": "",
+    "price": 6.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Blood And Sand",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "New York Sour",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Manhattan",
+    "description": "",
+    "price": 5.6
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Whiskey Sour",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Mint Julep",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Old Fashion",
+    "description": "",
+    "price": 5.6
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Penicillin",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Pina Colada",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Zombie",
+    "description": "",
+    "price": 5.6
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Caipirinha",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Classic Daiquri",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Mojito",
+    "description": "",
+    "price": 5.25
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Mai Tai",
+    "description": "",
+    "price": 5.6
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Elpersidente",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Knicker Bocker",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Amaretto Sour",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Kir Royale",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Side Car",
+    "description": "",
+    "price": 5.6
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Aperol Spirits",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Campari Spirits",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Flat White Martini",
+    "description": "",
+    "price": 5.25
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Lemon Drop Martini",
+    "description": "",
+    "price": 5.5
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Long Island Ice Tea",
+    "description": "",
+    "price": 9.0
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Bull Frog",
+    "description": "",
+    "price": 9.0
+  },
+  {
+    "category": "Classic Cocktails",
+    "name": "Flaming Lamborghini",
+    "description": "",
+    "price": 25.0
+  },
+  {
+    "category": "Signature Cocktails",
+    "name": "CASABLANCA",
+    "description": "Sparkling wine with Moroccan mint–infused vodka, passion fruit purée, elderflower, citrus; garnished with dry fruit and mint.",
+    "price": 3.5
+  },
+  {
+    "category": "Signature Cocktails",
+    "name": "ZAKURO",
+    "description": "Vodka with pomegranate, red vermouth, citrus cordial; tuile tree garnish.",
+    "price": 4.0
+  },
+  {
+    "category": "Signature Cocktails",
+    "name": "RED CORAL",
+    "description": "Hibiscus & lemongrass–infused tequila with cranberry, blueberry sweetness, egg white; edible flower garnish.",
+    "price": 4.5
+  },
+  {
+    "category": "Signature Cocktails",
+    "name": "COFFEE CARIBI",
+    "description": "Coffee-, vanilla-, cacao-infused rum with Baileys, coconut syrup, citrus; dried pineapple and mint garnish.",
+    "price": 5.5
+  },
+  {
+    "category": "Signature Cocktails",
+    "name": "BRANDY SKY",
+    "description": "SA brandy infused with red plum, cloves, star anise, tonka; with apricot brandy, amaretto, cocoa bitters; cherry & orange peel.",
+    "price": 4.5
+  },
+  {
+    "category": "Signature Cocktails",
+    "name": "HONEY MOON",
+    "description": "Whiskey infused with buckwheat, star anise, cinnamon; honey, apple juice, ginger, bitters; honey tuile.",
+    "price": 4.0
+  },
+  {
+    "category": "Bottled Beer",
+    "name": "Corona",
+    "description": "",
+    "price": 4.0
+  },
+  {
+    "category": "Bottled Beer",
+    "name": "Amstel Light",
+    "description": "",
+    "price": 4.0
+  },
+  {
+    "category": "Bottled Beer",
+    "name": "Heineken",
+    "description": "",
+    "price": 4.0
+  },
+  {
+    "category": "Bottled Beer",
+    "name": "Peroni",
+    "description": "",
+    "price": 4.0
+  },
+  {
+    "category": "Bottled Beer",
+    "name": "Savanna Dry",
+    "description": "",
+    "price": 4.0
+  },
+  {
+    "category": "Bottled Beer",
+    "name": "Smirnoff Ice",
+    "description": "",
+    "price": 5.0
+  },
+  {
+    "category": "White Wine",
+    "name": "Ruffino Orvieto Classic Bottle",
+    "description": "Italy • Alc 12.5% • Grapes: Grechetto & Procanico",
+    "price": 31.5
+  },
+  {
+    "category": "White Wine",
+    "name": "Vina Esmeialda Bottle",
+    "description": "Spain • Alc 12% • Grapes: Moscatel & Gewurztraminer",
+    "price": 35.5
+  },
+  {
+    "category": "White Wine",
+    "name": "La Scola Gavi Di Gavi Bottle",
+    "description": "Italy • Alc 12% • Grapes: Cortese",
+    "price": 39.5
+  },
+  {
+    "category": "White Wine",
+    "name": "Louis Moreau Chablis Bottle",
+    "description": "France • Alc 12.5% • Grapes: Chardonnay",
+    "price": 39.5
+  },
+  {
+    "category": "White Wine",
+    "name": "Le Grand Noir Bottle",
+    "description": "France • Alc 13.5% • Grapes: Chardonnay",
+    "price": 35.5
+  },
+  {
+    "category": "White Wine",
+    "name": "Marius Blanc Glass",
+    "description": "",
+    "price": 4.8
+  },
+  {
+    "category": "White Wine",
+    "name": "Calvet Sauvnoin Blanc Glass",
+    "description": "",
+    "price": 4.8
+  },
+  {
+    "category": "Red Wine",
+    "name": "Saint Georges Les Charbonnieres Bottle",
+    "description": "France • Alc 14.5% • Grapes: Pinot Noir",
+    "price": 149.6
+  },
+  {
+    "category": "Red Wine",
+    "name": "Dezzani Barolo DOCG San Carlo Bottle",
+    "description": "Italy • Alc 14.5% • Grapes: Nebbiolo",
+    "price": 126.0
+  },
+  {
+    "category": "Red Wine",
+    "name": "Chocolate Block Bottle",
+    "description": "South Africa • Alc 14.5% • Grapes: Syrah, Cinsault, Cabernet Sauvignon, Viognier",
+    "price": 90.6
+  },
+  {
+    "category": "Red Wine",
+    "name": "Chateau Moulin De Barion Bottle",
+    "description": "France • Alc 13% • Grapes: Merlot, Cabernet Franc",
+    "price": 70.9
+  },
+  {
+    "category": "Red Wine",
+    "name": "Rure Barbera d’asti",
+    "description": "Italy • Alc 14.5% • Grapes: Barbera",
+    "price": 70.9
+  },
+  {
+    "category": "Red Wine",
+    "name": "Chateau Vieux Cardinal Bottle",
+    "description": "France • Alc 14% • Grapes: Merlot, Cabernet, Cabernet Sauvignon",
+    "price": 63.0
+  },
+  {
+    "category": "Red Wine",
+    "name": "Chateau De Bordes Quancard Bottle",
+    "description": "France • Alc 13.5% • Grapes: Merlot, Cabernet Sauvignon, Cabernet Franc",
+    "price": 55.1
+  },
+  {
+    "category": "Red Wine",
+    "name": "Altano DOC Douro Bottle",
+    "description": "Portugal • Alc 14% • Grapes: Touriga Franca, Tinta Roriz, Tinta Barroca",
+    "price": 43.3
+  },
+  {
+    "category": "Red Wine",
+    "name": "Marius Rouge Glass",
+    "description": "",
+    "price": 4.8
+  },
+  {
+    "category": "Rose Wine",
+    "name": "Castel D Anjou Bottle",
+    "description": "France • Alc 11% • Grapes: Merlot, Sauvignon Blanc, Cabernet Franc & Malbec",
+    "price": 37.8
+  },
+  {
+    "category": "Rose Wine",
+    "name": "Sangre De Toro Bottle",
+    "description": "Spain • Grapes: Cariñena & Garnacha Tinta",
+    "price": 33.1
+  },
+  {
+    "category": "Rose Wine",
+    "name": "Mateus Rose Bottle",
+    "description": "Portugal • Alc 11% • Grapes: Baga, Rufete, Tinta Barroca & Touriga",
+    "price": 25.2
+  },
+  {
+    "category": "Rose Wine",
+    "name": "Mateus Rose Glass",
+    "description": "",
+    "price": 7.0
+  },
+  {
+    "category": "Rose Wine",
+    "name": "Marius Rose Glass",
+    "description": "",
+    "price": 4.8
+  },
+  {
+    "category": "Champagne",
+    "name": "Moet Chandon Brut Bottle",
+    "description": "",
+    "price": 120.0
+  },
+  {
+    "category": "Champagne",
+    "name": "Dom Perignon Bottle",
+    "description": "",
+    "price": 400.0
+  },
+  {
+    "category": "Champagne",
+    "name": "Veuve CLicquot Brut Bottle",
+    "description": "",
+    "price": 145.7
+  },
+  {
+    "category": "Prosecco",
+    "name": "Jacobs Creek Rose Glass",
+    "description": "",
+    "price": 5.0
+  },
+  {
+    "category": "Prosecco",
+    "name": "Jacobs Creek Rose Bottle",
+    "description": "",
+    "price": 15.8
+  },
+  {
+    "category": "Prosecco",
+    "name": "Brilla Rose Bottle",
+    "description": "",
+    "price": 39.4
+  },
+  {
+    "category": "Prosecco",
+    "name": "Bottega Poeti Gold Bottle",
+    "description": "",
+    "price": 40.0
+  },
+  {
+    "category": "Sparkling Wine",
+    "name": "POL REMY Glass",
+    "description": "",
+    "price": 6.0
+  },
+  {
+    "category": "Sparkling Wine",
+    "name": "POL REMY Bottle",
+    "description": "",
+    "price": 20.0
+  },
+  {
+    "category": "Mocktails",
+    "name": "Virgin Sex On The Beach",
+    "description": "",
+    "price": 3.0
+  },
+  {
+    "category": "Mocktails",
+    "name": "Virgin Pina Colada",
+    "description": "",
+    "price": 3.0
+  },
+  {
+    "category": "Mocktails",
+    "name": "Virgin Mojito",
+    "description": "",
+    "price": 3.0
+  },
+  {
+    "category": "Soft Drinks",
+    "name": "Sprite",
+    "description": "",
+    "price": 2.5
+  },
+  {
+    "category": "Soft Drinks",
+    "name": "Coca Cola",
+    "description": "",
+    "price": 2.5
+  },
+  {
+    "category": "Soft Drinks",
+    "name": "Coca Cola Zero",
+    "description": "",
+    "price": 2.5
+  },
+  {
+    "category": "Soft Drinks",
+    "name": "Ginger Ale",
+    "description": "",
+    "price": 2.5
+  },
+  {
+    "category": "Soft Drinks",
+    "name": "Tonic Water",
+    "description": "",
+    "price": 2.5
+  },
+  {
+    "category": "Soft Drinks",
+    "name": "Soda",
+    "description": "",
+    "price": 2.5
+  },
+  {
+    "category": "Soft Drinks",
+    "name": "Redbull",
+    "description": "",
+    "price": 3.1
+  },
+  {
+    "category": "Soft Drinks",
+    "name": "Redbull Sugar Free",
+    "description": "",
+    "price": 3.1
+  },
+  {
+    "category": "Soft Drinks",
+    "name": "Hildon Water Small",
+    "description": "",
+    "price": 2.0
+  },
+  {
+    "category": "Soft Drinks",
+    "name": "Hildon Sparkling Small",
+    "description": "",
+    "price": 2.0
+  },
+  {
+    "category": "Soft Drinks",
+    "name": "Hildon Water Still Big",
+    "description": "",
+    "price": 3.0
+  },
+  {
+    "category": "Soft Drinks",
+    "name": "Hildon Water Sparkling Big",
+    "description": "",
+    "price": 3.0
+  },
+  {
+    "category": "Shisha Flavors",
+    "name": "Double Apple Nakhla",
+    "description": "",
+    "price": 10.0
+  },
+  {
+    "category": "Shisha Flavors",
+    "name": "Double Apple Fakher",
+    "description": "",
+    "price": 10.0
+  },
+  {
+    "category": "Shisha Flavors",
+    "name": "Double Apple Mix",
+    "description": "",
+    "price": 10.0
+  },
+  {
+    "category": "Shisha Flavors",
+    "name": "Grab Fakher",
+    "description": "",
+    "price": 10.0
+  },
+  {
+    "category": "Shisha Flavors",
+    "name": "Grab Mint Fakher",
+    "description": "",
+    "price": 10.0
+  },
+  {
+    "category": "Shisha Flavors",
+    "name": "Mint Fakher",
+    "description": "",
+    "price": 10.0
+  },
+  {
+    "category": "Shisha Flavors",
+    "name": "Lemon Mint Fakher",
+    "description": "",
+    "price": 10.0
+  },
+  {
+    "category": "Shisha Flavors",
+    "name": "Watermelon Fakher",
+    "description": "",
+    "price": 10.0
+  },
+  {
+    "category": "Shisha Flavors",
+    "name": "Blueberry Grape Fakher",
+    "description": "",
+    "price": 10.0
+  },
+  {
+    "category": "Shisha Flavors",
+    "name": "Blueberry Mint Fakher",
+    "description": "",
+    "price": 10.0
+  },
+  {
+    "category": "Shisha Flavors",
+    "name": "Orange Fakher",
+    "description": "",
+    "price": 10.0
+  },
+  {
+    "category": "Shisha Flavors",
+    "name": "Gum Mint Fakher",
+    "description": "",
+    "price": 10.0
+  }
+]

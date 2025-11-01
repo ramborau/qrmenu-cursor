@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 
 async function getUnsplashImage(itemName: string, category?: string): Promise<string | null> {
   const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY || "";
-  
+
   if (!UNSPLASH_ACCESS_KEY) {
     console.warn('⚠️  UNSPLASH_ACCESS_KEY not set. Skipping image fetch.');
     return null;
@@ -113,12 +113,12 @@ async function main() {
   for (let i = 0; i < menuItems.length; i++) {
     const item = menuItems[i];
     const categoryName = item.subCategory.category.name;
-    
+
     console.log(`\n📝 Processing ${i + 1}/${menuItems.length}: ${item.name} (${categoryName})`);
 
     try {
       const imageUrl = await getUnsplashImage(item.name, categoryName);
-      
+
       if (imageUrl) {
         await prisma.menuItem.update({
           where: { id: item.id },

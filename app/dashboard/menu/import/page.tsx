@@ -37,17 +37,17 @@ export default function ImportMenuPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (mode === "file" && !file) {
       setError("Please select a file");
       return;
     }
-    
+
     if (mode === "url" && !url.trim()) {
       setError("Please enter a URL");
       return;
     }
-    
+
     if (mode === "paste" && !text.trim()) {
       setError("Please paste menu data");
       return;
@@ -59,7 +59,7 @@ export default function ImportMenuPage() {
 
     try {
       const formData = new FormData();
-      
+
       if (mode === "file" && file) {
         formData.append("file", file);
       } else if (mode === "url") {
@@ -67,7 +67,7 @@ export default function ImportMenuPage() {
       } else if (mode === "paste") {
         formData.append("text", text);
       }
-      
+
       formData.append("useGemini", useGemini.toString());
 
       const res = await fetch("/api/menu/import", {
