@@ -1,0 +1,129 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  OWNER
+  MANAGER
+  STAFF
+}
+
+enum AvailabilityStatus {
+  AVAILABLE
+  OUT_OF_STOCK
+  SEASONAL
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // Hashed password
+  name      String?
+  role      UserRole @default(OWNER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  restaurants Restaurant[]
+
+  @@map("users")
+}
+
+model Restaurant {
+  id              String   @id @default(cuid())
+  name            String
+  ownerId        String
+  logoUrl         String?
+  heroImageUrl    String?
+  primaryColor    String?  @default("#075e54")
+  secondaryColor  String?  @default("#00c307")
+  backgroundColor String?  @default("#ffffff")
+  typographySettings Json?  // Font settings, sizes, etc.
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  owner   User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  categories Category[]
+  tables    Table[]
+
+  @@map("restaurants")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  restaurantId String
+  name        String
+  description String?
+  icon        String?  // React Icon name
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  subCategories SubCategory[]
+
+  @@unique([restaurantId, name])
+  @@map("categories")
+}
+
+model SubCategory {
+  id          String   @id @default(cuid())
+  categoryId  String
+  name        String
+  description String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  items    MenuItem[]
+
+  @@unique([categoryId, name])
+  @@map("sub_categories")
+}
+
+model MenuItem {
+  id                String            @id @default(cuid())
+  subCategoryId     String
+  name              String
+  description       String?           @db.Text
+  price             Float
+  currency          String            @default("USD")
+  imageUrl          String?
+  tags              String[]          // Dietary tags: Vegetarian, Vegan, Gluten-Free, Spicy, etc.
+  allergens         String[]          // Allergen information
+  availabilityStatus AvailabilityStatus @default(AVAILABLE)
+  preparationTime   Int?              // In minutes
+  sortOrder         Int               @default(0)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  subCategory SubCategory @relation(fields: [subCategoryId], references: [id], onDelete: Cascade)
+
+  @@map("menu_items")
+}
+
+model Table {
+  id            String   @id @default(cuid())
+  restaurantId  String
+  tableNumber   String   // Can be A1, B2, Patio-3, etc.
+  qrCodeData    String   // The URL encoded in the QR code
+  qrCodeUrlSvg  String?  // Path to SVG file
+  qrCodeUrlPng  String?  // Path to PNG file
+  brandingSettings Json?  // QR code branding: colors, logo, patterns, etc.
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  @@unique([restaurantId, tableNumber])
+  @@map("tables")
+}
+

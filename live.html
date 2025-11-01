@@ -450,14 +450,14 @@
                                 duration: 'Week 2-3',
                                 agent: 'Database Agent',
                                 tasks: [
-                                    { id: 'task-1.2.1', label: 'Install and configure Prisma', status: 'not-started' },
-                                    { id: 'task-1.2.2', label: 'Design database schema', status: 'not-started' },
-                                    { id: 'task-1.2.3', label: 'Create initial Prisma schema', status: 'not-started' },
-                                    { id: 'task-1.2.4', label: 'Set up PostgreSQL database', status: 'not-started' },
-                                    { id: 'task-1.2.5', label: 'Create database migrations', status: 'not-started' },
-                                    { id: 'task-1.2.6', label: 'Write seed script for development data', status: 'not-started' },
-                                    { id: 'task-1.2.7', label: 'Set up Prisma Studio', status: 'not-started' },
-                                    { id: 'task-1.2.8', label: 'Create database connection utilities', status: 'not-started' }
+                                    { id: 'task-1.2.1', label: 'Install and configure Prisma', status: 'completed' },
+                                    { id: 'task-1.2.2', label: 'Design database schema', status: 'completed' },
+                                    { id: 'task-1.2.3', label: 'Create initial Prisma schema', status: 'completed' },
+                                    { id: 'task-1.2.4', label: 'Set up PostgreSQL database', status: 'in-progress' },
+                                    { id: 'task-1.2.5', label: 'Create database migrations', status: 'in-progress' },
+                                    { id: 'task-1.2.6', label: 'Write seed script for development data', status: 'completed' },
+                                    { id: 'task-1.2.7', label: 'Set up Prisma Studio', status: 'completed' },
+                                    { id: 'task-1.2.8', label: 'Create database connection utilities', status: 'completed' }
                                 ]
                             },
                             {
@@ -673,16 +673,11 @@
                 // Simulate Git API call
                 setTimeout(() => {
                     // In a real implementation, this would fetch from Git API
+                    // Fetch actual git commits (simulated for now)
                     const sampleCommits = [
                         {
-                            hash: 'a1b2c3d',
-                            message: 'Initial project setup with Next.js and TypeScript',
-                            author: 'Developer',
-                            date: new Date().toLocaleDateString()
-                        },
-                        {
-                            hash: 'e4f5g6h',
-                            message: 'Add Prisma schema and database migrations',
+                            hash: 'Initial',
+                            message: 'Initial project setup: Next.js, TypeScript, ESLint, Prettier, folder structure, Git, Vercel config, env vars, README, CI/CD',
                             author: 'Developer',
                             date: new Date().toLocaleDateString()
                         }

@@ -20,7 +20,7 @@ QR Menu Manager Pro is a comprehensive web-based platform that enables restauran
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn or pnpm
 
 ### Installation
