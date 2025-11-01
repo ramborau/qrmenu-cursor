@@ -42,10 +42,17 @@ export async function POST(request: NextRequest) {
     }
 
     // Manually verify password using Better Auth's verification
-    const isValid = await verifyPassword({
-      hash: account.password,
-      password: password,
-    });
+    const passwordHash = account.password;
+    
+    if (!passwordHash || typeof passwordHash !== 'string') {
+      console.error("Password hash is not a string:", { type: typeof passwordHash, value: passwordHash });
+      return NextResponse.json(
+        { message: "Invalid email or password" },
+        { status: 401 }
+      );
+    }
+    
+    const isValid = await verifyPassword(passwordHash, password);
 
     if (!isValid) {
       return NextResponse.json(

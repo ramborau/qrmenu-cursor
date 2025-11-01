@@ -1,6 +1,6 @@
 // Password verification using Better Auth's algorithm
 import { hex } from "@better-auth/utils/hex";
-import { scryptAsync } from "@noble/hashes/scrypt";
+import { scryptAsync } from "@noble/hashes/scrypt.js";
 
 const config = {
   N: 16384,
@@ -31,9 +31,12 @@ function constantTimeEqual(a: Uint8Array, b: Uint8Array): boolean {
 }
 
 export async function verifyPassword(hash: string, password: string): Promise<boolean> {
+  if (!hash || typeof hash !== 'string') {
+    throw new Error("Invalid password hash - must be a string");
+  }
   const [salt, key] = hash.split(":");
   if (!salt || !key) {
-    throw new Error("Invalid password hash");
+    throw new Error("Invalid password hash format - expected salt:key");
   }
   const targetKey = await generateKey(password, salt);
   return constantTimeEqual(targetKey, hex.hex.decode(key));
