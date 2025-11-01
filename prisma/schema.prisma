@@ -23,17 +23,46 @@ enum AvailabilityStatus {
 }
 
 model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  password      String   // Hashed password
+  name          String?
+  role          UserRole @default(OWNER)
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  restaurants Restaurant[]
+  sessions    Session[]
+
+  @@map("users")
+}
+
+model Session {
   id        String   @id @default(cuid())
-  email     String   @unique
-  password  String   // Hashed password
-  name      String?
-  role      UserRole @default(OWNER)
+  userId    String
+  expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  restaurants Restaurant[]
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("users")
+  @@map("sessions")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String   // email or phone
+  value      String   // verification code
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  @@unique([identifier, value])
+  @@map("verifications")
 }
 
 model Restaurant {
