@@ -10,10 +10,107 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// User model for authentication (Better Auth will handle some fields)
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      UserRole @default(OWNER)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  restaurants Restaurant[]
+
+  @@map("users")
+}
+
 enum UserRole {
   OWNER
   MANAGER
   STAFF
+}
+
+// Restaurant model
+model Restaurant {
+  id            String   @id @default(cuid())
+  name          String
+  ownerId       String   @map("owner_id")
+  logoUrl       String?  @map("logo_url")
+  heroImageUrl  String?  @map("hero_image_url")
+  primaryColor  String?  @default("#075e54") @map("primary_color")
+  secondaryColor String? @default("#00c307") @map("secondary_color")
+  backgroundColor String? @default("#ffffff") @map("background_color")
+  typographySettings Json? @map("typography_settings")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  categories Category[]
+  tables    Table[]
+
+  @@map("restaurants")
+}
+
+// Category model
+model Category {
+  id          String   @id @default(cuid())
+  restaurantId String  @map("restaurant_id")
+  name        String
+  description String?
+  icon        String?
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  restaurant    Restaurant   @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  subCategories SubCategory[]
+
+  @@unique([restaurantId, name])
+  @@map("categories")
+}
+
+// SubCategory model
+model SubCategory {
+  id          String   @id @default(cuid())
+  categoryId  String   @map("category_id")
+  name        String
+  description String?
+  sortOrder   Int      @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  category   Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  menuItems MenuItem[]
+
+  @@unique([categoryId, name])
+  @@map("sub_categories")
+}
+
+// MenuItem model
+model MenuItem {
+  id              String            @id @default(cuid())
+  subCategoryId   String            @map("sub_category_id")
+  name            String
+  description     String?
+  price           Float
+  currency        String            @default("USD")
+  imageUrl        String?           @map("image_url")
+  tags            String[]          @default([])
+  allergens       String[]          @default([])
+  availabilityStatus AvailabilityStatus @default(AVAILABLE) @map("availability_status")
+  preparationTime Int?              @map("preparation_time") // in minutes
+  sortOrder       Int               @default(0) @map("sort_order")
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+
+  // Relations
+  subCategory SubCategory @relation(fields: [subCategoryId], references: [id], onDelete: Cascade)
+
+  @@map("menu_items")
 }
 
 enum AvailabilityStatus {
@@ -22,137 +119,21 @@ enum AvailabilityStatus {
   SEASONAL
 }
 
-model User {
-  id            String   @id @default(cuid())
-  email         String   @unique
-  emailVerified Boolean  @default(false)
-  password      String   // Hashed password
-  name          String?
-  role          UserRole @default(OWNER)
-  image         String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  restaurants Restaurant[]
-  sessions    Session[]
-
-  @@map("users")
-}
-
-model Session {
-  id        String   @id @default(cuid())
-  userId    String
-  expiresAt DateTime
-  token     String   @unique
-  ipAddress String?
-  userAgent String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("sessions")
-}
-
-model Verification {
-  id         String   @id @default(cuid())
-  identifier String   // email or phone
-  value      String   // verification code
-  expiresAt  DateTime
-  createdAt  DateTime @default(now())
-
-  @@unique([identifier, value])
-  @@map("verifications")
-}
-
-model Restaurant {
-  id              String   @id @default(cuid())
-  name            String
-  ownerId        String
-  logoUrl         String?
-  heroImageUrl    String?
-  primaryColor    String?  @default("#075e54")
-  secondaryColor  String?  @default("#00c307")
-  backgroundColor String?  @default("#ffffff")
-  typographySettings Json?  // Font settings, sizes, etc.
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  owner   User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  categories Category[]
-  tables    Table[]
-
-  @@map("restaurants")
-}
-
-model Category {
-  id          String   @id @default(cuid())
-  restaurantId String
-  name        String
-  description String?
-  icon        String?  // React Icon name
-  sortOrder   Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
-  subCategories SubCategory[]
-
-  @@unique([restaurantId, name])
-  @@map("categories")
-}
-
-model SubCategory {
-  id          String   @id @default(cuid())
-  categoryId  String
-  name        String
-  description String?
-  sortOrder   Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  category Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  items    MenuItem[]
-
-  @@unique([categoryId, name])
-  @@map("sub_categories")
-}
-
-model MenuItem {
-  id                String            @id @default(cuid())
-  subCategoryId     String
-  name              String
-  description       String?           @db.Text
-  price             Float
-  currency          String            @default("USD")
-  imageUrl          String?
-  tags              String[]          // Dietary tags: Vegetarian, Vegan, Gluten-Free, Spicy, etc.
-  allergens         String[]          // Allergen information
-  availabilityStatus AvailabilityStatus @default(AVAILABLE)
-  preparationTime   Int?              // In minutes
-  sortOrder         Int               @default(0)
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-
-  subCategory SubCategory @relation(fields: [subCategoryId], references: [id], onDelete: Cascade)
-
-  @@map("menu_items")
-}
-
+// Table model for QR codes
 model Table {
-  id            String   @id @default(cuid())
-  restaurantId  String
-  tableNumber   String   // Can be A1, B2, Patio-3, etc.
-  qrCodeData    String   // The URL encoded in the QR code
-  qrCodeUrlSvg  String?  // Path to SVG file
-  qrCodeUrlPng  String?  // Path to PNG file
-  brandingSettings Json?  // QR code branding: colors, logo, patterns, etc.
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id              String   @id @default(cuid())
+  restaurantId    String   @map("restaurant_id")
+  tableNumber     String   @map("table_number")
+  qrCodeData      String?  @map("qr_code_data")
+  qrCodeUrlSvg    String?  @map("qr_code_url_svg")
+  qrCodeUrlPng    String?  @map("qr_code_url_png")
+  brandingSettings Json?   @map("branding_settings")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
 
+  // Relations
   restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 
   @@unique([restaurantId, tableNumber])
   @@map("tables")
 }
-
