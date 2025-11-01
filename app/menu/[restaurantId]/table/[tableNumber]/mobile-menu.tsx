@@ -501,6 +501,96 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
         )}
       </main>
 
+      {/* Nutrition Facts Drawer */}
+      <Drawer open={showNutritionDrawer} onOpenChange={setShowNutritionDrawer}>
+        <DrawerContent side="bottom" className="max-h-[85vh] rounded-t-3xl">
+          <DrawerHeader className="text-left">
+            <div className="flex items-center gap-2 mb-2">
+              <button
+                onClick={() => setShowNutritionDrawer(false)}
+                className="rounded-full p-2 hover:bg-gray-100 transition-colors"
+                aria-label="Close"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </button>
+              <DrawerTitle className="text-xl">
+                {selectedNutritionItem?.name} - Nutrition Facts
+              </DrawerTitle>
+            </div>
+            {selectedNutritionItem?.description && (
+              <DrawerDescription>{selectedNutritionItem.description}</DrawerDescription>
+            )}
+          </DrawerHeader>
+          <div className="px-4 pb-8 overflow-y-auto">
+            {selectedNutritionItem?.nutritionalValues && (
+              <div className="space-y-4">
+                <div className="border-b pb-4">
+                  <h3 className="text-sm font-semibold text-gray-500 mb-3">Nutritional Information</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <p className="text-2xl font-bold" style={{ color: isDarkTheme ? adjustedPrimaryColor : primaryColor }}>
+                        {selectedNutritionItem.nutritionalValues.calories || 0}
+                      </p>
+                      <p className="text-sm text-gray-600 mt-1">Calories</p>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <p className="text-2xl font-bold" style={{ color: isDarkTheme ? adjustedPrimaryColor : primaryColor }}>
+                        {selectedNutritionItem.nutritionalValues.protein || 0}g
+                      </p>
+                      <p className="text-sm text-gray-600 mt-1">Protein</p>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <p className="text-2xl font-bold" style={{ color: isDarkTheme ? adjustedPrimaryColor : primaryColor }}>
+                        {selectedNutritionItem.nutritionalValues.carbs || 0}g
+                      </p>
+                      <p className="text-sm text-gray-600 mt-1">Carbohydrates</p>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <p className="text-2xl font-bold" style={{ color: isDarkTheme ? adjustedPrimaryColor : primaryColor }}>
+                        {selectedNutritionItem.nutritionalValues.fat || 0}g
+                      </p>
+                      <p className="text-sm text-gray-600 mt-1">Fat</p>
+                    </div>
+                    {selectedNutritionItem.nutritionalValues.fiber !== undefined && (
+                      <div className="bg-gray-50 rounded-lg p-4">
+                        <p className="text-2xl font-bold" style={{ color: isDarkTheme ? adjustedPrimaryColor : primaryColor }}>
+                          {selectedNutritionItem.nutritionalValues.fiber || 0}g
+                        </p>
+                        <p className="text-sm text-gray-600 mt-1">Fiber</p>
+                      </div>
+                    )}
+                    {selectedNutritionItem.nutritionalValues.sugar !== undefined && (
+                      <div className="bg-gray-50 rounded-lg p-4">
+                        <p className="text-2xl font-bold" style={{ color: isDarkTheme ? adjustedPrimaryColor : primaryColor }}>
+                          {selectedNutritionItem.nutritionalValues.sugar || 0}g
+                        </p>
+                        <p className="text-sm text-gray-600 mt-1">Sugar</p>
+                      </div>
+                    )}
+                    {selectedNutritionItem.nutritionalValues.sodium !== undefined && (
+                      <div className="bg-gray-50 rounded-lg p-4">
+                        <p className="text-2xl font-bold" style={{ color: isDarkTheme ? adjustedPrimaryColor : primaryColor }}>
+                          {selectedNutritionItem.nutritionalValues.sodium || 0}mg
+                        </p>
+                        <p className="text-sm text-gray-600 mt-1">Sodium</p>
+                      </div>
+                    )}
+                    {selectedNutritionItem.nutritionalValues.cholesterol !== undefined && (
+                      <div className="bg-gray-50 rounded-lg p-4">
+                        <p className="text-2xl font-bold" style={{ color: isDarkTheme ? adjustedPrimaryColor : primaryColor }}>
+                          {selectedNutritionItem.nutritionalValues.cholesterol || 0}mg
+                        </p>
+                        <p className="text-sm text-gray-600 mt-1">Cholesterol</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </DrawerContent>
+      </Drawer>
+
       {/* Sticky Footer with Sub-Categories */}
       {!searchQuery && currentCategory && subCategories.length > 1 && (
         <footer

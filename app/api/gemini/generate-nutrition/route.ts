@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     const restaurantIds = restaurants.map((r) => r.id);
 
     // Build where clause to get menu items
-    const whereClause: any = {
+    let whereClause: any = {
       subCategory: {
         category: {
           restaurantId: { in: restaurantIds },
@@ -30,16 +30,29 @@ export async function POST(request: NextRequest) {
       },
     };
 
+    // Handle different selection scopes
     if (menuItemIds && Array.isArray(menuItemIds) && menuItemIds.length > 0) {
+      // Specific menu items selected
       whereClause.id = { in: menuItemIds };
     } else if (subCategoryIds && Array.isArray(subCategoryIds) && subCategoryIds.length > 0) {
+      // Subcategories selected
       whereClause.subCategoryId = { in: subCategoryIds };
-    } else if (categoryIds && Array.isArray(categoryIds) && categoryIds.length > 0) {
+      // Keep restaurant filter
       whereClause.subCategory = {
-        ...whereClause.subCategory,
+        category: {
+          restaurantId: { in: restaurantIds },
+        },
+      };
+    } else if (categoryIds && Array.isArray(categoryIds) && categoryIds.length > 0) {
+      // Categories selected
+      whereClause.subCategory = {
         categoryId: { in: categoryIds },
+        category: {
+          restaurantId: { in: restaurantIds },
+        },
       };
     }
+    // If none are provided (scope = "all"), whereClause already has restaurant filter which will get all items
 
     // Get all menu items
     const menuItems = await prisma.menuItem.findMany({

@@ -110,13 +110,16 @@ export function NutritionGenerationDialog({
     try {
       const payload: any = {};
 
-      if (selectedScope === "category") {
+      if (selectedScope === "category" && selectedCategories.length > 0) {
         payload.categoryIds = selectedCategories;
-      } else if (selectedScope === "subcategory") {
+      } else if (selectedScope === "subcategory" && selectedSubCategories.length > 0) {
         payload.subCategoryIds = selectedSubCategories;
-      } else if (selectedScope === "items") {
+      } else if (selectedScope === "items" && selectedItems.length > 0) {
         payload.menuItemIds = selectedItems;
       }
+      // If scope is "all", payload remains empty {} which will fetch all items
+
+      console.log("Generating nutrition for payload:", payload, "selectedCount:", selectedItemIds.length);
 
       const res = await fetch("/api/gemini/generate-nutrition", {
         method: "POST",
