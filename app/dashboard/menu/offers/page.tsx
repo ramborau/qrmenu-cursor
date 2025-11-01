@@ -95,11 +95,16 @@ export default function MenuOffersPage() {
   useEffect(() => {
     if (user) {
       fetchRestaurant();
-      fetchOffers();
       fetchCategories();
       fetchTables();
     }
   }, [user]);
+
+  useEffect(() => {
+    if (restaurantId) {
+      fetchOffers();
+    }
+  }, [restaurantId]);
 
   const fetchRestaurant = async () => {
     try {
