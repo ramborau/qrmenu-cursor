@@ -10,7 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Save, Upload, Loader2, X } from "lucide-react";
+import { Save, Upload, Loader2, X, Palette } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -22,6 +23,10 @@ export default function SettingsPage() {
     name: "",
     logoUrl: "",
     heroImageUrl: "",
+    primaryColor: "#075e54",
+    secondaryColor: "#00c307",
+    backgroundColor: "#ffffff",
+    darkTheme: false,
   });
   const [logoUploading, setLogoUploading] = useState(false);
   const [heroUploading, setHeroUploading] = useState(false);
@@ -60,6 +65,10 @@ export default function SettingsPage() {
           name: restaurantData.name || "",
           logoUrl: restaurantData.logoUrl || "",
           heroImageUrl: restaurantData.heroImageUrl || "",
+          primaryColor: restaurantData.primaryColor || "#075e54",
+          secondaryColor: restaurantData.secondaryColor || "#00c307",
+          backgroundColor: restaurantData.backgroundColor || "#ffffff",
+          darkTheme: restaurantData.darkTheme || false,
         });
       }
     } catch (error) {
@@ -164,7 +173,7 @@ export default function SettingsPage() {
       });
 
       if (res.ok) {
-        toast.error("Settings saved successfully!");
+        toast.success("Settings saved successfully!");
         fetchRestaurant();
       } else {
         const data = await res.json();
@@ -326,6 +335,101 @@ export default function SettingsPage() {
                         </Button>
                       </div>
                     )}
+                  </div>
+                </div>
+
+                <div className="border-t pt-6">
+                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    <Palette className="h-5 w-5" />
+                    Menu Theme & Colors
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <Label htmlFor="darkTheme">Dark Theme</Label>
+                        <p className="text-sm text-gray-500">Enable dark mode for menu pages</p>
+                      </div>
+                      <Switch
+                        id="darkTheme"
+                        checked={formData.darkTheme}
+                        onCheckedChange={(checked) =>
+                          setFormData({ ...formData, darkTheme: checked })
+                        }
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="primaryColor">Primary Color</Label>
+                      <div className="mt-2 flex gap-2">
+                        <Input
+                          id="primaryColor"
+                          type="color"
+                          value={formData.primaryColor}
+                          onChange={(e) =>
+                            setFormData({ ...formData, primaryColor: e.target.value })
+                          }
+                          className="h-10 w-20 cursor-pointer"
+                        />
+                        <Input
+                          type="text"
+                          value={formData.primaryColor}
+                          onChange={(e) =>
+                            setFormData({ ...formData, primaryColor: e.target.value })
+                          }
+                          placeholder="#075e54"
+                          className="flex-1"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="secondaryColor">Secondary Color</Label>
+                      <div className="mt-2 flex gap-2">
+                        <Input
+                          id="secondaryColor"
+                          type="color"
+                          value={formData.secondaryColor}
+                          onChange={(e) =>
+                            setFormData({ ...formData, secondaryColor: e.target.value })
+                          }
+                          className="h-10 w-20 cursor-pointer"
+                        />
+                        <Input
+                          type="text"
+                          value={formData.secondaryColor}
+                          onChange={(e) =>
+                            setFormData({ ...formData, secondaryColor: e.target.value })
+                          }
+                          placeholder="#00c307"
+                          className="flex-1"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="backgroundColor">Background Color</Label>
+                      <div className="mt-2 flex gap-2">
+                        <Input
+                          id="backgroundColor"
+                          type="color"
+                          value={formData.backgroundColor}
+                          onChange={(e) =>
+                            setFormData({ ...formData, backgroundColor: e.target.value })
+                          }
+                          className="h-10 w-20 cursor-pointer"
+                        />
+                        <Input
+                          type="text"
+                          value={formData.backgroundColor}
+                          onChange={(e) =>
+                            setFormData({ ...formData, backgroundColor: e.target.value })
+                          }
+                          placeholder="#ffffff"
+                          className="flex-1"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
 

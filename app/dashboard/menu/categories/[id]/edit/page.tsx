@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loading } from "@/components/ui/loading";
 import { IconPicker } from "@/components/icons/icon-picker";
+import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 
 export default function EditCategoryPage() {
@@ -22,6 +23,7 @@ export default function EditCategoryPage() {
     name: "",
     description: "",
     icon: "",
+    showImages: true,
   });
 
   useEffect(() => {
@@ -32,6 +34,7 @@ export default function EditCategoryPage() {
           name: data.name || "",
           description: data.description || "",
           icon: data.icon || "",
+          showImages: data.showImages !== false,
         });
       })
       .catch((error) => {
@@ -116,10 +119,27 @@ export default function EditCategoryPage() {
                 </div>
 
                 <div>
-                  <IconPicker
-                    value={formData.icon}
-                    onChange={(iconName) =>
-                      setFormData({ ...formData, icon: iconName })
+                  <Label>Icon (Optional)</Label>
+                  <div className="mt-2">
+                    <IconPicker
+                      value={formData.icon}
+                      onChange={(iconName) =>
+                        setFormData({ ...formData, icon: iconName })
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between border-t pt-4">
+                  <div className="flex-1">
+                    <Label htmlFor="showImages">Show Images</Label>
+                    <p className="text-sm text-gray-500">Display images for menu items in this category</p>
+                  </div>
+                  <Switch
+                    id="showImages"
+                    checked={formData.showImages}
+                    onCheckedChange={(checked) =>
+                      setFormData({ ...formData, showImages: checked })
                     }
                   />
                 </div>

@@ -88,6 +88,7 @@ model Restaurant {
   primaryColor  String?  @default("#075e54") @map("primary_color")
   secondaryColor String? @default("#00c307") @map("secondary_color")
   backgroundColor String? @default("#ffffff") @map("background_color")
+  darkTheme     Boolean  @default(false) @map("dark_theme")
   typographySettings Json? @map("typography_settings")
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
@@ -107,6 +108,7 @@ model Category {
   name        String
   description String?
   icon        String?
+  showImages  Boolean  @default(true) @map("show_images")
   sortOrder   Int      @default(0) @map("sort_order")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")

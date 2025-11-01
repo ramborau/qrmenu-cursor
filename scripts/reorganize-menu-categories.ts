@@ -22,7 +22,7 @@ const categoryMapping: Record<string, 'Food' | 'Drinks' | 'Shisha'> = {
   'Sides': 'Food',
   'Dessert': 'Food',
   'Desserts': 'Food',
-  
+
   // Drinks categories
   'Vodka': 'Drinks',
   'Gin': 'Drinks',
@@ -50,7 +50,7 @@ const categoryMapping: Record<string, 'Food' | 'Drinks' | 'Shisha'> = {
   'Sparkling Wine': 'Drinks',
   'Mocktails': 'Drinks',
   'Soft Drinks': 'Drinks',
-  
+
   // Shisha categories
   'Shisha Flavors': 'Shisha',
   'Shisha': 'Shisha',
@@ -186,7 +186,7 @@ async function main() {
     }
 
     // Determine which high-level category it belongs to
-    let targetCategory: 'Food' | 'Drinks' | 'Shisha' = categoryMapping[existingCat.name] || 
+    let targetCategory: 'Food' | 'Drinks' | 'Shisha' = categoryMapping[existingCat.name] ||
       categoryMapping[existingCat.name.replace(/&/g, 'And')] ||
       categoryMapping[existingCat.name.replace(/And/g, '&')];
 
@@ -240,7 +240,7 @@ async function main() {
     for (const oldSubCat of existingCat.subCategories) {
       // If subcategory is "Default", use the category name as subcategory name
       const subCategoryName = oldSubCat.name === 'Default' ? existingCat.name : oldSubCat.name;
-      
+
       // Check if subcategory with same name exists in target category
       let targetSubCat = await prisma.subCategory.findFirst({
         where: {

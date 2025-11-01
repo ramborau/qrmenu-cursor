@@ -68,6 +68,7 @@ export async function PATCH(
         ...(body.primaryColor !== undefined && { primaryColor: body.primaryColor }),
         ...(body.secondaryColor !== undefined && { secondaryColor: body.secondaryColor }),
         ...(body.backgroundColor !== undefined && { backgroundColor: body.backgroundColor }),
+        ...(body.darkTheme !== undefined && { darkTheme: body.darkTheme }),
         ...(body.typographySettings !== undefined && { typographySettings: body.typographySettings }),
       },
     });

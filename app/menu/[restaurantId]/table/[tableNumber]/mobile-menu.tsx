@@ -28,6 +28,7 @@ interface Category {
   id: string;
   name: string;
   icon?: string | null;
+  showImages?: boolean;
   subCategories: SubCategory[];
 }
 
@@ -39,6 +40,7 @@ interface MobileMenuProps {
     primaryColor?: string | null;
     secondaryColor?: string | null;
     backgroundColor?: string | null;
+    darkTheme?: boolean;
     categories: Category[];
   };
   tableNumber: string;
@@ -49,6 +51,7 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [activeSubCategory, setActiveSubCategory] = useState<string>("");
 
   // Group categories into Food, Drinks, Shisha
   const highLevelCategories = useMemo(() => {
@@ -62,14 +65,15 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
         id: cat.id,
         name: cat.name,
         icon: cat.icon,
+        showImages: cat.showImages,
         subCategories: cat.subCategories,
       }));
     }
 
     return [
-      food && { id: food.id, name: "Food", icon: food.icon, subCategories: food.subCategories },
-      drinks && { id: drinks.id, name: "Drinks", icon: drinks.icon, subCategories: drinks.subCategories },
-      shisha && { id: shisha.id, name: "Shisha", icon: shisha.icon, subCategories: shisha.subCategories },
+      food && { id: food.id, name: "Food", icon: food.icon, showImages: food.showImages, subCategories: food.subCategories },
+      drinks && { id: drinks.id, name: "Drinks", icon: drinks.icon, showImages: drinks.showImages, subCategories: drinks.subCategories },
+      shisha && { id: shisha.id, name: "Shisha", icon: shisha.icon, showImages: shisha.showImages, subCategories: shisha.subCategories },
     ].filter(Boolean) as Category[];
   }, [restaurant.categories]);
 
@@ -82,6 +86,44 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
 
   const currentCategory = highLevelCategories.find((cat) => cat.id === selectedCategory);
   const subCategories = currentCategory?.subCategories || [];
+  const showImages = currentCategory?.showImages !== false; // Default to true
+
+  // Scroll-based active subcategory detection
+  useEffect(() => {
+    if (!currentCategory || subCategories.length <= 1) return;
+
+    const handleScroll = () => {
+      const subCategoryElements = subCategories.map((subCat) => ({
+        id: subCat.id,
+        element: document.getElementById(`subcat-${subCat.id}`),
+      })).filter((item) => item.element);
+
+      const scrollPosition = window.scrollY + 160; // Account for header height
+
+      for (let i = subCategoryElements.length - 1; i >= 0; i--) {
+        const item = subCategoryElements[i];
+        if (item.element) {
+          const elementTop = item.element.offsetTop;
+          if (scrollPosition >= elementTop) {
+            setActiveSubCategory(item.id);
+            break;
+          }
+        }
+      }
+
+      // If scrolled to top, set first subcategory as active
+      if (scrollPosition < 200) {
+        if (subCategoryElements[0]) {
+          setActiveSubCategory(subCategoryElements[0].id);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [currentCategory, subCategories]);
 
   // Filter menu items based on search
   const filteredItems = useMemo(() => {
@@ -111,12 +153,17 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
     setShowSearch(false);
   };
 
+  const isDarkTheme = restaurant.darkTheme || false;
   const primaryColor = restaurant.primaryColor || "#075e54";
   const secondaryColor = restaurant.secondaryColor || "#00c307";
-  const bgColor = restaurant.backgroundColor || "#ffffff";
+  const bgColor = restaurant.backgroundColor || (isDarkTheme ? "#1a1a1a" : "#ffffff");
+  const textColor = isDarkTheme ? "#ffffff" : "#111827";
+  const textColorSecondary = isDarkTheme ? "#9ca3af" : "#6b7280";
+  const cardBg = isDarkTheme ? "#2d2d2d" : "#ffffff";
+  const borderColor = isDarkTheme ? "#3d3d3d" : "#e5e7eb";
 
   return (
-    <div className="min-h-screen bg-white" style={{ backgroundColor: bgColor }}>
+    <div className="min-h-screen transition-colors" style={{ backgroundColor: bgColor, color: textColor }}>
       {/* Sticky Header */}
       <header
         className="sticky top-0 z-30 border-b shadow-sm"
@@ -209,7 +256,7 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
       <main className="pb-24">
         {filteredItems.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 px-4">
-            <p className="text-gray-500 text-center">
+            <p className="text-center" style={{ color: textColorSecondary }}>
               {searchQuery
                 ? `No items found for "${searchQuery}"`
                 : "No items available in this category"}
@@ -226,87 +273,150 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
                       {subCategory.icon && (
                         <CategoryIcon
                           iconPath={subCategory.icon}
-                          className="h-5 w-5 text-gray-600"
+                          className="h-5 w-5"
+                          style={{ color: isDarkTheme ? '#d1d5db' : '#4b5563' }}
                         />
                       )}
-                      <h2 className="text-xl font-bold text-gray-900">{subCategory.name}</h2>
+                      <h2 className="text-xl font-bold" style={{ color: textColor }}>{subCategory.name}</h2>
                     </div>
                   )}
 
                   {/* Menu Items */}
                   <div className="grid gap-4">
-                    {subCategory.menuItems.map((item) => (
-                    <div
-                      key={item.id}
-                      className="rounded-2xl bg-white p-4 shadow-md hover:shadow-lg transition-shadow border border-gray-100 active:scale-[0.98]"
-                    >
-                        <div className="flex gap-4">
-                        {/* Item Image */}
-                        {item.imageUrl ? (
-                          <img
-                            src={item.imageUrl}
-                            alt={item.name}
-                            className="h-24 w-24 rounded-xl object-cover flex-shrink-0 shadow-sm"
-                          />
-                        ) : (
-                          <div 
-                            className="h-24 w-24 rounded-xl flex-shrink-0 flex items-center justify-center"
-                            style={{ backgroundColor: `${primaryColor}10` }}
-                          >
-                            <CategoryIcon iconPath="FaUtensils" className="h-8 w-8" style={{ color: primaryColor }} />
-                          </div>
-                        )}
-
-                          {/* Item Details */}
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-start justify-between gap-2">
-                              <div className="flex-1 min-w-0">
-                                <h3 className="font-semibold text-gray-900 text-base leading-tight">
-                                  {item.name}
-                                </h3>
-                                {item.description && (
-                                  <p className="mt-1 text-sm text-gray-600 line-clamp-2">
-                                    {item.description}
-                                  </p>
-                                )}
-                              </div>
-                              <div className="flex-shrink-0">
-                                <p
-                                  className="text-lg font-bold whitespace-nowrap"
-                                  style={{ color: primaryColor }}
-                                >
-                                  {new Intl.NumberFormat("en-US", {
-                                    style: "currency",
-                                    currency: item.currency || "BHD",
-                                  }).format(item.price)}
-                                </p>
+                    {subCategory.menuItems.map((item) => {
+                      const hasImage = showImages && item.imageUrl;
+                      return (
+                        <div
+                          key={item.id}
+                          className={`rounded-2xl shadow-md hover:shadow-lg transition-shadow active:scale-[0.98] overflow-hidden ${
+                            hasImage ? '' : 'p-4 border'
+                          }`}
+                          style={{
+                            backgroundColor: cardBg,
+                            borderColor: hasImage ? 'transparent' : borderColor,
+                          }}
+                        >
+                          {hasImage ? (
+                            // Layout with image touching edges
+                            <div className="flex items-center">
+                              {/* Image - touches top, left, bottom */}
+                              <img
+                                src={item.imageUrl!}
+                                alt={item.name}
+                                className="h-28 w-28 object-cover flex-shrink-0"
+                                style={{ minHeight: '7rem' }}
+                              />
+                              {/* Content with padding */}
+                              <div className="flex-1 min-w-0 p-4 flex items-center">
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-start justify-between gap-2 mb-1">
+                                    <div className="flex-1 min-w-0">
+                                      <h3 className="font-semibold text-base leading-tight" style={{ color: textColor }}>
+                                        {item.name}
+                                      </h3>
+                                      {item.description && (
+                                        <p className="mt-1 text-sm line-clamp-2" style={{ color: textColorSecondary }}>
+                                          {item.description}
+                                        </p>
+                                      )}
+                                    </div>
+                                    <div className="flex-shrink-0 ml-2">
+                                      <p
+                                        className="text-lg font-bold whitespace-nowrap"
+                                        style={{ color: primaryColor }}
+                                      >
+                                        {new Intl.NumberFormat("en-US", {
+                                          style: "currency",
+                                          currency: item.currency || "BHD",
+                                        }).format(item.price)}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  {/* Tags */}
+                                  {item.tags.length > 0 && (
+                                    <div className="mt-2 flex flex-wrap gap-1">
+                                      {item.tags.slice(0, 3).map((tag, idx) => (
+                                        <span
+                                          key={idx}
+                                          className="rounded-full px-2 py-0.5 text-xs"
+                                          style={{
+                                            backgroundColor: isDarkTheme ? '#3d3d3d' : '#f3f4f6',
+                                            color: isDarkTheme ? '#d1d5db' : '#374151',
+                                          }}
+                                        >
+                                          {tag}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  )}
+                                  {/* Allergens */}
+                                  {item.allergens.length > 0 && (
+                                    <p className="mt-2 text-xs" style={{ color: '#ef4444' }}>
+                                      ⚠️ Contains: {item.allergens.join(", ")}
+                                    </p>
+                                  )}
+                                </div>
                               </div>
                             </div>
-
-                            {/* Tags */}
-                            {item.tags.length > 0 && (
-                              <div className="mt-2 flex flex-wrap gap-1">
-                                {item.tags.slice(0, 3).map((tag, idx) => (
-                                  <span
-                                    key={idx}
-                                    className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-700"
-                                  >
-                                    {tag}
-                                  </span>
-                                ))}
+                          ) : (
+                            // Layout without image - vertically centered
+                            <div className="flex items-center gap-4">
+                              {/* Item Details - centered vertically */}
+                              <div className="flex-1 min-w-0 flex items-center">
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-start justify-between gap-2">
+                                    <div className="flex-1 min-w-0">
+                                      <h3 className="font-semibold text-base leading-tight" style={{ color: textColor }}>
+                                        {item.name}
+                                      </h3>
+                                      {item.description && (
+                                        <p className="mt-1 text-sm line-clamp-2" style={{ color: textColorSecondary }}>
+                                          {item.description}
+                                        </p>
+                                      )}
+                                    </div>
+                                    <div className="flex-shrink-0 ml-2">
+                                      <p
+                                        className="text-lg font-bold whitespace-nowrap"
+                                        style={{ color: primaryColor }}
+                                      >
+                                        {new Intl.NumberFormat("en-US", {
+                                          style: "currency",
+                                          currency: item.currency || "BHD",
+                                        }).format(item.price)}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  {/* Tags */}
+                                  {item.tags.length > 0 && (
+                                    <div className="mt-2 flex flex-wrap gap-1">
+                                      {item.tags.slice(0, 3).map((tag, idx) => (
+                                        <span
+                                          key={idx}
+                                          className="rounded-full px-2 py-0.5 text-xs"
+                                          style={{
+                                            backgroundColor: isDarkTheme ? '#3d3d3d' : '#f3f4f6',
+                                            color: isDarkTheme ? '#d1d5db' : '#374151',
+                                          }}
+                                        >
+                                          {tag}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  )}
+                                  {/* Allergens */}
+                                  {item.allergens.length > 0 && (
+                                    <p className="mt-2 text-xs" style={{ color: '#ef4444' }}>
+                                      ⚠️ Contains: {item.allergens.join(", ")}
+                                    </p>
+                                  )}
+                                </div>
                               </div>
-                            )}
-
-                            {/* Allergens */}
-                            {item.allergens.length > 0 && (
-                              <p className="mt-2 text-xs text-red-600">
-                                ⚠️ Contains: {item.allergens.join(", ")}
-                              </p>
-                            )}
-                          </div>
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -317,7 +427,13 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
 
       {/* Sticky Footer with Sub-Categories */}
       {!searchQuery && currentCategory && subCategories.length > 1 && (
-        <footer className="fixed bottom-0 left-0 right-0 z-20 border-t bg-white/95 backdrop-blur-sm shadow-2xl">
+        <footer
+          className="fixed bottom-0 left-0 right-0 z-20 border-t backdrop-blur-sm shadow-2xl"
+          style={{
+            backgroundColor: isDarkTheme ? 'rgba(29, 29, 29, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+            borderTopColor: borderColor,
+          }}
+        >
           <div className="overflow-x-auto scrollbar-hide pb-safe">
             <div className="flex gap-2 px-4 py-3">
               {subCategories.map((subCat) => (
@@ -326,19 +442,31 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
                   onClick={() => {
                     const element = document.getElementById(`subcat-${subCat.id}`);
                     if (element) {
-                      element.scrollIntoView({ behavior: "smooth", block: "start" });
+                      // Add offset for sticky header
+                      const headerHeight = 140; // Approximate header height
+                      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+                      const offsetPosition = elementPosition - headerHeight;
+                      window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth",
+                      });
+                      setActiveSubCategory(subCat.id);
                     }
                   }}
-                  className="rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap transition-all active:scale-95"
+                  className={`rounded-full px-4 py-2 text-sm font-semibold whitespace-nowrap transition-all active:scale-95 hover:scale-105 ${
+                    activeSubCategory === subCat.id ? 'ring-2 ring-offset-2' : ''
+                  }`}
                   style={{
-                    backgroundColor: `${primaryColor}15`,
-                    color: primaryColor,
+                    backgroundColor: activeSubCategory === subCat.id ? primaryColor : `${primaryColor}20`,
+                    color: activeSubCategory === subCat.id ? '#ffffff' : primaryColor,
+                    border: `1px solid ${primaryColor}40`,
+                    ringColor: primaryColor,
                   }}
                 >
                   {subCat.icon && (
                     <CategoryIcon
                       iconPath={subCat.icon}
-                      className="inline h-4 w-4 mr-1"
+                      className="inline h-3.5 w-3.5 mr-1.5"
                     />
                   )}
                   {subCat.name}

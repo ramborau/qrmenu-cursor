@@ -39,7 +39,7 @@ export async function PATCH(
   try {
     const session = await requireAuth();
     const body = await request.json();
-    const { name, description, icon, sortOrder } = body;
+    const { name, description, icon, sortOrder, showImages } = body;
 
     // Verify category belongs to user's restaurant
     const category = await prisma.category.findUnique({
@@ -88,6 +88,7 @@ export async function PATCH(
         ...(description !== undefined && { description }),
         ...(icon !== undefined && { icon }),
         ...(sortOrder !== undefined && { sortOrder }),
+        ...(showImages !== undefined && { showImages }),
       },
       include: {
         restaurant: true,

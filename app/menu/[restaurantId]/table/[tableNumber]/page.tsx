@@ -29,6 +29,13 @@ async function getRestaurantMenu(restaurantId: string) {
         orderBy: {
           sortOrder: "asc",
         },
+        select: {
+          id: true,
+          name: true,
+          icon: true,
+          showImages: true,
+          subCategories: true,
+        },
       },
     },
   });
