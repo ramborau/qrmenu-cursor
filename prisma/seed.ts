@@ -5,26 +5,43 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🌱 Starting database seed...');
 
-  // Create a sample user/owner
-  const owner = await prisma.user.upsert({
-    where: { email: 'owner@example.com' },
-    update: {},
-    create: {
-      email: 'owner@example.com',
-      name: 'John Doe',
-      role: 'OWNER',
-    },
+  // Note: Better Auth handles user creation differently
+  // We'll check if user exists, if not, provide instructions
+  let owner = await prisma.user.findUnique({
+    where: { email: 'rahul@botpe.com' },
   });
 
-  console.log('✅ Created owner:', owner.email);
+  if (!owner) {
+    console.log('\n⚠️  Admin user not found.');
+    console.log('📝 Please create the admin user using the signup page:');
+    console.log('   1. Start the app: npm run dev');
+    console.log('   2. Go to: http://localhost:3000/auth/signup');
+    console.log('   3. Sign up with:');
+    console.log('      Email: rahul@botpe.com');
+    console.log('      Password: Ramborau46**');
+    console.log('      Name: Rahul Admin');
+    console.log('   4. After signup, run this seed again to create sample data.');
+    console.log('   5. Or manually update the user role to OWNER in the database.');
+    return;
+  }
 
-  // Create a sample restaurant
+  // Update user role to OWNER if not already
+  if (owner.role !== 'OWNER') {
+    owner = await prisma.user.update({
+      where: { id: owner.id },
+      data: { role: 'OWNER' },
+    });
+    console.log('✅ Updated user role to OWNER');
+  } else {
+    console.log('✅ Admin user found:', owner.email);
+  }
+
+  // Create a sample restaurant for the admin
   const restaurant = await prisma.restaurant.upsert({
-    where: { id: 'sample-restaurant-id' },
+    where: { ownerId: owner.id },
     update: {},
     create: {
-      id: 'sample-restaurant-id',
-      name: 'Sample Restaurant',
+      name: 'My Restaurant',
       ownerId: owner.id,
       primaryColor: '#075e54',
       secondaryColor: '#00c307',
@@ -35,12 +52,19 @@ async function main() {
   console.log('✅ Created restaurant:', restaurant.name);
 
   // Create sample categories
-  const foodCategory = await prisma.category.create({
-    data: {
+  const foodCategory = await prisma.category.upsert({
+    where: {
+      restaurantId_name: {
+        restaurantId: restaurant.id,
+        name: 'Food',
+      },
+    },
+    update: {},
+    create: {
       restaurantId: restaurant.id,
       name: 'Food',
       description: 'Delicious food items',
-      icon: 'FaUtensils',
+      icon: 'fa:FaUtensils',
       sortOrder: 1,
       subCategories: {
         create: [
@@ -99,12 +123,19 @@ async function main() {
 
   console.log('✅ Created category:', foodCategory.name);
 
-  const beveragesCategory = await prisma.category.create({
-    data: {
+  const beveragesCategory = await prisma.category.upsert({
+    where: {
+      restaurantId_name: {
+        restaurantId: restaurant.id,
+        name: 'Beverages',
+      },
+    },
+    update: {},
+    create: {
       restaurantId: restaurant.id,
       name: 'Beverages',
       description: 'Drinks and beverages',
-      icon: 'FaGlassWater',
+      icon: 'fa:FaGlassWater',
       sortOrder: 2,
       subCategories: {
         create: [
@@ -135,11 +166,18 @@ async function main() {
   console.log('✅ Created category:', beveragesCategory.name);
 
   // Create sample table with QR code
-  const table = await prisma.table.create({
-    data: {
+  const table = await prisma.table.upsert({
+    where: {
+      restaurantId_tableNumber: {
+        restaurantId: restaurant.id,
+        tableNumber: 'T-01',
+      },
+    },
+    update: {},
+    create: {
       restaurantId: restaurant.id,
       tableNumber: 'T-01',
-      qrCodeData: `https://menu.app/${restaurant.id}/table/T-01`,
+      qrCodeData: `http://localhost:3000/menu/${restaurant.id}/table/T-01`,
       brandingSettings: {
         primaryColor: '#075e54',
         secondaryColor: '#00c307',
@@ -149,7 +187,11 @@ async function main() {
 
   console.log('✅ Created table:', table.tableNumber);
 
-  console.log('🎉 Seed completed successfully!');
+  console.log('\n🎉 Seed completed successfully!');
+  console.log('\n📝 Admin Credentials:');
+  console.log('   Email: rahul@botpe.com');
+  console.log('   Password: Ramborau46**');
+  console.log('\n🚀 You can now start the app with: npm run dev');
 }
 
 main()

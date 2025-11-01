@@ -1,0 +1,29 @@
+# Copy and run these commands in order:
+
+# 1. Set environment variables (replace with your database credentials)
+export DATABASE_URL="postgresql://postgres:postgres@localhost:5432/qrmenu?schema=public"
+export APP_URL="http://localhost:3000"
+export BETTER_AUTH_SECRET="$(openssl rand -hex 32)"
+
+# 2. Push database schema
+npx prisma db push
+
+# 3. Generate Prisma client
+npx prisma generate
+
+# 4. Start the app
+npm run dev
+
+# 5. In browser: Go to http://localhost:3000/auth/signup
+#    Sign up with: rahul@botpe.com / Ramborau46**
+
+# 6. Update user role (in another terminal)
+# Option A: Using Prisma Studio
+npx prisma studio
+# Find user and change role to OWNER
+
+# Option B: Using SQL
+psql -U postgres -d qrmenu -c "UPDATE users SET role = 'OWNER' WHERE email = 'rahul@botpe.com';"
+
+# 7. Seed sample data
+npm run db:seed

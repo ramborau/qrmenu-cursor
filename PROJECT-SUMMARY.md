@@ -167,7 +167,7 @@ All major features have been implemented and are ready for production use.
   /auth         # Auth pages (login, signup)
   /dashboard    # Admin dashboard pages
   /menu         # Public customer menu pages
-  
+
 /components
   /dashboard    # Dashboard-specific components
   /icons        # Icon picker component
@@ -175,7 +175,7 @@ All major features have been implemented and are ready for production use.
   /menu         # Menu-specific components
   /qr           # QR code components
   /ui           # ShadCN/UI components
-  
+
 /lib
   /file-parsers # File import parsers (CSV, JSON, Excel, etc.)
   # Utilities (auth, prisma, performance, unsplash)
