@@ -10,7 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Save, Palette } from "lucide-react";
+import { Save, Palette, Moon, Sun } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 export default function CustomizationPage() {
   const router = useRouter();
@@ -22,6 +23,7 @@ export default function CustomizationPage() {
     primaryColor: "#075e54",
     secondaryColor: "#00c307",
     backgroundColor: "#ffffff",
+    darkTheme: false,
   });
   const [previewUrl, setPreviewUrl] = useState("");
 
@@ -57,6 +59,7 @@ export default function CustomizationPage() {
           primaryColor: restaurantData.primaryColor || "#075e54",
           secondaryColor: restaurantData.secondaryColor || "#00c307",
           backgroundColor: restaurantData.backgroundColor || "#ffffff",
+          darkTheme: restaurantData.darkTheme || false,
         });
         if (restaurantData.id) {
           setPreviewUrl(`/menu/${restaurantData.id}/table/T-01`);
@@ -81,13 +84,23 @@ export default function CustomizationPage() {
         body: JSON.stringify(formData),
       });
 
-      if (res.ok) {
-        toast.error("Colors saved successfully!");
-        fetchRestaurant();
-      } else {
-        const data = await res.json();
-        toast.error(data.message || "Failed to save colors");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        toast.error(errorData.message || `Failed to save settings (${res.status})`);
+        return;
       }
+
+      const data = await res.json();
+      setRestaurant(data);
+      setFormData({
+        primaryColor: data.primaryColor || "#075e54",
+        secondaryColor: data.secondaryColor || "#00c307",
+        backgroundColor: data.backgroundColor || "#ffffff",
+        darkTheme: data.darkTheme || false,
+      });
+      
+      toast.success("Settings saved successfully!");
+      console.log("Settings saved:", data);
     } catch (error) {
       console.error("Failed to save colors:", error);
       toast.error("Failed to save colors");
@@ -204,6 +217,7 @@ export default function CustomizationPage() {
                           setFormData({ ...formData, backgroundColor: e.target.value })
                         }
                         className="h-12 w-20"
+                        disabled={formData.darkTheme}
                       />
                       <Input
                         type="text"
@@ -213,13 +227,54 @@ export default function CustomizationPage() {
                         }
                         placeholder="#ffffff"
                         pattern="^#[0-9A-Fa-f]{6}$"
+                        disabled={formData.darkTheme}
+                      />
+                    </div>
+                    {formData.darkTheme && (
+                      <p className="mt-1 text-xs text-gray-500">
+                        Background color is set to black when dark theme is enabled
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="border-t pt-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <Label htmlFor="darkTheme" className="flex items-center gap-2">
+                          {formData.darkTheme ? (
+                            <Moon className="h-4 w-4" />
+                          ) : (
+                            <Sun className="h-4 w-4" />
+                          )}
+                          Dark Theme
+                        </Label>
+                        <p className="text-sm text-gray-500">
+                          Enable dark mode with black background and smart color adjustments
+                        </p>
+                      </div>
+                      <Switch
+                        id="darkTheme"
+                        checked={formData.darkTheme}
+                        onCheckedChange={(checked) => {
+                          setFormData({ 
+                            ...formData, 
+                            darkTheme: checked,
+                            backgroundColor: checked ? "#000000" : "#ffffff",
+                          });
+                        }}
                       />
                     </div>
                   </div>
 
-                  {contrastRatio < 3 && (
+                  {!formData.darkTheme && contrastRatio < 3 && (
                     <div className="rounded-md bg-yellow-100 p-3 text-sm text-yellow-800">
                       Warning: Contrast ratio ({contrastRatio.toFixed(2)}) is below recommended minimum (3:1). Text may be hard to read.
+                    </div>
+                  )}
+                  
+                  {formData.darkTheme && (
+                    <div className="rounded-md bg-green-100 p-3 text-sm text-green-800">
+                      ✓ Dark theme enabled: Black background with automatic text color adjustments for optimal readability.
                     </div>
                   )}
 

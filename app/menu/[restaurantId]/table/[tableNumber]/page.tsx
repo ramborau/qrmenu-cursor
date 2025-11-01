@@ -36,7 +36,7 @@ async function getRestaurantMenu(restaurantId: string) {
 
   // Return only the fields we need (filter out sensitive data)
   if (!restaurant) return null;
-  
+
   return {
     id: restaurant.id,
     name: restaurant.name,

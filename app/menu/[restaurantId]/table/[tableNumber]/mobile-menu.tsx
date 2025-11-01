@@ -156,18 +156,47 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
   const isDarkTheme = restaurant.darkTheme || false;
   const primaryColor = restaurant.primaryColor || "#075e54";
   const secondaryColor = restaurant.secondaryColor || "#00c307";
-  const bgColor = restaurant.backgroundColor || (isDarkTheme ? "#1a1a1a" : "#ffffff");
+  
+  // Dark theme: Pure black background with primary/secondary accents
+  const bgColor = isDarkTheme ? "#000000" : (restaurant.backgroundColor || "#ffffff");
   const textColor = isDarkTheme ? "#ffffff" : "#111827";
-  const textColorSecondary = isDarkTheme ? "#9ca3af" : "#6b7280";
-  const cardBg = isDarkTheme ? "#2d2d2d" : "#ffffff";
-  const borderColor = isDarkTheme ? "#3d3d3d" : "#e5e7eb";
+  const textColorSecondary = isDarkTheme ? "#a0a0a0" : "#6b7280";
+  const cardBg = isDarkTheme ? "#111111" : "#ffffff";
+  const borderColor = isDarkTheme ? "#222222" : "#e5e7eb";
+  
+  // Smart color adjustments for dark theme
+  // Make primary and secondary colors brighter/lighter for better visibility on black
+  const getAdjustedColor = (color: string, isDark: boolean) => {
+    if (!isDark) return color;
+    
+    // Convert hex to RGB
+    const hex = color.replace('#', '');
+    const r = parseInt(hex.substr(0, 2), 16);
+    const g = parseInt(hex.substr(2, 2), 16);
+    const b = parseInt(hex.substr(4, 2), 16);
+    
+    // Lighten the color by 20% for better visibility on black
+    const lighten = (value: number) => Math.min(255, Math.floor(value + (255 - value) * 0.2));
+    
+    const newR = lighten(r);
+    const newG = lighten(g);
+    const newB = lighten(b);
+    
+    return `#${newR.toString(16).padStart(2, '0')}${newG.toString(16).padStart(2, '0')}${newB.toString(16).padStart(2, '0')}`;
+  };
+  
+  const adjustedPrimaryColor = getAdjustedColor(primaryColor, isDarkTheme);
+  const adjustedSecondaryColor = getAdjustedColor(secondaryColor, isDarkTheme);
 
   return (
     <div className="min-h-screen transition-colors" style={{ backgroundColor: bgColor, color: textColor }}>
       {/* Sticky Header */}
       <header
         className="sticky top-0 z-30 border-b shadow-sm"
-        style={{ backgroundColor: primaryColor, color: "#ffffff" }}
+        style={{ 
+          backgroundColor: isDarkTheme ? adjustedPrimaryColor : primaryColor, 
+          color: "#ffffff" 
+        }}
       >
         {/* Restaurant Name & Table */}
         <div className="px-4 py-3">
@@ -222,7 +251,10 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
         )}
 
         {/* High-Level Categories (Food, Drinks, Shisha) */}
-        <div className="flex border-t border-white/20 overflow-x-auto scrollbar-hide">
+        <div 
+          className="flex border-t overflow-x-auto scrollbar-hide"
+          style={{ borderTopColor: isDarkTheme ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.2)' }}
+        >
           {highLevelCategories.map((category) => {
             const isActive = category.id === selectedCategory;
             return (
@@ -235,7 +267,7 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
                 }}
                 className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold transition-all whitespace-nowrap ${
                   isActive
-                    ? "border-b-2 border-white text-white"
+                    ? "border-b-2 text-white"
                     : "text-white/70 hover:text-white hover:bg-white/10"
                 }`}
                 style={{
@@ -323,7 +355,7 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
                                     <div className="flex-shrink-0 ml-2">
                                       <p
                                         className="text-lg font-bold whitespace-nowrap"
-                                        style={{ color: primaryColor }}
+                                        style={{ color: isDarkTheme ? adjustedSecondaryColor : primaryColor }}
                                       >
                                         {new Intl.NumberFormat("en-US", {
                                           style: "currency",
@@ -340,8 +372,8 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
                                           key={idx}
                                           className="rounded-full px-2 py-0.5 text-xs"
                                           style={{
-                                            backgroundColor: isDarkTheme ? '#3d3d3d' : '#f3f4f6',
-                                            color: isDarkTheme ? '#d1d5db' : '#374151',
+                                            backgroundColor: isDarkTheme ? '#222222' : '#f3f4f6',
+                                            color: isDarkTheme ? '#e0e0e0' : '#374151',
                                           }}
                                         >
                                           {tag}
@@ -378,7 +410,7 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
                                     <div className="flex-shrink-0 ml-2">
                                       <p
                                         className="text-lg font-bold whitespace-nowrap"
-                                        style={{ color: primaryColor }}
+                                        style={{ color: isDarkTheme ? adjustedSecondaryColor : primaryColor }}
                                       >
                                         {new Intl.NumberFormat("en-US", {
                                           style: "currency",
@@ -395,8 +427,8 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
                                           key={idx}
                                           className="rounded-full px-2 py-0.5 text-xs"
                                           style={{
-                                            backgroundColor: isDarkTheme ? '#3d3d3d' : '#f3f4f6',
-                                            color: isDarkTheme ? '#d1d5db' : '#374151',
+                                            backgroundColor: isDarkTheme ? '#222222' : '#f3f4f6',
+                                            color: isDarkTheme ? '#e0e0e0' : '#374151',
                                           }}
                                         >
                                           {tag}
@@ -430,7 +462,7 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
         <footer
           className="fixed bottom-0 left-0 right-0 z-20 border-t backdrop-blur-sm shadow-2xl"
           style={{
-            backgroundColor: isDarkTheme ? 'rgba(29, 29, 29, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+            backgroundColor: isDarkTheme ? 'rgba(0, 0, 0, 0.95)' : 'rgba(255, 255, 255, 0.95)',
             borderTopColor: borderColor,
           }}
         >
@@ -457,10 +489,16 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
                     activeSubCategory === subCat.id ? 'ring-2 ring-offset-2' : ''
                   }`}
                   style={{
-                    backgroundColor: activeSubCategory === subCat.id ? primaryColor : `${primaryColor}20`,
-                    color: activeSubCategory === subCat.id ? '#ffffff' : primaryColor,
-                    border: `1px solid ${primaryColor}40`,
-                    ringColor: primaryColor,
+                    backgroundColor: activeSubCategory === subCat.id 
+                      ? (isDarkTheme ? adjustedPrimaryColor : primaryColor)
+                      : isDarkTheme 
+                        ? `${adjustedPrimaryColor}30` 
+                        : `${primaryColor}20`,
+                    color: activeSubCategory === subCat.id 
+                      ? '#ffffff' 
+                      : (isDarkTheme ? adjustedPrimaryColor : primaryColor),
+                    border: `1px solid ${isDarkTheme ? adjustedPrimaryColor : primaryColor}40`,
+                    ringColor: isDarkTheme ? adjustedPrimaryColor : primaryColor,
                   }}
                 >
                   {subCat.icon && (
