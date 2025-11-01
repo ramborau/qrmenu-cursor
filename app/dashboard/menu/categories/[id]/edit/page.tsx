@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loading } from "@/components/ui/loading";
 import { IconPicker } from "@/components/icons/icon-picker";
+import { toast } from "sonner";
 
 export default function EditCategoryPage() {
   const router = useRouter();
@@ -35,7 +36,7 @@ export default function EditCategoryPage() {
       })
       .catch((error) => {
         console.error("Failed to fetch category:", error);
-        alert("Failed to load category");
+        toast.error("Failed to load category");
       })
       .finally(() => setLoading(false));
   }, [categoryId]);
@@ -55,11 +56,11 @@ export default function EditCategoryPage() {
         router.push("/dashboard/menu");
       } else {
         const data = await res.json();
-        alert(data.message || "Failed to update category");
+        toast.error(data.message || "Failed to update category");
       }
     } catch (error) {
       console.error("Failed to update category:", error);
-      alert("Failed to update category");
+      toast.error("Failed to update category");
     } finally {
       setSaving(false);
     }

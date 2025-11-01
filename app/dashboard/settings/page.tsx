@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -77,15 +78,15 @@ export default function SettingsPage() {
       });
 
       if (res.ok) {
-        alert("Settings saved successfully!");
+        toast.error("Settings saved successfully!");
         fetchRestaurant();
       } else {
         const data = await res.json();
-        alert(data.message || "Failed to save settings");
+        toast.error(data.message || "Failed to save settings");
       }
     } catch (error) {
       console.error("Failed to save settings:", error);
-      alert("Failed to save settings");
+      toast.error("Failed to save settings");
     } finally {
       setSaving(false);
     }

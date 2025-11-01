@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -77,7 +78,7 @@ export default function QRCodesPage() {
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!restaurantId) {
-      alert("Please wait for restaurant to load");
+      toast.error("Please wait for restaurant to load");
       return;
     }
 
@@ -98,11 +99,11 @@ export default function QRCodesPage() {
         setFormData({ tableNumber: "", count: 1 });
       } else {
         const data = await res.json();
-        alert(data.message || "Failed to generate QR codes");
+        toast.error(data.message || "Failed to generate QR codes");
       }
     } catch (error) {
       console.error("Failed to generate QR codes:", error);
-      alert("Failed to generate QR codes");
+      toast.error("Failed to generate QR codes");
     } finally {
       setGenerating(false);
     }
@@ -127,7 +128,7 @@ export default function QRCodesPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this QR code?")) return;
+    if (!window.confirm("Are you sure you want to delete this QR code?")) return;
 
     try {
       const res = await fetch(`/api/qr-codes/${id}`, {
@@ -137,11 +138,11 @@ export default function QRCodesPage() {
       if (res.ok) {
         fetchQRCodes();
       } else {
-        alert("Failed to delete QR code");
+        toast.error("Failed to delete QR code");
       }
     } catch (error) {
       console.error("Failed to delete QR code:", error);
-      alert("Failed to delete QR code");
+      toast.error("Failed to delete QR code");
     }
   };
 

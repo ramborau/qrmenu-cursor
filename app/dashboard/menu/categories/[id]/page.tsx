@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -72,7 +73,7 @@ export default function CategoryDetailPage() {
   };
 
   const handleDeleteSubCategory = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this sub-category?")) return;
+    if (!window.confirm("Are you sure you want to delete this sub-category?")) return;
 
     try {
       const res = await fetch(`/api/sub-categories/${id}`, {
@@ -82,16 +83,16 @@ export default function CategoryDetailPage() {
       if (res.ok) {
         fetchSubCategories();
       } else {
-        alert("Failed to delete sub-category");
+        toast.error("Failed to delete sub-category");
       }
     } catch (error) {
       console.error("Failed to delete sub-category:", error);
-      alert("Failed to delete sub-category");
+      toast.error("Failed to delete sub-category");
     }
   };
 
   const handleDeleteMenuItem = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this menu item?")) return;
+    if (!window.confirm("Are you sure you want to delete this menu item?")) return;
 
     try {
       const res = await fetch(`/api/menu-items/${id}`, {
@@ -101,11 +102,11 @@ export default function CategoryDetailPage() {
       if (res.ok) {
         fetchSubCategories();
       } else {
-        alert("Failed to delete menu item");
+        toast.error("Failed to delete menu item");
       }
     } catch (error) {
       console.error("Failed to delete menu item:", error);
-      alert("Failed to delete menu item");
+      toast.error("Failed to delete menu item");
     }
   };
 

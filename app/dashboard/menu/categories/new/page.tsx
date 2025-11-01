@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { IconPicker } from "@/components/icons/icon-picker";
+import { toast } from "sonner";
 
 export default function NewCategoryPage() {
   const router = useRouter();
@@ -33,7 +34,7 @@ export default function NewCategoryPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!restaurantId) {
-      alert("Please wait for restaurant to load");
+      toast.error("Please wait for restaurant to load");
       return;
     }
 
@@ -49,14 +50,15 @@ export default function NewCategoryPage() {
       });
 
       if (res.ok) {
+        toast.success("Category created successfully");
         router.push("/dashboard/menu");
       } else {
         const data = await res.json();
-        alert(data.message || "Failed to create category");
+        toast.error(data.message || "Failed to create category");
       }
     } catch (error) {
       console.error("Failed to create category:", error);
-      alert("Failed to create category");
+      toast.error("Failed to create category");
     } finally {
       setLoading(false);
     }

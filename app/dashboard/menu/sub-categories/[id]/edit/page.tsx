@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -32,7 +33,7 @@ export default function EditSubCategoryPage() {
       })
       .catch((error) => {
         console.error("Failed to fetch sub-category:", error);
-        alert("Failed to load sub-category");
+        toast.error("Failed to load sub-category");
       })
       .finally(() => setLoading(false));
   }, [subCategoryId]);
@@ -52,11 +53,11 @@ export default function EditSubCategoryPage() {
         router.back();
       } else {
         const data = await res.json();
-        alert(data.message || "Failed to update sub-category");
+        toast.error(data.message || "Failed to update sub-category");
       }
     } catch (error) {
       console.error("Failed to update sub-category:", error);
-      alert("Failed to update sub-category");
+      toast.error("Failed to update sub-category");
     } finally {
       setSaving(false);
     }

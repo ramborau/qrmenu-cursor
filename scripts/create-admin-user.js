@@ -1,7 +1,7 @@
 /**
  * Script to create admin user via API
  * Run this AFTER starting the dev server: npm run dev
- * 
+ *
  * Usage: node scripts/create-admin-user.js
  */
 

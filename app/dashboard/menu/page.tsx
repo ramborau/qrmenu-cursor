@@ -10,6 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Plus, Utensils, Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { CategoryIcon } from "@/components/menu/category-icon";
+import { DraggableCategoryList } from "@/components/menu/draggable-category-list";
+import { toast } from "sonner";
 
 interface Category {
   id: string;
@@ -83,7 +85,7 @@ export default function MenuManagementPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this category?")) return;
+    if (!window.window.confirm("Are you sure you want to delete this category?")) return;
 
     try {
       const res = await fetch(`/api/categories/${id}`, {
@@ -91,13 +93,41 @@ export default function MenuManagementPage() {
       });
 
       if (res.ok) {
+        toast.success("Category deleted successfully");
         fetchCategories();
       } else {
-        alert("Failed to delete category");
+        toast.error("Failed to delete category");
       }
     } catch (error) {
       console.error("Failed to delete category:", error);
-      alert("Failed to delete category");
+      toast.error("Failed to delete category");
+    }
+  };
+
+  const handleReorder = async (newOrder: Category[]) => {
+    try {
+      const categoryOrders = newOrder.map((cat, index) => ({
+        id: cat.id,
+        sortOrder: index,
+      }));
+
+      const res = await fetch("/api/categories/reorder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ categoryOrders }),
+      });
+
+      if (res.ok) {
+        toast.success("Categories reordered successfully");
+        setCategories(newOrder);
+      } else {
+        toast.error("Failed to reorder categories");
+        fetchCategories(); // Revert on error
+      }
+    } catch (error) {
+      console.error("Failed to reorder categories:", error);
+      toast.error("Failed to reorder categories");
+      fetchCategories(); // Revert on error
     }
   };
 
@@ -146,60 +176,13 @@ export default function MenuManagementPage() {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {categories.map((category) => (
-                <Card key={category.id}>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="flex items-center gap-2">
-                        {category.icon && (
-                          <CategoryIcon iconPath={category.icon} className="h-5 w-5" />
-                        )}
-                        {category.name}
-                      </CardTitle>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() =>
-                            router.push(`/dashboard/menu/categories/${category.id}/edit`)
-                          }
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDelete(category.id)}
-                        >
-                          <Trash2 className="h-4 w-4 text-red-500" />
-                        </Button>
-                      </div>
-                    </div>
-                    {category.description && (
-                      <CardDescription>{category.description}</CardDescription>
-                    )}
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      <p className="text-sm text-gray-600">
-                        Sub-categories: {category.subCategories.length}
-                      </p>
-                      <Button
-                        variant="outline"
-                        className="w-full"
-                        onClick={() =>
-                          router.push(`/dashboard/menu/categories/${category.id}`)
-                        }
-                      >
-                        <Utensils className="mr-2 h-4 w-4" />
-                        Manage
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <DraggableCategoryList
+              categories={categories}
+              onReorder={handleReorder}
+              onEdit={(id) => router.push(`/dashboard/menu/categories/${id}/edit`)}
+              onDelete={handleDelete}
+              onManage={(id) => router.push(`/dashboard/menu/categories/${id}`)}
+            />
           )}
         </div>
       </DashboardLayout>

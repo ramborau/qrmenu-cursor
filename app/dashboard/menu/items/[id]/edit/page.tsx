@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -49,7 +50,7 @@ export default function EditMenuItemPage() {
       })
       .catch((error) => {
         console.error("Failed to fetch menu item:", error);
-        alert("Failed to load menu item");
+        toast.error("Failed to load menu item");
       })
       .finally(() => setLoading(false));
   }, [itemId]);
@@ -107,11 +108,11 @@ export default function EditMenuItemPage() {
         router.back();
       } else {
         const data = await res.json();
-        alert(data.message || "Failed to update menu item");
+        toast.error(data.message || "Failed to update menu item");
       }
     } catch (error) {
       console.error("Failed to update menu item:", error);
-      alert("Failed to update menu item");
+      toast.error("Failed to update menu item");
     } finally {
       setSaving(false);
     }

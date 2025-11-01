@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -37,11 +38,11 @@ export default function NewSubCategoryPage() {
         router.push(`/dashboard/menu/categories/${categoryId}`);
       } else {
         const data = await res.json();
-        alert(data.message || "Failed to create sub-category");
+        toast.error(data.message || "Failed to create sub-category");
       }
     } catch (error) {
       console.error("Failed to create sub-category:", error);
-      alert("Failed to create sub-category");
+      toast.error("Failed to create sub-category");
     } finally {
       setLoading(false);
     }

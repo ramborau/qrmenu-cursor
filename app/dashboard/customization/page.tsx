@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -81,15 +82,15 @@ export default function CustomizationPage() {
       });
 
       if (res.ok) {
-        alert("Colors saved successfully!");
+        toast.error("Colors saved successfully!");
         fetchRestaurant();
       } else {
         const data = await res.json();
-        alert(data.message || "Failed to save colors");
+        toast.error(data.message || "Failed to save colors");
       }
     } catch (error) {
       console.error("Failed to save colors:", error);
-      alert("Failed to save colors");
+      toast.error("Failed to save colors");
     } finally {
       setSaving(false);
     }

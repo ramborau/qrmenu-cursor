@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner";
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -84,11 +85,11 @@ export default function NewMenuItemPage() {
         router.back();
       } else {
         const data = await res.json();
-        alert(data.message || "Failed to create menu item");
+        toast.error(data.message || "Failed to create menu item");
       }
     } catch (error) {
       console.error("Failed to create menu item:", error);
-      alert("Failed to create menu item");
+      toast.error("Failed to create menu item");
     } finally {
       setLoading(false);
     }
