@@ -65,6 +65,8 @@ export async function POST(request: NextRequest) {
     // If none are provided (scope = "all"), whereClause already has restaurant filter which will get all items
 
     // Get all menu items
+    console.log("Fetching menu items with whereClause:", JSON.stringify(whereClause, null, 2));
+    
     const menuItems = await prisma.menuItem.findMany({
       where: whereClause,
       include: {
@@ -76,9 +78,18 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    console.log(`Found ${menuItems.length} menu items to process`);
+
     if (menuItems.length === 0) {
       return NextResponse.json(
-        { message: "No menu items found to generate nutrition facts for" },
+        { 
+          message: "No menu items found to generate nutrition facts for",
+          details: {
+            restaurantIds,
+            whereClause,
+            receivedPayload: { categoryIds, subCategoryIds, menuItemIds }
+          }
+        },
         { status: 404 }
       );
     }
@@ -140,9 +151,12 @@ Provide realistic nutritional values based on the item name and description. Ret
       }
     }
 
+    console.log(`Successfully processed ${results.length} out of ${menuItems.length} items`);
+
     return NextResponse.json({
       message: `Generated nutrition facts for ${results.length} menu items`,
       updatedCount: results.length,
+      totalItems: menuItems.length,
       results,
     });
   } catch (error: any) {
