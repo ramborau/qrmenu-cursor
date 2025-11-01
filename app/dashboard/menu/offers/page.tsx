@@ -143,7 +143,7 @@ export default function MenuOffersPage() {
     try {
       const res = await fetch(`/api/offers?restaurantId=${restaurantId}`);
       const data = await res.json();
-      
+
       // Ensure data is always an array
       if (Array.isArray(data)) {
         setOffers(data);
@@ -535,12 +535,12 @@ export default function MenuOffersPage() {
                                   }
                                 }}
                               />
-                              <label
-                                htmlFor={`target-${cat.id}`}
-                                className="text-sm cursor-pointer"
-                              >
-                                {cat.name} ({cat.subCategories?.reduce((total, sub) => total + (sub.menuItems?.length || 0), 0) || 0} items)
-                              </label>
+                        <Label
+                          htmlFor={`target-${cat.id}`}
+                          className="text-sm cursor-pointer"
+                        >
+                          {cat.name} ({cat.subCategories?.reduce((total, sub) => total + (sub.menuItems?.length || 0), 0) || 0} items)
+                        </Label>
                             </div>
                           ))}
                         {formData.targetType === "SUBCATEGORY" && (
@@ -570,12 +570,12 @@ export default function MenuOffersPage() {
                                           }
                                         }}
                                       />
-                                      <label
+                                      <Label
                                         htmlFor={`target-sub-${subCategory.id}`}
                                         className="text-sm cursor-pointer"
                                       >
                                         {subCategory.name} ({subCategory.menuItems?.length || 0} items)
-                                      </label>
+                                      </Label>
                                     </div>
                                   ))}
                                 </div>
@@ -613,7 +613,7 @@ export default function MenuOffersPage() {
                                             }
                                           }}
                                         />
-                                        <label
+                                        <Label
                                           htmlFor={`target-item-${item.id}`}
                                           className="text-sm cursor-pointer"
                                         >
@@ -621,7 +621,7 @@ export default function MenuOffersPage() {
                                             style: "currency",
                                             currency: item.currency || "USD",
                                           }).format(item.price)}
-                                        </label>
+                                        </Label>
                                       </div>
                                     ))}
                                   </div>
@@ -655,12 +655,12 @@ export default function MenuOffersPage() {
                                 checked={formData.tableNumbers.includes(table.tableNumber)}
                                 onCheckedChange={() => handleTableToggle(table.tableNumber)}
                               />
-                              <label
+                              <Label
                                 htmlFor={`table-${table.id}`}
                                 className="text-sm cursor-pointer"
                               >
                                 {table.tableNumber}
-                              </label>
+                              </Label>
                             </div>
                           ))}
                         </div>
@@ -692,9 +692,9 @@ export default function MenuOffersPage() {
                             setFormData({ ...formData, isForever: checked as boolean })
                           }
                         />
-                        <label htmlFor="isForever" className="text-sm cursor-pointer">
+                        <Label htmlFor="isForever" className="text-sm cursor-pointer">
                           Valid Forever
-                        </label>
+                        </Label>
                       </div>
 
                       {!formData.isForever && (
@@ -734,12 +734,12 @@ export default function MenuOffersPage() {
                                 checked={formData.daysOfWeek.includes(day.value)}
                                 onCheckedChange={() => handleDayToggle(day.value)}
                               />
-                              <label
+                              <Label
                                 htmlFor={`day-${day.value}`}
                                 className="text-sm cursor-pointer"
                               >
                                 {day.label}
-                              </label>
+                              </Label>
                             </div>
                           ))}
                         </div>
@@ -799,9 +799,9 @@ export default function MenuOffersPage() {
                         setFormData({ ...formData, isActive: checked as boolean })
                       }
                     />
-                    <label htmlFor="isActive" className="text-sm cursor-pointer">
+                    <Label htmlFor="isActive" className="text-sm cursor-pointer">
                       Active
-                    </label>
+                    </Label>
                   </div>
 
                   <div className="flex gap-2">

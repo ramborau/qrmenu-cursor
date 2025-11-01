@@ -10,6 +10,8 @@ import {
   DrawerTitle,
   DrawerDescription,
 } from "@/components/ui/drawer";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface MenuItem {
   id: string;
@@ -224,13 +226,15 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
                 <p className="text-xs opacity-90">Table {tableNumber}</p>
               </div>
             </div>
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setShowSearch(!showSearch)}
-              className="rounded-full p-2 hover:bg-white/20 transition-colors"
+              className="rounded-full hover:bg-white/20"
               aria-label="Search"
             >
               <Search className="h-5 w-5" />
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -238,23 +242,25 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
         {showSearch && (
           <div className="px-4 pb-3">
             <div className="relative">
-              <input
+              <Input
                 type="text"
                 value={searchInput}
                 onChange={(e) => handleSearch(e.target.value)}
                 placeholder="Search menu items..."
-                className="w-full rounded-full bg-white/20 px-4 py-2 pl-10 pr-10 text-white placeholder:text-white/70 focus:outline-none focus:bg-white/30"
+                className="w-full rounded-full bg-white/20 px-4 py-2 pl-10 pr-10 text-white placeholder:text-white/70 focus:outline-none focus:bg-white/30 border-white/30"
                 style={{ border: "1px solid rgba(255,255,255,0.3)" }}
                 autoFocus
               />
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/70" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/70 pointer-events-none" />
               {searchInput && (
-                <button
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={clearSearch}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 p-0 text-white/70 hover:text-white"
                 >
                   <X className="h-4 w-4" />
-                </button>
+                </Button>
               )}
             </div>
           </div>
@@ -268,14 +274,15 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
           {highLevelCategories.map((category) => {
             const isActive = category.id === selectedCategory;
             return (
-              <button
+              <Button
                 key={category.id}
+                variant="ghost"
                 onClick={() => {
                   setSelectedCategory(category.id);
                   setSearchQuery(""); // Clear search when switching categories
                   setSearchInput("");
                 }}
-                className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold transition-all whitespace-nowrap ${
+                className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold transition-all whitespace-nowrap rounded-none ${
                   isActive
                     ? "border-b-2 text-white"
                     : "text-white/70 hover:text-white hover:bg-white/10"
@@ -288,7 +295,7 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
                   <CategoryIcon iconPath={category.icon} className="h-4 w-4" />
                 )}
                 <span>{category.name}</span>
-              </button>
+              </Button>
             );
           })}
         </div>
@@ -358,19 +365,21 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
                                           {item.name}
                                         </h3>
                                         {item.nutritionalValues && (
-                                          <button
+                                          <Button
+                                            variant="ghost"
+                                            size="icon"
                                             onClick={() => {
                                               setSelectedNutritionItem(item);
                                               setShowNutritionDrawer(true);
                                             }}
-                                            className="flex-shrink-0 rounded-full p-1 hover:opacity-70 transition-opacity"
+                                            className="flex-shrink-0 rounded-full p-1 h-6 w-6 hover:opacity-70 transition-opacity"
                                             style={{
                                               backgroundColor: isDarkTheme ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
                                             }}
                                             aria-label="View nutrition facts"
                                           >
                                             <Info className="h-4 w-4" style={{ color: isDarkTheme ? '#a0a0a0' : '#6b7280' }} />
-                                          </button>
+                                          </Button>
                                         )}
                                       </div>
                                       {item.description && (
@@ -430,19 +439,21 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
                                           {item.name}
                                         </h3>
                                         {item.nutritionalValues && (
-                                          <button
+                                          <Button
+                                            variant="ghost"
+                                            size="icon"
                                             onClick={() => {
                                               setSelectedNutritionItem(item);
                                               setShowNutritionDrawer(true);
                                             }}
-                                            className="flex-shrink-0 rounded-full p-1 hover:opacity-70 transition-opacity"
+                                            className="flex-shrink-0 rounded-full p-1 h-6 w-6 hover:opacity-70 transition-opacity"
                                             style={{
                                               backgroundColor: isDarkTheme ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
                                             }}
                                             aria-label="View nutrition facts"
                                           >
                                             <Info className="h-4 w-4" style={{ color: isDarkTheme ? '#a0a0a0' : '#6b7280' }} />
-                                          </button>
+                                          </Button>
                                         )}
                                       </div>
                                       {item.description && (
@@ -506,13 +517,15 @@ export function MobileMenu({ restaurant, tableNumber }: MobileMenuProps) {
         <DrawerContent side="bottom" className="max-h-[85vh] rounded-t-3xl">
           <DrawerHeader className="text-left">
             <div className="flex items-center gap-2 mb-2">
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => setShowNutritionDrawer(false)}
-                className="rounded-full p-2 hover:bg-gray-100 transition-colors"
+                className="rounded-full"
                 aria-label="Close"
               >
                 <ArrowLeft className="h-5 w-5" />
-              </button>
+              </Button>
               <DrawerTitle className="text-xl">
                 {selectedNutritionItem?.name} - Nutrition Facts
               </DrawerTitle>

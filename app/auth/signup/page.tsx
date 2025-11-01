@@ -3,6 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -42,104 +46,89 @@ export default function SignUpPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary-dark to-secondary p-4">
-      <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-xl">
-        <h1 className="mb-6 text-3xl font-bold text-primary-dark">
-          Create Account
-        </h1>
-        <p className="mb-6 text-gray-600">
-          Sign up to start managing your restaurant menu
-        </p>
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-3xl text-primary-dark">
+            Create Account
+          </CardTitle>
+          <CardDescription>
+            Sign up to start managing your restaurant menu
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {error && (
+            <div className="mb-4 rounded bg-red-100 p-3 text-sm text-red-700">
+              {error}
+            </div>
+          )}
 
-        {error && (
-          <div className="mb-4 rounded bg-red-100 p-3 text-sm text-red-700">
-            {error}
-          </div>
-        )}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                type="text"
+                required
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+                placeholder="John Doe"
+              />
+            </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              htmlFor="name"
-              className="mb-2 block text-sm font-medium text-gray-700"
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                required
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                placeholder="john@example.com"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                required
+                minLength={8}
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+                placeholder="••••••••"
+              />
+              <p className="text-xs text-muted-foreground">
+                Minimum 8 characters with mixed case and numbers
+              </p>
+            </div>
+
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full"
             >
-              Name
-            </label>
-            <input
-              id="name"
-              type="text"
-              required
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-primary-dark focus:outline-none focus:ring-2 focus:ring-primary-light"
-              placeholder="John Doe"
-            />
-          </div>
+              {loading ? "Creating account..." : "Sign Up"}
+            </Button>
+          </form>
 
-          <div>
-            <label
-              htmlFor="email"
-              className="mb-2 block text-sm font-medium text-gray-700"
+          <p className="mt-6 text-center text-sm text-gray-600">
+            Already have an account?{" "}
+            <Link
+              href="/auth/login"
+              className="font-semibold text-primary-dark hover:underline"
             >
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-primary-dark focus:outline-none focus:ring-2 focus:ring-primary-light"
-              placeholder="john@example.com"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="mb-2 block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              minLength={8}
-              value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-primary-dark focus:outline-none focus:ring-2 focus:ring-primary-light"
-              placeholder="••••••••"
-            />
-            <p className="mt-1 text-xs text-gray-500">
-              Minimum 8 characters with mixed case and numbers
-            </p>
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-md bg-primary-dark px-4 py-2 font-semibold text-white transition-colors hover:bg-primary-dark/90 disabled:opacity-50"
-          >
-            {loading ? "Creating account..." : "Sign Up"}
-          </button>
-        </form>
-
-        <p className="mt-6 text-center text-sm text-gray-600">
-          Already have an account?{" "}
-          <Link
-            href="/auth/login"
-            className="font-semibold text-primary-dark hover:underline"
-          >
-            Sign in
-          </Link>
-        </p>
-      </div>
+              Sign in
+            </Link>
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }
