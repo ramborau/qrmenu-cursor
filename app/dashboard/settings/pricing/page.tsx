@@ -490,12 +490,12 @@ export default function DynamicPricingPage() {
                             checked={formData.daysOfWeek.includes(day.value)}
                             onCheckedChange={() => handleDayToggle(day.value)}
                           />
-                          <label
+                          <Label
                             htmlFor={`day-${day.value}`}
                             className="text-sm cursor-pointer"
                           >
                             {day.label}
-                          </label>
+                          </Label>
                         </div>
                       ))}
                     </div>
