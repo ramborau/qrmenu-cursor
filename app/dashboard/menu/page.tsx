@@ -21,6 +21,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { PricingAdjustment } from "@/components/menu/pricing-adjustment";
+import { Sparkles, Loader2 } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { NutritionGenerationDialog } from "@/components/menu/nutrition-generation-dialog";
 
 interface Category {
   id: string;
@@ -40,6 +43,7 @@ export default function MenuManagementPage() {
   const [restaurantId, setRestaurantId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [showPricingDialog, setShowPricingDialog] = useState(false);
+  const [showNutritionDialog, setShowNutritionDialog] = useState(false);
 
   useEffect(() => {
     fetch("/api/auth/session")
@@ -181,6 +185,29 @@ export default function MenuManagementPage() {
                     categories={categories}
                     onComplete={() => {
                       setShowPricingDialog(false);
+                      fetchCategories();
+                    }}
+                  />
+                </DialogContent>
+              </Dialog>
+              <Dialog open={showNutritionDialog} onOpenChange={setShowNutritionDialog}>
+                <DialogTrigger asChild>
+                  <Button variant="outline">
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    Generate Nutrition Facts
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Generate Nutrition Facts with AI</DialogTitle>
+                    <DialogDescription>
+                      Select categories, subcategories, or menu items to generate nutrition facts
+                    </DialogDescription>
+                  </DialogHeader>
+                  <NutritionGenerationDialog
+                    categories={categories}
+                    onComplete={() => {
+                      setShowNutritionDialog(false);
                       fetchCategories();
                     }}
                   />
