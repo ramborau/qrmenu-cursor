@@ -270,13 +270,15 @@ export default function NewMenuItemPage() {
                           className="flex items-center gap-1 rounded-full bg-primary-dark px-3 py-1 text-xs text-white"
                         >
                           {tag}
-                          <button
+                          <Button
                             type="button"
+                            variant="ghost"
+                            size="icon"
                             onClick={() => handleRemoveTag(tag)}
-                            className="hover:opacity-70"
+                            className="h-4 w-4 p-0 hover:opacity-70"
                           >
                             ×
-                          </button>
+                          </Button>
                         </span>
                       ))}
                     </div>
@@ -309,13 +311,15 @@ export default function NewMenuItemPage() {
                           className="flex items-center gap-1 rounded-full bg-red-100 px-3 py-1 text-xs text-red-700"
                         >
                           {allergen}
-                          <button
+                          <Button
                             type="button"
+                            variant="ghost"
+                            size="icon"
                             onClick={() => handleRemoveAllergen(allergen)}
-                            className="hover:opacity-70"
+                            className="h-4 w-4 p-0 hover:opacity-70"
                           >
                             ×
-                          </button>
+                          </Button>
                         </span>
                       ))}
                     </div>
