@@ -515,9 +515,9 @@ export default function OffersPage() {
                           setFormData({ ...formData, isForever: checked as boolean })
                         }
                       />
-                      <label htmlFor="isForever" className="text-sm cursor-pointer">
+                      <Label htmlFor="isForever" className="text-sm cursor-pointer">
                         Valid Forever
-                      </label>
+                      </Label>
                     </div>
 
                     {!formData.isForever && (
@@ -615,9 +615,9 @@ export default function OffersPage() {
                         setFormData({ ...formData, isActive: checked as boolean })
                       }
                     />
-                    <label htmlFor="isActive" className="text-sm cursor-pointer">
+                    <Label htmlFor="isActive" className="text-sm cursor-pointer">
                       Active
-                    </label>
+                    </Label>
                   </div>
 
                   <div className="flex gap-2">
