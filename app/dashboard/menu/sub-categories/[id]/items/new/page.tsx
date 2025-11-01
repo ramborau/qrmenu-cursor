@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ImagePicker } from "@/components/menu/image-picker";
 
 export default function NewMenuItemPage() {
   const params = useParams();
@@ -171,15 +172,13 @@ export default function NewMenuItemPage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="imageUrl">Image URL</Label>
-                  <Input
-                    id="imageUrl"
-                    type="url"
+                  <Label>Image</Label>
+                  <ImagePicker
                     value={formData.imageUrl}
-                    onChange={(e) =>
-                      setFormData({ ...formData, imageUrl: e.target.value })
+                    onChange={(url) =>
+                      setFormData({ ...formData, imageUrl: url })
                     }
-                    placeholder="https://example.com/image.jpg"
+                    menuItemName={formData.name}
                   />
                 </div>
 
