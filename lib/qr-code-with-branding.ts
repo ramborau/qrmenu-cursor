@@ -37,7 +37,7 @@ export async function generateQRCodeWithBranding(
 
   // Note: Logo embedding would require canvas/server-side image processing
   // For now, we support color customization which is the most important feature
-  
+
   return { svg, png };
 }
 

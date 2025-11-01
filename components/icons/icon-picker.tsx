@@ -111,7 +111,7 @@ export function IconPicker({ value, onChange }: IconPickerProps) {
         {filteredIcons.map((iconPath) => {
           const [prefix, iconName] = iconPath.split(":");
           const isSelected = selectedIcon === iconPath;
-          
+
           return (
             <Card
               key={iconPath}

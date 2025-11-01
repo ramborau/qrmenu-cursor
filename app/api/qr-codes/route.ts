@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     for (let i = 0; i < count; i++) {
       const tableNum = tableNumber || `T-${String(i + 1).padStart(2, "0")}`;
       const qrUrl = `${baseUrl}/menu/${restaurantId}/table/${tableNum}`;
-      
+
       // Generate QR code with branding
       const { svg: qrCodeSvg, png: qrCodePng } = await generateQRCodeWithBranding(qrUrl, {
         foregroundColor: brandingSettings?.foregroundColor || restaurant.primaryColor || "#075e54",

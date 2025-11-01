@@ -28,8 +28,15 @@ export default function DashboardPage() {
       .then((data) => {
         if (data?.user) {
           setUser(data.user);
-          // TODO: Fetch actual stats from API
-          // For now, showing placeholder stats
+          // Fetch actual stats from API
+          fetch("/api/stats")
+            .then((res) => res.json())
+            .then((statsData) => {
+              setStats(statsData);
+            })
+            .catch((error) => {
+              console.error("Failed to fetch stats:", error);
+            });
         } else {
           router.push("/auth/login");
         }

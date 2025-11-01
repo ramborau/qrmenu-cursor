@@ -1,5 +1,8 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { revalidate } from "@/lib/performance";
+
+export const revalidate = 3600; // Revalidate every hour
 
 async function getRestaurantMenu(restaurantId: string) {
   const restaurant = await prisma.restaurant.findUnique({
@@ -66,11 +69,22 @@ export default async function MenuPage({
           </div>
         ) : (
           <div className="space-y-8">
-            {restaurant.categories.map((category) => (
-              <section key={category.id} id={category.id}>
-                <h2 className="mb-4 text-2xl font-bold text-gray-900">
-                  {category.name}
-                </h2>
+            {restaurant.categories.map((category, index) => (
+              <section 
+                key={category.id} 
+                id={category.id}
+                className="scroll-mt-20"
+              >
+                <div className="sticky top-16 z-10 mb-4 bg-white pb-2 pt-2">
+                  <h2 
+                    className="text-2xl font-bold text-gray-900"
+                    style={{
+                      color: restaurant.primaryColor || "#075e54",
+                    }}
+                  >
+                    {category.name}
+                  </h2>
+                </div>
 
                 {category.subCategories.length === 0 ? (
                   <p className="text-gray-500">No items in this category yet.</p>
@@ -145,19 +159,26 @@ export default async function MenuPage({
         )}
       </main>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-10 border-t bg-white px-4 py-2">
+      <nav className="sticky bottom-0 left-0 right-0 z-10 border-t bg-white px-4 py-2 shadow-lg">
         <div className="mx-auto max-w-4xl">
-          <div className="flex gap-2 overflow-x-auto pb-2">
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
             {restaurant.categories.map((category) => (
               <a
                 key={category.id}
                 href={`#${category.id}`}
-                className="whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors"
+                className="whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all hover:scale-105 active:scale-95"
                 style={{
                   backgroundColor: restaurant.primaryColor
                     ? `${restaurant.primaryColor}20`
                     : "#075e5420",
                   color: restaurant.primaryColor || "#075e54",
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  const element = document.getElementById(category.id);
+                  if (element) {
+                    element.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }
                 }}
               >
                 {category.name}
@@ -166,6 +187,21 @@ export default async function MenuPage({
           </div>
         </div>
       </nav>
+      
+      <style jsx global>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        @media (hover: none) {
+          nav a:active {
+            transform: scale(0.95);
+          }
+        }
+      `}</style>
     </div>
   );
 }

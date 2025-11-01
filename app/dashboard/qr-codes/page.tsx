@@ -208,7 +208,7 @@ export default function QRCodesPage() {
                     />
                   </div>
                 </div>
-                
+
                 <div>
                   <Button
                     type="button"
