@@ -24,7 +24,7 @@ model User {
   // Better Auth relations
   accounts  Account[]
   sessions  Session[]
-  
+
   // App relations
   restaurants Restaurant[]
 

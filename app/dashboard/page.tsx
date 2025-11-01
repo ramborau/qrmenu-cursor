@@ -2,20 +2,34 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { Loading } from "@/components/ui/loading";
+import { ErrorBoundary } from "@/components/error-boundary";
+import { StatsCard } from "@/components/dashboard/stats-card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Utensils, QrCode, Menu, TrendingUp, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default function DashboardPage() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    totalItems: 0,
+    totalCategories: 0,
+    totalTables: 0,
+    totalScans: 0,
+  });
 
   useEffect(() => {
-    // Check session and get user
     fetch("/api/auth/session")
       .then((res) => res.json())
       .then((data) => {
         if (data?.user) {
           setUser(data.user);
+          // TODO: Fetch actual stats from API
+          // For now, showing placeholder stats
         } else {
           router.push("/auth/login");
         }
@@ -26,103 +40,104 @@ export default function DashboardPage() {
       .finally(() => setLoading(false));
   }, [router]);
 
-  const handleLogout = async () => {
-    try {
-      await fetch("/api/auth/sign-out", {
-        method: "POST",
-      });
-      router.push("/auth/login");
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  };
-
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <div className="mb-4 h-8 w-8 animate-spin rounded-full border-4 border-primary-dark border-t-transparent"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
+        <Loading size="lg" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center">
-              <h1 className="text-xl font-bold text-primary-dark">
-                🍽️ QR Menu Manager Pro
-              </h1>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">
-                {user?.name || user?.email}
-              </span>
-              <button
-                onClick={handleLogout}
-                className="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700"
-              >
-                Logout
-              </button>
-            </div>
+    <ErrorBoundary>
+      <DashboardLayout user={user}>
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+            <p className="mt-2 text-gray-600">
+              Welcome back, {user?.name || user?.email}! Here's your overview.
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <StatsCard
+              title="Menu Items"
+              value={stats.totalItems}
+              description="Total menu items"
+              icon={Menu}
+            />
+            <StatsCard
+              title="Categories"
+              value={stats.totalCategories}
+              description="Menu categories"
+              icon={Utensils}
+            />
+            <StatsCard
+              title="QR Codes"
+              value={stats.totalTables}
+              description="Active table codes"
+              icon={QrCode}
+            />
+            <StatsCard
+              title="Total Scans"
+              value={stats.totalScans}
+              description="QR code scans"
+              icon={TrendingUp}
+            />
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <Card>
+              <CardHeader>
+                <CardTitle>Menu Management</CardTitle>
+                <CardDescription>
+                  Create and manage your restaurant menu items, categories, and sub-categories
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Link href="/dashboard/menu">
+                  <Button className="w-full">
+                    Manage Menu <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>QR Codes</CardTitle>
+                <CardDescription>
+                  Generate and download QR codes for your restaurant tables
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Link href="/dashboard/qr-codes">
+                  <Button className="w-full">
+                    Manage QR Codes <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Customization</CardTitle>
+                <CardDescription>
+                  Customize colors, branding, and menu appearance
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Link href="/dashboard/customization">
+                  <Button className="w-full">
+                    Customize <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
           </div>
         </div>
-      </nav>
-
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900">Dashboard</h2>
-          <p className="mt-2 text-gray-600">
-            Welcome to your restaurant menu management dashboard
-          </p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <div className="rounded-lg bg-white p-6 shadow">
-            <h3 className="text-lg font-semibold text-gray-900">Menu Management</h3>
-            <p className="mt-2 text-sm text-gray-600">
-              Create and manage your restaurant menu
-            </p>
-            <Link
-              href="/dashboard/menu"
-              className="mt-4 inline-block text-primary-dark hover:underline"
-            >
-              Manage Menu →
-            </Link>
-          </div>
-
-          <div className="rounded-lg bg-white p-6 shadow">
-            <h3 className="text-lg font-semibold text-gray-900">QR Codes</h3>
-            <p className="mt-2 text-sm text-gray-600">
-              Generate and manage QR codes for your tables
-            </p>
-            <Link
-              href="/dashboard/qr-codes"
-              className="mt-4 inline-block text-primary-dark hover:underline"
-            >
-              Manage QR Codes →
-            </Link>
-          </div>
-
-          <div className="rounded-lg bg-white p-6 shadow">
-            <h3 className="text-lg font-semibold text-gray-900">Settings</h3>
-            <p className="mt-2 text-sm text-gray-600">
-              Configure your restaurant settings
-            </p>
-            <Link
-              href="/dashboard/settings"
-              className="mt-4 inline-block text-primary-dark hover:underline"
-            >
-              Settings →
-            </Link>
-          </div>
-        </div>
-      </main>
-    </div>
+      </DashboardLayout>
+    </ErrorBoundary>
   );
 }
 
