@@ -578,6 +578,21 @@
                                     { id: 'task-1.9.7', label: 'Add mobile-first responsive design', status: 'completed' },
                                     { id: 'task-1.9.8', label: 'Implement basic navigation', status: 'completed' }
                                 ]
+                            },
+                            {
+                                id: 'sprint-1.10',
+                                name: 'Basic Color Customization',
+                                duration: 'Week 10-11',
+                                agent: 'Frontend Agent, Backend Agent',
+                                tasks: [
+                                    { id: 'task-1.10.1', label: 'Add color fields to Restaurant model', status: 'completed' },
+                                    { id: 'task-1.10.2', label: 'Create color customization UI', status: 'completed' },
+                                    { id: 'task-1.10.3', label: 'Implement color picker component', status: 'completed' },
+                                    { id: 'task-1.10.4', label: 'Implement preview functionality', status: 'completed' },
+                                    { id: 'task-1.10.5', label: 'Apply colors to customer menu view', status: 'completed' },
+                                    { id: 'task-1.10.6', label: 'Add color validation (accessibility)', status: 'completed' },
+                                    { id: 'task-1.10.7', label: 'Save color settings to database', status: 'completed' }
+                                ]
                             }
                         ]
                     },
@@ -779,22 +794,40 @@
                     // Fetch actual git commits (simulated for now)
                     const sampleCommits = [
                         {
-                            hash: 'Initial',
+                            hash: 'edbed64',
+                            message: 'Color customization and settings: Restaurant color customization UI, preview, contrast validation, restaurant settings page',
+                            author: 'Developer',
+                            date: new Date().toLocaleDateString()
+                        },
+                        {
+                            hash: '9711856',
+                            message: 'Menu Management & QR Codes: Categories CRUD, Sub-categories CRUD, Menu items CRUD, QR code generation with SVG/PNG download, Customer menu view',
+                            author: 'Developer',
+                            date: new Date(Date.now() - 3600000).toLocaleDateString()
+                        },
+                        {
+                            hash: 'b74c961',
+                            message: 'Admin dashboard: ShadCN/UI setup, sidebar navigation, header, dashboard layout, stats cards, loading states, error boundaries',
+                            author: 'Developer',
+                            date: new Date(Date.now() - 7200000).toLocaleDateString()
+                        },
+                        {
+                            hash: '29a4f84',
+                            message: 'Authentication system: Better Auth setup, signup/login/logout flows, password reset, session management, RBAC, middleware, dashboard',
+                            author: 'Developer',
+                            date: new Date(Date.now() - 10800000).toLocaleDateString()
+                        },
+                        {
+                            hash: '008490a',
+                            message: 'Database setup: Prisma schema, models (User, Restaurant, Category, SubCategory, MenuItem, Table), seed script, DB utilities',
+                            author: 'Developer',
+                            date: new Date(Date.now() - 14400000).toLocaleDateString()
+                        },
+                        {
+                            hash: '197e3fa',
                             message: 'Initial project setup: Next.js, TypeScript, ESLint, Prettier, folder structure, Git, Vercel config, env vars, README, CI/CD',
                             author: 'Developer',
-                            date: new Date().toLocaleDateString()
-                        },
-                        {
-                            hash: 'DB-Setup',
-                            message: 'Database setup: Prisma schema, models (User, Restaurant, Category, SubCategory, MenuItem, Table), seed script, Prisma Studio config, connection utilities',
-                            author: 'Developer',
-                            date: new Date().toLocaleDateString()
-                        },
-                        {
-                            hash: 'Auth-Setup',
-                            message: 'Authentication setup: Better Auth, sign in/up/logout flows, session management, RBAC, middleware, auth routes and components',
-                            author: 'Developer',
-                            date: new Date().toLocaleDateString()
+                            date: new Date(Date.now() - 18000000).toLocaleDateString()
                         }
                     ];
 
