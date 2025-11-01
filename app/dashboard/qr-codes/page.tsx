@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus, QrCode, Download, Trash2 } from "lucide-react";
+import { BrandingForm } from "@/components/qr/branding-form";
 
 export default function QRCodesPage() {
   const router = useRouter();
@@ -22,6 +23,9 @@ export default function QRCodesPage() {
     tableNumber: "",
     count: 1,
   });
+  const [brandingSettings, setBrandingSettings] = useState<any>(null);
+  const [showBranding, setShowBranding] = useState(false);
+  const [restaurant, setRestaurant] = useState<any>(null);
 
   useEffect(() => {
     fetch("/api/auth/session")
@@ -51,6 +55,7 @@ export default function QRCodesPage() {
       const data = await res.json();
       if (data.length > 0) {
         setRestaurantId(data[0].id);
+        setRestaurant(data[0]);
       }
     } catch (error) {
       console.error("Failed to fetch restaurant:", error);
@@ -84,6 +89,7 @@ export default function QRCodesPage() {
         body: JSON.stringify({
           restaurantId,
           ...formData,
+          brandingSettings: brandingSettings || undefined,
         }),
       });
 
@@ -202,6 +208,26 @@ export default function QRCodesPage() {
                     />
                   </div>
                 </div>
+                
+                <div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setShowBranding(!showBranding)}
+                    className="w-full"
+                  >
+                    {showBranding ? "Hide" : "Show"} Branding Options
+                  </Button>
+                </div>
+
+                {showBranding && restaurant && (
+                  <BrandingForm
+                    restaurant={restaurant}
+                    initialBranding={brandingSettings}
+                    onChange={setBrandingSettings}
+                  />
+                )}
+
                 <Button type="submit" disabled={generating || !restaurantId}>
                   <Plus className="mr-2 h-4 w-4" />
                   {generating ? "Generating..." : "Generate QR Codes"}

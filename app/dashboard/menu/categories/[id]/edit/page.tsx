@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loading } from "@/components/ui/loading";
+import { IconPicker } from "@/components/icons/icon-picker";
 
 export default function EditCategoryPage() {
   const router = useRouter();
@@ -114,14 +115,11 @@ export default function EditCategoryPage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="icon">Icon</Label>
-                  <Input
-                    id="icon"
+                  <IconPicker
                     value={formData.icon}
-                    onChange={(e) =>
-                      setFormData({ ...formData, icon: e.target.value })
+                    onChange={(iconName) =>
+                      setFormData({ ...formData, icon: iconName })
                     }
-                    placeholder="e.g., FaUtensils (React Icons name)"
                   />
                 </div>
 

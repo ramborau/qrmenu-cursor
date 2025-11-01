@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth-helpers";
-import QRCode from "qrcode";
+import { generateQRCodeWithBranding } from "@/lib/qr-code-with-branding";
 
 export async function GET(request: NextRequest) {
   try {
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
   try {
     const session = await requireAuth();
     const body = await request.json();
-    const { restaurantId, tableNumber, count = 1 } = body;
+    const { restaurantId, tableNumber, count = 1, brandingSettings } = body;
 
     if (!restaurantId) {
       return NextResponse.json(
@@ -70,18 +70,15 @@ export async function POST(request: NextRequest) {
     for (let i = 0; i < count; i++) {
       const tableNum = tableNumber || `T-${String(i + 1).padStart(2, "0")}`;
       const qrUrl = `${baseUrl}/menu/${restaurantId}/table/${tableNum}`;
-
-      // Generate QR code as SVG
-      const qrCodeSvg = await QRCode.toString(qrUrl, {
-        type: "svg",
-        width: 300,
-        margin: 1,
-      });
-
-      // Generate QR code as PNG (base64)
-      const qrCodePng = await QRCode.toDataURL(qrUrl, {
-        width: 300,
-        margin: 1,
+      
+      // Generate QR code with branding
+      const { svg: qrCodeSvg, png: qrCodePng } = await generateQRCodeWithBranding(qrUrl, {
+        foregroundColor: brandingSettings?.foregroundColor || restaurant.primaryColor || "#075e54",
+        backgroundColor: brandingSettings?.backgroundColor || restaurant.backgroundColor || "#ffffff",
+        logoUrl: brandingSettings?.logoUrl || restaurant.logoUrl || undefined,
+        logoSize: brandingSettings?.logoSize || 60,
+        errorCorrectionLevel: brandingSettings?.errorCorrectionLevel || "M",
+        margin: brandingSettings?.margin || 1,
       });
 
       // Check if table already exists
@@ -100,6 +97,7 @@ export async function POST(request: NextRequest) {
             qrCodeData: qrUrl,
             qrCodeUrlSvg: qrCodeSvg,
             qrCodeUrlPng: qrCodePng,
+            brandingSettings: brandingSettings || null,
           },
         });
         tables.push(updated);
@@ -112,6 +110,7 @@ export async function POST(request: NextRequest) {
             qrCodeData: qrUrl,
             qrCodeUrlSvg: qrCodeSvg,
             qrCodeUrlPng: qrCodePng,
+            brandingSettings: brandingSettings || null,
           },
         });
         tables.push(table);

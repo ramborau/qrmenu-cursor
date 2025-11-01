@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Utensils, Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { CategoryIcon } from "@/components/menu/category-icon";
 
 interface Category {
   id: string;
@@ -151,7 +152,9 @@ export default function MenuManagementPage() {
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle className="flex items-center gap-2">
-                        {category.icon && <span>{category.icon}</span>}
+                        {category.icon && (
+                          <CategoryIcon iconPath={category.icon} className="h-5 w-5" />
+                        )}
                         {category.name}
                       </CardTitle>
                       <div className="flex gap-2">
