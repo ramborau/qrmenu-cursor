@@ -8,15 +8,7 @@ export const dynamic = 'force-dynamic'; // Force dynamic rendering
 async function getRestaurantMenu(restaurantId: string) {
   const restaurant = await prisma.restaurant.findUnique({
     where: { id: restaurantId },
-    select: {
-      id: true,
-      name: true,
-      logoUrl: true,
-      heroImageUrl: true,
-      primaryColor: true,
-      secondaryColor: true,
-      backgroundColor: true,
-      darkTheme: true,
+    include: {
       categories: {
         include: {
           subCategories: {
@@ -42,7 +34,32 @@ async function getRestaurantMenu(restaurantId: string) {
     },
   });
 
-  return restaurant;
+  // Return only the fields we need (filter out sensitive data)
+  if (!restaurant) return null;
+  
+  return {
+    id: restaurant.id,
+    name: restaurant.name,
+    logoUrl: restaurant.logoUrl,
+    heroImageUrl: restaurant.heroImageUrl,
+    primaryColor: restaurant.primaryColor,
+    secondaryColor: restaurant.secondaryColor,
+    backgroundColor: restaurant.backgroundColor,
+    darkTheme: restaurant.darkTheme ?? false,
+    categories: restaurant.categories.map(cat => ({
+      id: cat.id,
+      name: cat.name,
+      icon: cat.icon,
+      showImages: cat.showImages ?? true,
+      subCategories: cat.subCategories.map(subCat => ({
+        id: subCat.id,
+        name: subCat.name,
+        description: subCat.description,
+        icon: subCat.icon,
+        menuItems: subCat.menuItems,
+      })),
+    })),
+  };
 }
 
 export default async function MenuPage({

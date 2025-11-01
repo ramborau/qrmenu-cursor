@@ -61,7 +61,7 @@ export async function PATCH(
 
     // Build update data object - only include fields that are provided
     const updateData: any = {};
-    
+
     if (body.name !== undefined) updateData.name = body.name;
     if (body.logoUrl !== undefined) updateData.logoUrl = body.logoUrl;
     if (body.heroImageUrl !== undefined) updateData.heroImageUrl = body.heroImageUrl;

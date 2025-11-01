@@ -180,7 +180,7 @@ export default function SettingsPage() {
       }
 
       const data = await res.json();
-      
+
       // Update local state with the response data
       setRestaurant(data);
       setFormData({
@@ -192,7 +192,7 @@ export default function SettingsPage() {
         backgroundColor: data.backgroundColor || "#ffffff",
         darkTheme: data.darkTheme || false,
       });
-      
+
       toast.success("Settings saved successfully!");
       console.log("Settings saved:", data);
     } catch (error) {
