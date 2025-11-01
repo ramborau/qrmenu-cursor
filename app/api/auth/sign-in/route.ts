@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { verifyPassword } from "better-auth/utils";
+import { verifyPassword } from "@/lib/password-verify";
 import crypto from "crypto";
 
 export async function POST(request: NextRequest) {

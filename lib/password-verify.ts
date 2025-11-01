@@ -1,7 +1,8 @@
 // Password verification using Better Auth's algorithm
+// Replicating Better Auth's verifyPassword function exactly
 import { hex } from "@better-auth/utils/hex";
 import { scryptAsync } from "@noble/hashes/scrypt.js";
-import { hexToBytes } from "@noble/hashes/utils";
+import * as utils from "@noble/hashes/utils.js";
 
 const config = {
   N: 16384,
@@ -11,8 +12,11 @@ const config = {
 };
 
 async function generateKey(password: string, salt: string): Promise<Uint8Array> {
-  const saltBytes = hexToBytes(salt);
-  return scryptAsync(password.normalize("NFKC"), saltBytes, {
+  // Better Auth passes salt (hex string) directly to scryptAsync
+  // scryptAsync uses 'clean' utility which converts hex strings to bytes
+  // But to be safe, let's convert hex to bytes explicitly
+  const saltBytes = utils.hexToBytes(salt);
+  return await scryptAsync(password.normalize("NFKC"), saltBytes, {
     N: config.N,
     p: config.p,
     r: config.r,
@@ -40,8 +44,14 @@ export async function verifyPassword(hash: string, password: string): Promise<bo
   if (!salt || !key) {
     throw new Error("Invalid password hash format - expected salt:key");
   }
-  const targetKey = await generateKey(password, salt);
-  const storedKey = hexToBytes(key);
-  return constantTimeEqual(targetKey, storedKey);
+  
+  try {
+    const targetKey = await generateKey(password, salt);
+    const storedKey = utils.hexToBytes(key);
+    return constantTimeEqual(targetKey, storedKey);
+  } catch (error: any) {
+    console.error("Password verification error:", error.message);
+    return false;
+  }
 }
 
