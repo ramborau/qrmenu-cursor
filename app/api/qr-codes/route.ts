@@ -6,7 +6,7 @@ import QRCode from "qrcode";
 export async function GET(request: NextRequest) {
   try {
     const session = await requireAuth();
-    
+
     // Get user's restaurants
     const restaurants = await prisma.restaurant.findMany({
       where: { ownerId: session.user.id },
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     for (let i = 0; i < count; i++) {
       const tableNum = tableNumber || `T-${String(i + 1).padStart(2, "0")}`;
       const qrUrl = `${baseUrl}/menu/${restaurantId}/table/${tableNum}`;
-      
+
       // Generate QR code as SVG
       const qrCodeSvg = await QRCode.toString(qrUrl, {
         type: "svg",
