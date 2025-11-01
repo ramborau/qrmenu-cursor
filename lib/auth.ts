@@ -13,14 +13,14 @@ const fixedAdapter = (options: any) => {
 
   // Helper function to map account fields
   const mapAccountFields = (account: any) => {
-    if (!account) return account;
+    if (!account || typeof account !== 'object') return account;
     const mapped: any = { ...account };
-    // Map provider -> providerId
-    if (mapped.provider !== undefined && mapped.providerId === undefined) {
+    // Map provider -> providerId (Better Auth expects providerId)
+    if (mapped.provider !== undefined) {
       mapped.providerId = mapped.provider;
     }
-    // Map id -> accountId  
-    if (mapped.id !== undefined && mapped.accountId === undefined) {
+    // Map id -> accountId (Better Auth might expect accountId)
+    if (mapped.id !== undefined) {
       mapped.accountId = mapped.id;
     }
     return mapped;
@@ -34,17 +34,7 @@ const fixedAdapter = (options: any) => {
       
       // Map provider -> providerId for account results
       if (params?.model === "account" && Array.isArray(results)) {
-        const mapped = results.map(mapAccountFields);
-        // Debug log
-        if (mapped.length > 0) {
-          console.log("[Auth Fix] Mapped accounts:", mapped.map((a: any) => ({
-            id: a.id,
-            provider: a.provider,
-            providerId: a.providerId,
-            hasPassword: !!a.password,
-          })));
-        }
-        return mapped;
+        return results.map(mapAccountFields);
       }
       
       return results;
@@ -56,38 +46,34 @@ const fixedAdapter = (options: any) => {
   if (originalFindOne) {
     adapter.findOne = async (params: any) => {
       const result = await originalFindOne(params);
-      
+
       // Map provider -> providerId for account result
       if (params?.model === "account" && result) {
         return mapAccountFields(result);
       }
-      
+
       return result;
     };
   }
 
-  // Better Auth uses internalAdapter which might have findAccounts method
-  // Wrap it if it exists to ensure field mapping
-  if (adapter.findAccounts) {
-    const originalFindAccounts = adapter.findAccounts;
-    adapter.findAccounts = async (userId: string, trxAdapter?: any) => {
-      const accounts = await originalFindAccounts(userId, trxAdapter);
-      if (Array.isArray(accounts)) {
-        return accounts.map(mapAccountFields);
-      }
-      return accounts;
-    };
-  }
-
-  // Also check if adapter has internalAdapter property
-  if (adapter.internalAdapter && adapter.internalAdapter.findAccounts) {
-    const originalInternalFindAccounts = adapter.internalAdapter.findAccounts;
-    adapter.internalAdapter.findAccounts = async (userId: string, trxAdapter?: any) => {
-      const accounts = await originalInternalFindAccounts(userId, trxAdapter);
-      if (Array.isArray(accounts)) {
-        return accounts.map(mapAccountFields);
-      }
-      return accounts;
+  // Wrap transaction to ensure field mapping works in transactions too
+  if (adapter.transaction && typeof adapter.transaction === 'function') {
+    const originalTransaction = adapter.transaction;
+    adapter.transaction = async (callback: any) => {
+      return originalTransaction(async (trxAdapter: any) => {
+        // Wrap transaction adapter's findMany too
+        if (trxAdapter && trxAdapter.findMany) {
+          const originalTrxFindMany = trxAdapter.findMany;
+          trxAdapter.findMany = async (params: any) => {
+            const results = await originalTrxFindMany(params);
+            if (params?.model === "account" && Array.isArray(results)) {
+              return results.map(mapAccountFields);
+            }
+            return results;
+          };
+        }
+        return callback(trxAdapter);
+      });
     };
   }
 
