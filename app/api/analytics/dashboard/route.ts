@@ -5,7 +5,7 @@ import { requireAuth } from "@/lib/auth-helpers";
 export async function GET(request: NextRequest) {
   try {
     const session = await requireAuth();
-    
+
     // Get user's restaurants
     const restaurants = await prisma.restaurant.findMany({
       where: { ownerId: session.user.id },

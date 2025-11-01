@@ -145,7 +145,7 @@ export function DraggableCategoryList({
       const newIndex = categories.findIndex((cat) => cat.id === over.id);
 
       const newOrder = arrayMove(categories, oldIndex, newIndex);
-      
+
       // Update sortOrder values
       const updatedOrder = newOrder.map((cat, index) => ({
         ...cat,
